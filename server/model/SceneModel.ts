@@ -32,7 +32,7 @@ class SceneModel {
 
     public async createModel() {
         try {
-            await Mongoose.connect(this.dbConnectionString, {useNewUrlParser: true, useUnifiedTopology: true});
+            await Mongoose.connect(this.dbConnectionString);
             this.model = Mongoose.model<ISceneModel>("Scenes", this.schema);
         }
         catch (e) {
