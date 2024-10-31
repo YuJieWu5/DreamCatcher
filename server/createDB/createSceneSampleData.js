@@ -62,3 +62,36 @@ scenesCollection.insert(
     review: []
 }
 )
+db.createCollection('users')
+usersCollection = db.getCollection("users")
+usersCollection.remove({})
+usersCollection.insert(
+    {
+        userId: "a81f83a2-243f-451f-bc4a-fab6538c103d",
+        userName: "Vivian",
+        phone: "2067711111",
+        email: "ywu4@seattleu.edu",
+        password: "123",
+        authorization: "prime",
+    }
+)
+usersCollection.insert(
+    {
+        userId: "bb4d1f89-53c8-4b3a-92f8-8a7dc2f9babe",
+        userName: "Ivy",
+        phone: "2067711111",
+        email: "ivy@seattleu.edu",
+        password: "123",
+        authorization: "prime",
+    }
+)
+usersCollection.insert(
+    {
+        userId: "f5a013b7-0e83-4ec8-bfd2-8a8f3838bace",
+        userName: "Test",
+        phone: "2067712222",
+        email: "test@seattleu.edu",
+        password: "123",
+        authorization: "general",
+    }
+)
