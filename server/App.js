@@ -37,9 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
+// import express from 'express';
 var express = require("express");
 var bodyParser = require("body-parser");
 var SceneModel_1 = require("./model/SceneModel");
+var UserModel_1 = require("./model/UserModel");
 var crypto = require("crypto");
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
@@ -49,6 +51,7 @@ var App = /** @class */ (function () {
         this.middleware();
         this.routes();
         this.Scenes = new SceneModel_1.SceneModel(mongoDBConnection);
+        this.Users = new UserModel_1.UserModel(mongoDBConnection);
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
@@ -64,6 +67,7 @@ var App = /** @class */ (function () {
     App.prototype.routes = function () {
         var _this = this;
         var router = express.Router();
+        //get scene by sceneId
         router.get('/app/scene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id;
             return __generator(this, function (_a) {
@@ -78,6 +82,7 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        //create new scene
         router.post('/app/scene/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id, jsonObj, e_1;
             return __generator(this, function (_a) {
@@ -104,7 +109,7 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
-        // DELETE route for deleting a scene by sceneId
+        // delete scene by sceneId
         router.delete('/app/scene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id, e_2;
             return __generator(this, function (_a) {
@@ -127,6 +132,7 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        //display all scene
         router.get('/app/scene/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -139,15 +145,95 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        //get scene count
         router.get('/app/scenecount', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('Query the number of list elements in db');
+                        console.log('Query the number of scene elements in db');
                         return [4 /*yield*/, this.Scenes.retrieveSceneCount(res)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
+                }
+            });
+        }); });
+        //endpoint for user//
+        //create a new user
+        router.post('/app/user/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var id, jsonObj, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = crypto.randomBytes(16).toString("hex");
+                        jsonObj = req.body;
+                        jsonObj.userId = id;
+                        console.log(req.body);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.Users.model.create([jsonObj])];
+                    case 2:
+                        _a.sent();
+                        res.send('{"id":"' + id + '"}');
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_3 = _a.sent();
+                        console.error(e_3);
+                        console.log('object creation failed');
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        //get scene by sceneId
+        router.get('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var id;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = req.params.userId;
+                        console.log('Query single user with id: ' + id);
+                        return [4 /*yield*/, this.Users.retrieveUser(res, id)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        //get user count
+        router.get('/app/usercount', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log('Query the number of users in db');
+                        return [4 /*yield*/, this.Users.retrieveUserCount(res)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        //update user(phone || email || name) by userId
+        router.patch('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, updateData, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userId = req.params.userId;
+                        updateData = req.body;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.Users.updateUserById(res, userId, updateData)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_4 = _a.sent();
+                        console.error(e_4);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); });

@@ -1,6 +1,8 @@
 import express from 'express';
+// import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import {SceneModel} from './model/SceneModel';
+import {UserModel} from './model/UserModel';
 import * as crypto from 'crypto';
 
 // Creates and configures an ExpressJS web server.
@@ -9,6 +11,7 @@ class App {
   // ref to Express instance
   public expressApp: express.Application;
   public Scenes:SceneModel;
+  public Users:UserModel;
 
   //Run configuration methods on the Express instance.
   constructor(mongoDBConnection:string)
@@ -17,6 +20,7 @@ class App {
     this.middleware();
     this.routes();
     this.Scenes = new SceneModel(mongoDBConnection);
+    this.Users = new UserModel(mongoDBConnection);
   }
 
   // Configure Express middleware.
@@ -34,12 +38,14 @@ class App {
   private routes(): void {
     let router = express.Router();
 
+    //get scene by sceneId
     router.get('/app/scene/:sceneId', async (req, res) => {
       var id = req.params.sceneId;
       console.log('Query single scene with id: ' + id);
       await this.Scenes.retrieveScenes(res, id);
     });
-
+    
+    //create new scene
     router.post('/app/scene/', async (req, res) => {
       const id = crypto.randomBytes(16).toString("hex");
       console.log(req.body);
@@ -55,7 +61,7 @@ class App {
         }
     });
 
-    // DELETE route for deleting a scene by sceneId
+    // delete scene by sceneId
     router.delete('/app/scene/:sceneId', async (req, res) => {
         var id = req.params.sceneId;
         console.log('Attempting to delete scene with id: ' + id);
@@ -67,15 +73,61 @@ class App {
         }
     });
 
+    //display all scene
     router.get('/app/scene/', async (req, res) => {
         console.log('Query All Scenes');
         await this.Scenes.retrieveAllScenes(res);
     });
 
+    //get scene count
     router.get('/app/scenecount', async (req, res) => {
-      console.log('Query the number of list elements in db');
+      console.log('Query the number of scene elements in db');
       await this.Scenes.retrieveSceneCount(res);
     });
+
+    //endpoint for user//
+
+    //create a new user
+    router.post('/app/user/', async (req, res) => {
+      const id = crypto.randomBytes(16).toString("hex");
+      var jsonObj = req.body;
+      jsonObj.userId = id;
+      console.log(req.body);
+      try {
+        await this.Users.model.create([jsonObj]);
+        res.send('{"id":"' + id + '"}');
+      }
+      catch (e) {
+        console.error(e);
+        console.log('object creation failed');
+      }
+    });
+
+    //get scene by sceneId
+    router.get('/app/user/:userId', async (req, res) => {
+      var id = req.params.userId;
+      console.log('Query single user with id: ' + id);
+      await this.Users.retrieveUser(res, id);
+    });
+
+    //get user count
+    router.get('/app/usercount', async (req, res) => {
+      console.log('Query the number of users in db');
+      await this.Users.retrieveUserCount(res);
+    });
+
+    //update user(phone || email || name) by userId
+    router.patch('/app/user/:userId', async (req, res) => {
+      const userId = req.params.userId;
+      const updateData = req.body; // e.g., { userName, phone, email })
+      try{
+        await this.Users.updateUserById(res, userId, updateData);
+      }catch(e){
+        console.error(e);
+      }
+      
+  });
+  
 
     this.expressApp.use('/', router);
 
