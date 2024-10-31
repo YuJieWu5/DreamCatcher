@@ -42,8 +42,6 @@ class SceneModel {
 
     public async retrieveAllScenes(response:any) {
         var query = this.model.find({});
-        // query.where("state");
-        // query.lt("B");
         try {
             const itemArray = await query.exec();
             response.json(itemArray);
@@ -77,15 +75,13 @@ class SceneModel {
         }
     }
 
-    // Delete a scene by sceneId
+    // delete a scene by sceneId
     public async deleteSceneById(response: any, sceneId: string) {
         try {
             const result = await this.model.deleteOne({ sceneId: sceneId });
             if (result.deletedCount > 0) {
-                // console.log('Scene deleted successfully')
                 response.status(200).json({ message: 'Scene deleted successfully' });
             } else {
-                // console.log('Scene not found');
                 response.status(404).json({ message: 'Scene not found' });
             }
         }

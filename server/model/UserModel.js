@@ -36,30 +36,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SceneModel = void 0;
+exports.UserModel = void 0;
 var Mongoose = require("mongoose");
-var SceneModel = /** @class */ (function () {
-    function SceneModel(DB_CONNECTION_STRING) {
+var UserModel = /** @class */ (function () {
+    function UserModel(DB_CONNECTION_STRING) {
         this.dbConnectionString = DB_CONNECTION_STRING;
         this.createSchema();
         this.createModel();
     }
-    SceneModel.prototype.createSchema = function () {
+    UserModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
-            sceneId: String,
-            sceneName: String,
-            street: String,
-            city: String,
-            state: String,
-            postalCode: String,
-            country: String,
-            mediaName: String,
-            type: String,
-            description: String,
-            review: [String]
-        }, { collection: 'scenes' });
+            userId: String,
+            userName: String,
+            phone: Number,
+            email: String,
+            password: String,
+            authorization: String
+        }, { collection: 'users' });
     };
-    SceneModel.prototype.createModel = function () {
+    UserModel.prototype.createModel = function () {
         return __awaiter(this, void 0, void 0, function () {
             var e_1;
             return __generator(this, function (_a) {
@@ -69,7 +64,7 @@ var SceneModel = /** @class */ (function () {
                         return [4 /*yield*/, Mongoose.connect(this.dbConnectionString)];
                     case 1:
                         _a.sent();
-                        this.model = Mongoose.model("Scenes", this.schema);
+                        this.model = Mongoose.model("Users", this.schema);
                         return [3 /*break*/, 3];
                     case 2:
                         e_1 = _a.sent();
@@ -80,20 +75,20 @@ var SceneModel = /** @class */ (function () {
             });
         });
     };
-    SceneModel.prototype.retrieveAllScenes = function (response) {
+    UserModel.prototype.retrieveUser = function (response, value) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, itemArray, e_2;
+            var query, result, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = this.model.find({});
+                        query = this.model.findOne({ userId: value });
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, query.exec()];
                     case 2:
-                        itemArray = _a.sent();
-                        response.json(itemArray);
+                        result = _a.sent();
+                        response.json(result);
                         return [3 /*break*/, 4];
                     case 3:
                         e_2 = _a.sent();
@@ -104,20 +99,22 @@ var SceneModel = /** @class */ (function () {
             });
         });
     };
-    SceneModel.prototype.retrieveScenes = function (response, value) {
+    UserModel.prototype.retrieveUserCount = function (response) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, result, e_3;
+            var query, numberOfScenes, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = this.model.findOne({ sceneId: value });
+                        console.log("retrieve User Count ...");
+                        query = this.model.estimatedDocumentCount();
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, query.exec()];
                     case 2:
-                        result = _a.sent();
-                        response.json(result);
+                        numberOfScenes = _a.sent();
+                        console.log("numberOfUsers: " + numberOfScenes);
+                        response.json(numberOfScenes);
                         return [3 /*break*/, 4];
                     case 3:
                         e_3 = _a.sent();
@@ -128,59 +125,37 @@ var SceneModel = /** @class */ (function () {
             });
         });
     };
-    SceneModel.prototype.retrieveSceneCount = function (response) {
+    // update userName, phone, or email by userId
+    UserModel.prototype.updateUserById = function (response, userId, updateData) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, numberOfScenes, e_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        console.log("retrieve Scene Count ...");
-                        query = this.model.estimatedDocumentCount();
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, query.exec()];
-                    case 2:
-                        numberOfScenes = _a.sent();
-                        console.log("numberOfScenes: " + numberOfScenes);
-                        response.json(numberOfScenes);
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_4 = _a.sent();
-                        console.error(e_4);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    // delete a scene by sceneId
-    SceneModel.prototype.deleteSceneById = function (response, sceneId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var result, e_5;
+            var result, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.model.deleteOne({ sceneId: sceneId })];
+                        console.log(updateData);
+                        return [4 /*yield*/, this.model.findOneAndUpdate({ userId: userId }, // filter by userId
+                            { $set: updateData }, // update specific fields
+                            { new: true } //new=true returns updated document
+                            )];
                     case 1:
                         result = _a.sent();
-                        if (result.deletedCount > 0) {
-                            response.status(200).json({ message: 'Scene deleted successfully' });
+                        if (result) {
+                            response.status(200).json({ message: 'User updated successfully', data: result });
                         }
                         else {
-                            response.status(404).json({ message: 'Scene not found' });
+                            response.status(404).json({ message: 'User not found' });
                         }
                         return [3 /*break*/, 3];
                     case 2:
-                        e_5 = _a.sent();
-                        console.error(e_5);
+                        e_4 = _a.sent();
+                        console.error(e_4);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    return SceneModel;
+    return UserModel;
 }());
-exports.SceneModel = SceneModel;
+exports.UserModel = UserModel;
