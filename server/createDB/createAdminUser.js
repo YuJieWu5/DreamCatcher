@@ -6,3 +6,5 @@ db.createUser(
 	roles: [ "readWriteAnyDatabase", "dbAdminAnyDatabase", "clusterAdmin"]	
 }
 )
+
+console.log(db.getUsers());
