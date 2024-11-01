@@ -103,7 +103,7 @@ class App {
       }
     });
 
-    //get scene by sceneId
+    //get scene by userId
     router.get('/app/user/:userId', async (req, res) => {
       var id = req.params.userId;
       console.log('Query single user with id: ' + id);
