@@ -1,1 +1,27 @@
-<p>mainpage works!</p>
+<div class="container">
+  <div class="content-container">
+    <!-- Sidebar with cards -->
+    <mat-drawer-container class="drawer-container">
+      <mat-drawer class="drawer-color" #drawer mode="side" opened>
+        <!--should display search bar instead-->
+        <span>Game of Thrones</span>
+        <p class="subtitle">Game of Thrones Filming Locations Guide</p>
+        <mat-card *ngFor="let location of locations" class="location-card">
+          <mat-card-header>
+            <img mat-card-avatar [src]="location.image" alt="{{location.title}}">
+            <mat-card-title>{{ location.title }}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ location.description }}</p>
+          </mat-card-content>
+          <mat-card-actions class="align-right">
+            <button mat-button color="primary" (click)="viewLocation(location)">View</button>
+          </mat-card-actions>
+        </mat-card>
+      </mat-drawer>
+
+      <!-- Main content -->
+      <div class="map-container" id="map"></div>
+    </mat-drawer-container>
+  </div>
+</div>
