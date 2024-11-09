@@ -52,7 +52,7 @@ var UserModel = /** @class */ (function () {
             email: String,
             password: String,
             authorization: String
-        }, { collection: 'users' });
+        }, { collection: 'users', strict: false });
     };
     UserModel.prototype.createModel = function () {
         return __awaiter(this, void 0, void 0, function () {
@@ -133,7 +133,6 @@ var UserModel = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        console.log(updateData);
                         return [4 /*yield*/, this.model.findOneAndUpdate({ userId: userId }, // filter by userId
                             { $set: updateData }, // update specific fields
                             { new: true } //new=true returns updated document
@@ -152,6 +151,120 @@ var UserModel = /** @class */ (function () {
                         console.error(e_4);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //FUNCTION REGARDING FAVORITE LIST
+    //get favorite list data
+    UserModel.prototype.retrieveFavoriteList = function (response, value) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log("Model reveived userId:" + value);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.model.findOne({ userId: value }).lean().exec()];
+                    case 2:
+                        result = _a.sent();
+                        console.log(result);
+                        console.log(result === null || result === void 0 ? void 0 : result.favoriteList);
+                        response.status(200).json({ success: true, favoriteList: (result === null || result === void 0 ? void 0 : result.favoriteList) || [] }); // Return scenes or an empty array if no result is found
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_5 = _a.sent();
+                        console.error(e_5);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //add sceneId to favoriteList
+    UserModel.prototype.addSceneToFavorites = function (response, userId, sceneId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, updatedUser, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        console.log('User ID:', userId, ' Scene ID:', sceneId);
+                        return [4 /*yield*/, this.model.updateOne({ userId: userId }, // Match user by userId
+                            { $addToSet: { favoriteList: sceneId } } // Add to favoriteList only if not present
+                            )];
+                    case 1:
+                        result = _a.sent();
+                        if (!(result.modifiedCount > 0)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.model.findOne({ userId: userId })];
+                    case 2:
+                        updatedUser = _a.sent();
+                        if (updatedUser) {
+                            response.status(200).json({
+                                message: sceneId + ' added',
+                                favoriteList: updatedUser.favoriteList
+                            });
+                        }
+                        else {
+                            response.status(404).json({ message: 'User not found after update' });
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        response.status(404).json({ message: 'User not found or SceneId already in favoriteList' });
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        e_6 = _a.sent();
+                        console.error(e_6);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_6 });
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // delete a sceneId from favoriteList
+    UserModel.prototype.deleteSceneFromFavoriteList = function (response, userId, sceneId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, updatedUser, e_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        // Find the document by userId
+                        // Remove the sceneId from the scenes array
+                        console.log('User ID:', userId, ' Scene ID:', sceneId);
+                        return [4 /*yield*/, this.model.updateOne({ userId: userId }, // Match user by userId
+                            { $pull: { favoriteList: sceneId } } // Add to favoriteList only if not present
+                            )];
+                    case 1:
+                        result = _a.sent();
+                        if (!(result.modifiedCount > 0)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.model.findOne({ userId: userId })];
+                    case 2:
+                        updatedUser = _a.sent();
+                        if (updatedUser) {
+                            response.status(200).json({
+                                message: sceneId + ' deleted',
+                                favoriteList: updatedUser.favoriteList
+                            });
+                        }
+                        else {
+                            response.status(404).json({ message: 'User not found after update' });
+                        }
+                        return [3 /*break*/, 4];
+                    case 3:
+                        response.status(404).json({ message: 'User not found or SceneId already in favoriteList' });
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        e_7 = _a.sent();
+                        console.error(e_7);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         });
