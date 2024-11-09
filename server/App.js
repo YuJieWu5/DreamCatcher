@@ -37,8 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
-// import express from 'express';
 var express = require("express");
+// import express from 'express';
 var bodyParser = require("body-parser");
 var SceneModel_1 = require("./model/SceneModel");
 var UserModel_1 = require("./model/UserModel");
@@ -186,7 +186,7 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
-        //get scene by sceneId
+        //get scene by userId
         router.get('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id;
             return __generator(this, function (_a) {
@@ -234,6 +234,66 @@ var App = /** @class */ (function () {
                         console.error(e_4);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        //get user favorite list
+        router.get('/app/user/:userId/favoritelist', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var id;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        console.log('Query the favoritelist by userID YAY');
+                        id = req.params.userId;
+                        console.log('Query single user with id: ' + id);
+                        return [4 /*yield*/, this.Users.retrieveFavoriteList(res, id)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        //add scene to user favorite list
+        router.patch('/app/user/:userId/addscene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, sceneId, e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userId = req.params.userId;
+                        sceneId = req.body.sceneId;
+                        return [4 /*yield*/, this.Users.addSceneToFavorites(res, userId, sceneId)];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_5 = _a.sent();
+                        console.error(e_5);
+                        console.log('add scene failed');
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        //delete scene to user favorite list
+        router.patch('/app/user/:userId/deletescene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, sceneId, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userId = req.params.userId;
+                        sceneId = req.body.sceneId;
+                        return [4 /*yield*/, this.Users.deleteSceneFromFavoriteList(res, userId, sceneId)];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_6 = _a.sent();
+                        console.error(e_6);
+                        console.log('delete scene failed');
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); });

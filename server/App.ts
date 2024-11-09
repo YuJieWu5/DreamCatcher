@@ -1,5 +1,5 @@
-import express from 'express';
-// import * as express from 'express';
+import * as express from 'express';
+// import express from 'express';
 import * as bodyParser from 'body-parser';
 import {SceneModel} from './model/SceneModel';
 import {UserModel} from './model/UserModel';
@@ -125,8 +125,41 @@ class App {
       }catch(e){
         console.error(e);
       }
-      
-  });
+    });
+
+    //get user favorite list
+    router.get('/app/user/:userId/favoritelist', async (req, res) => {
+      console.log('Query the favoritelist by userID YAY');
+      var id = req.params.userId;
+      console.log('Query single user with id: ' + id);
+      await this.Users.retrieveFavoriteList(res, id);
+    });
+
+    //add scene to user favorite list
+    router.patch('/app/user/:userId/addscene', async (req, res) => {  
+      try {
+        const userId = req.params.userId;
+        const{ sceneId } = req.body;
+        await this.Users.addSceneToFavorites(res, userId, sceneId);
+      }
+      catch (e) {
+        console.error(e);
+        console.log('add scene failed');
+      }
+    });
+
+    //delete scene to user favorite list
+    router.patch('/app/user/:userId/deletescene', async (req, res) => {
+      try {
+        const userId = req.params.userId;
+        const{ sceneId } = req.body;
+        await this.Users.deleteSceneFromFavoriteList(res, userId, sceneId);
+      }
+      catch (e) {
+        console.error(e);
+        console.log('delete scene failed');
+      }
+    });
   
 
     this.expressApp.use('/', router);
