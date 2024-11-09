@@ -7,5 +7,6 @@ interface IUserModel extends Mongoose.Document {
     email: string;
     password: string;
     authorization: string;
+    favoriteList: [string];
 }
 export {IUserModel};

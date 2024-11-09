@@ -17,11 +17,7 @@ class SceneModel {
             {
                 sceneId: String,
                 sceneName: String,
-                street: String,
-                city: String,
-                state: String,
-                postalCode: String,
-                country: String,
+                address: String,
                 mediaName: String,
                 type: String,
                 description: String,
