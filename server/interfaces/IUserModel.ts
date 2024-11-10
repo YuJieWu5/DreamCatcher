@@ -1,4 +1,5 @@
 import Mongoose = require("mongoose");
+import { IFavoriteListModel } from "./IFavoriteListModel";
 
 interface IUserModel extends Mongoose.Document {
     userId: string;
@@ -7,6 +8,6 @@ interface IUserModel extends Mongoose.Document {
     email: string;
     password: string;
     authorization: string;
-    favoriteList: [string];
+    favoriteList: IFavoriteListModel[];
 }
 export {IUserModel};

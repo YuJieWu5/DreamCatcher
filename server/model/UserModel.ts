@@ -1,8 +1,10 @@
 import * as Mongoose from "mongoose";
 import {IUserModel} from '../interfaces/IUserModel';
+import * as crypto from 'crypto';
 
 class UserModel {
     public schema:any;
+    public favListSchema: any;
     public model:any;
     public dbConnectionString:string;
 
@@ -13,16 +15,37 @@ class UserModel {
     }
 
     public createSchema() {
+        this.favListSchema = new Mongoose.Schema({
+            favListId: {type: String, require: true, unique: true},
+            listName: { type: String, required: true },
+            scenes: { type: [String], default: [] }
+        });
+
         this.schema = new Mongoose.Schema(
             {
-                userId: String,
-                userName: String,
-                phone: Number,
-                email: String,
-                password: String,
-                authorization: String
+                userId: { type: String, required: true, unique: true },
+                userName: { type: String, required: true },
+                phone: { type: Number, required: true },
+                email: { type: String, required: true },
+                password: { type: String, required: true },
+                authorization: { type: String, required: true },
+                favoriteList: { type: [this.favListSchema], default: [] }
             }, {collection: 'users', strict: false }
-        );    
+        );
+
+        //add a pre-save hook to generate default favorite list if not provided
+        this.schema.pre('save', function (next) {
+            if (this.favoriteList.length === 0) {
+                const id = crypto.randomBytes(16).toString("hex");
+                this.favoriteList.push({
+                    favListId: id,
+                    listName: "Default",
+                    scenes: []
+                });
+            }
+            next();
+        });
+        
     }
 
     public async createModel() {
@@ -82,11 +105,11 @@ class UserModel {
 
     //FUNCTION REGARDING FAVORITE LIST
 
-    //get favorite list data
-    public async retrieveFavoriteList(response:any, value:string) {
-        console.log("Model reveived userId:"+ value);
+    //get all favorite list data
+    public async retrieveFavoriteList(response:any, userId:string) {
+        console.log("Model reveived userId:"+ userId);
         try {
-            const result = await this.model.findOne({ userId: value }).lean().exec();
+            const result = await this.model.findOne({ userId: userId }).lean().exec();
 
             console.log(result?.favoriteList);
             //return scenes or an empty array if no result is found
@@ -96,15 +119,33 @@ class UserModel {
         }
     }
 
-    //add sceneId to favoriteList
-    public async addSceneToFavorites(response: any, userId: string, sceneId: string) {
+    //get one favorite list data by listId
+    public async retrieveFavoriteListByListId(response:any, userId:string, favListId:string) {
+        console.log("Find favorite data by userId: "+ userId + " and favListId: "+ favListId);
         try {
-            console.log('User ID:', userId, ' Scene ID:', sceneId);
+            const result = await this.model.findOne({ userId: userId, "favoriteList.favListId": favListId }).lean().exec();
+
+            console.log(result?.favoriteList);
+            if(result && result.favoriteList){
+                response.status(200).json({ success: true, favoriteList: result.favoriteList });
+            } else {
+                response.status(404).json({ success: false, message: 'Favorite list not found' });
+            }
+        } catch (e) {
+            console.error(e);
+            response.status(500).json({ success: false, message: 'An error occurred', error: e });
+        }
+    }
+
+    //add sceneId to favoriteList
+    public async addSceneToFavorites(response: any, userId: string, favListId: string, sceneId: string) {
+        try {
+            console.log('User ID:', userId, ' List ID:', favListId, ' Scene ID:', sceneId);
             
             //add sceneId to favoriteList only if not present
             const result = await this.model.updateOne(
-                { userId: userId },
-                { $addToSet: { favoriteList: sceneId } } 
+                { userId: userId, "favoriteList.favListId": favListId },
+                { $addToSet: { "favoriteList.$.scenes": sceneId } } 
             );
 
             if (result.modifiedCount > 0) {
@@ -112,7 +153,7 @@ class UserModel {
                 const updatedUser = await this.model.findOne({ userId: userId });
                 if (updatedUser) {
                     response.status(200).json({
-                        message: sceneId +' added',
+                        message: sceneId +' added to '+ favListId,
                         favoriteList: updatedUser.favoriteList
                     });
                 } else {
@@ -129,14 +170,14 @@ class UserModel {
     
 
     // delete a sceneId from favoriteList
-    public async deleteSceneFromFavoriteList(response: any, userId: string, sceneId: string) {
+    public async deleteSceneFromFavoriteList(response: any, userId: string, favListId: string, sceneId: string) {
         try {
-            console.log('User ID:', userId, ' Scene ID:', sceneId);
+            console.log('User ID:', userId, ' List ID:', favListId, ' Scene ID:', sceneId);
 
             //remove sceneId from favoriteList
             const result = await this.model.updateOne(
-                { userId: userId },
-                { $pull: { favoriteList: sceneId } }
+                { userId: userId, "favoriteList.favListId": favListId },
+                { $pull: { "favoriteList.$.scenes": sceneId } }
             );
 
             if (result.modifiedCount > 0) {
@@ -144,7 +185,7 @@ class UserModel {
                 const updatedUser = await this.model.findOne({ userId: userId });
                 if (updatedUser) {
                     response.status(200).json({
-                        message: sceneId +' deleted',
+                        message: sceneId +' deleted from '+ favListId,
                         favoriteList: updatedUser.favoriteList
                     });
                 } else {
