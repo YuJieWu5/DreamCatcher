@@ -85,5 +85,28 @@ class SceneModel {
             console.error(e);
         }
     }
+
+    // search a scene by keyword
+    public async searchSceneByKeyword(response: any, keyword: string){
+        try{
+            console.log(keyword);
+            const result = await this.model.find({
+                $or: [
+                    { sceneName: { $regex: keyword, $options: 'i' } }, // 'i' for case-insensitive
+                    { address: { $regex: keyword, $options: 'i' } }
+                ]
+            });
+
+            console.log(result);
+            if (result.length > 0) {
+                response.status(200).json(result);
+            } else {
+                response.status(404).json({ message: 'No matching scenes found' });
+            }
+        }catch(e){
+            console.error(e);
+            response.status(500).json({ success: false, message: 'An error occurred', error: e });
+        }
+    }
 }
 export {SceneModel};

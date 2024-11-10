@@ -177,6 +177,41 @@ var SceneModel = /** @class */ (function () {
             });
         });
     };
+    // search a scene by keyword
+    SceneModel.prototype.searchSceneByKeyword = function (response, keyword) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        console.log(keyword);
+                        return [4 /*yield*/, this.model.find({
+                                $or: [
+                                    { sceneName: { $regex: keyword, $options: 'i' } }, // 'i' for case-insensitive
+                                    { address: { $regex: keyword, $options: 'i' } }
+                                ]
+                            })];
+                    case 1:
+                        result = _a.sent();
+                        console.log(result);
+                        if (result.length > 0) {
+                            response.status(200).json(result);
+                        }
+                        else {
+                            response.status(404).json({ message: 'No matching scenes found' });
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_6 = _a.sent();
+                        console.error(e_6);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_6 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return SceneModel;
 }());
 exports.SceneModel = SceneModel;
