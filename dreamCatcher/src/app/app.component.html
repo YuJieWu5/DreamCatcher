@@ -1,26 +1,9 @@
-<div class="container  mat-app-background">
-  <mat-toolbar color="primary">
-    <span class="title" [routerLink]="['/']">Dream Catcher</span>
-    <span class="spacer"></span>
-    <button mat-icon-button (click)="toggleDrawer()">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </mat-toolbar>
-  
+<div class="container mat-app-background">
   <mat-drawer-container class="drawer-container">
-    <mat-drawer #drawer mode="side" [(opened)]="opened" position="end">
-      <mat-nav-list>
-        <mat-list-item [routerLink]="['/user']">User Info</mat-list-item>
-        <mat-list-item [routerLink]="['/favlist']">Favorite List</mat-list-item>
-        <mat-list-item [routerLink]="['/trips']">Trips</mat-list-item>
-        <mat-list-item>Log Out</mat-list-item>
-      </mat-nav-list>
-    </mat-drawer>
-  
+    <app-header></app-header>
+
     <div class="content">
-      <!-- Main content of your page goes here -->
-      <!-- <p>Main content area</p> -->
-      <router-outlet />
+      <router-outlet></router-outlet>
     </div>
-  </mat-drawer-container>  
+  </mat-drawer-container>
 </div>

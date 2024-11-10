@@ -1,27 +1,19 @@
-<div class="container">
-  <div class="content-container">
-    <!-- Sidebar with cards -->
-    <mat-drawer-container class="drawer-container">
-      <mat-drawer class="drawer-color" #drawer mode="side" opened>
-        <!--should display search bar instead-->
-        <span>Game of Thrones</span>
-        <p class="subtitle">Game of Thrones Filming Locations Guide</p>
-        <mat-card *ngFor="let location of locations" class="location-card">
-          <mat-card-header>
-            <img mat-card-avatar [src]="location.image" alt="{{location.title}}">
-            <mat-card-title>{{ location.title }}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{ location.description }}</p>
-          </mat-card-content>
-          <mat-card-actions class="align-right">
-            <button mat-button color="primary" (click)="viewLocation(location)">View</button>
-          </mat-card-actions>
-        </mat-card>
-      </mat-drawer>
-
-      <!-- Main content -->
-      <div class="map-container" id="map"></div>
-    </mat-drawer-container>
+<div class="content">
+  <div *ngIf="showResults" class="results-sidebar">
+    <div id="results-title">Results:</div>
+    <div class="location-list">
+      <div *ngFor="let location of filteredLocations" class="location-card">
+        <div class="location-image-container">
+          <img [src]="location.image" alt="{{location.title}}" class="location-image">
+        </div>
+        <div class="location-info">
+          <div class="location-title">{{ location.title }}</div>
+          <div class="location-description">{{ location.description }}</div>
+          <button (click)="viewLocation(location)" class="view-button">View</button>
+        </div>
+      </div>
+    </div>
   </div>
+  <div class="map-container" id="map"></div>
 </div>
+

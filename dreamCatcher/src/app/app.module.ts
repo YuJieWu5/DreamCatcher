@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -7,6 +8,7 @@ import { MainpageComponent } from './mainpage/mainpage.component';
 import { UserpageComponent } from './userpage/userpage.component';
 import { FavoritelistpageComponent } from './favoritelistpage/favoritelistpage.component';
 import { TripspageComponent } from './tripspage/tripspage.component';
+import { HeaderComponent } from './header/header.component';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {DreamCatcherProxyServiceService} from './dream-catcher-proxy-service.service';
@@ -21,7 +23,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { LocationModalComponent } from './location-modal/location-modal.component';
 
 
 
@@ -31,10 +34,13 @@ import { MatCardModule } from '@angular/material/card';
     MainpageComponent,
     UserpageComponent,
     FavoritelistpageComponent,
-    TripspageComponent
+    TripspageComponent,
+    HeaderComponent,
+    LocationModalComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     MatTableModule,
     MatSortModule,
@@ -44,7 +50,8 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     MatListModule,
     MatSidenavModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule
   ],
   providers: [
     provideHttpClient(),

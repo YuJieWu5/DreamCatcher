@@ -1,0 +1,40 @@
+.custom-toolbar {
+    background: transparent;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    width: 100%;
+    height: 60px;
+    justify-content: space-between;
+    background-color: white;
+  }
+  
+  .search-bar-wrapper {
+    position: relative;
+    width: 28%;
+    height: 100%;
+    padding: 0 40px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar {
+    width: 100%;
+    border: 1px solid black;
+    border-radius: 20px;
+    padding: 10px 40px 10px 10px; /* Space for the icon */
+    box-sizing: border-box;
+    outline: none;
+  }
+  
+  .search-button {
+    position: absolute;
+    right: 50px; /* Adjust based on your padding */
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+  }
+
+
