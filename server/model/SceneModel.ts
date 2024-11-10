@@ -22,7 +22,7 @@ class SceneModel {
                 type: String,
                 description: String,
                 review: [String]
-            }, {collection: 'scenes'}
+            }, {collection: 'scenes',versionKey: false}
         );    
     }
 

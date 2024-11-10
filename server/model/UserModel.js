@@ -59,7 +59,7 @@ var UserModel = /** @class */ (function () {
             password: { type: String, required: true },
             authorization: { type: String, required: true },
             favoriteList: { type: [this.favListSchema], default: [] }
-        }, { collection: 'users', strict: false });
+        }, { collection: 'users', strict: false, versionKey: false });
         //add a pre-save hook to generate default favorite list if not provided
         this.schema.pre('save', function (next) {
             if (this.favoriteList.length === 0) {

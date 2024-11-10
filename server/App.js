@@ -98,12 +98,13 @@ var App = /** @class */ (function () {
                         return [4 /*yield*/, this.Scenes.model.create([jsonObj])];
                     case 2:
                         _a.sent();
-                        res.send('{"id":"' + id + '"}');
+                        res.status(200).json({ message: 'scene creation success', id: id });
                         return [3 /*break*/, 4];
                     case 3:
                         e_1 = _a.sent();
                         console.error(e_1);
-                        console.log('object creation failed');
+                        console.log('scene creation failed');
+                        res.status(404).json({ message: 'scene creation failed' });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -190,12 +191,13 @@ var App = /** @class */ (function () {
                         return [4 /*yield*/, this.Users.model.create([jsonObj])];
                     case 2:
                         _a.sent();
-                        res.send('{"id":"' + id + '"}');
+                        res.status(200).json({ message: 'user creation success', id: id });
                         return [3 /*break*/, 4];
                     case 3:
                         e_3 = _a.sent();
                         console.error(e_3);
                         console.log('object creation failed');
+                        res.status(404).json({ message: 'user creation failed' });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }

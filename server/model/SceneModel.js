@@ -53,7 +53,7 @@ var SceneModel = /** @class */ (function () {
             type: String,
             description: String,
             review: [String]
-        }, { collection: 'scenes' });
+        }, { collection: 'scenes', versionKey: false });
     };
     SceneModel.prototype.createModel = function () {
         return __awaiter(this, void 0, void 0, function () {

@@ -53,11 +53,12 @@ class App {
         jsonObj.sceneId = id;
         try {
           await this.Scenes.model.create([jsonObj]);
-          res.send('{"id":"' + id + '"}');
+          res.status(200).json({message: 'scene creation success', id: id});
         }
         catch (e) {
           console.error(e);
-          console.log('object creation failed');
+          console.log('scene creation failed');
+          res.status(404).json({message: 'scene creation failed'})
         }
     });
 
@@ -65,7 +66,6 @@ class App {
     router.delete('/app/scene/:sceneId', async (req, res) => {
         var id = req.params.sceneId;
         console.log('Attempting to delete scene with id: ' + id);
-        
         try {
             await this.Scenes.deleteSceneById(res, id);
         } catch (e) {
@@ -102,11 +102,12 @@ class App {
       console.log(req.body);
       try {
         await this.Users.model.create([jsonObj]);
-        res.send('{"id":"' + id + '"}');
+        res.status(200).json({message: 'user creation success', id: id});
       }
       catch (e) {
         console.error(e);
         console.log('object creation failed');
+        res.status(404).json({message: 'user creation failed'});
       }
     });
 
