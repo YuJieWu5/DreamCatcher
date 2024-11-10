@@ -85,6 +85,13 @@ class App {
       await this.Scenes.retrieveSceneCount(res);
     });
 
+    //search scene by keyword
+    router.get('/app/scene/search/:keyword', async (req, res) => {
+      var keyword = req.params.keyword;
+      console.log("passed in keyword: "+ keyword);
+      await this.Scenes.searchSceneByKeyword(res, keyword);
+    });
+
     //endpoint for user//
 
     //create a new user
@@ -127,20 +134,28 @@ class App {
       }
     });
 
-    //get user favorite list
+    //get user all favorite list
     router.get('/app/user/:userId/favoritelist', async (req, res) => {
-      console.log('Query the favoritelist by userID YAY');
       var id = req.params.userId;
       console.log('Query single user with id: ' + id);
       await this.Users.retrieveFavoriteList(res, id);
+    });
+
+    //get user's one favorite list by favListId & userId
+    router.get('/app/user/:userId/favoritelist/:favListId', async (req, res) => {
+      var id = req.params.userId;
+      var listId = req.params.favListId;
+      console.log('Query single user with id: ' + id+" and listId:"+ listId);
+      await this.Users.retrieveFavoriteListByListId(res, id, listId);
     });
 
     //add scene to user favorite list
     router.patch('/app/user/:userId/addscene', async (req, res) => {  
       try {
         const userId = req.params.userId;
+        const{ listId } = req.body;
         const{ sceneId } = req.body;
-        await this.Users.addSceneToFavorites(res, userId, sceneId);
+        await this.Users.addSceneToFavorites(res, userId, listId, sceneId);
       }
       catch (e) {
         console.error(e);
@@ -152,8 +167,9 @@ class App {
     router.patch('/app/user/:userId/deletescene', async (req, res) => {
       try {
         const userId = req.params.userId;
+        const{ listId } = req.body;
         const{ sceneId } = req.body;
-        await this.Users.deleteSceneFromFavoriteList(res, userId, sceneId);
+        await this.Users.deleteSceneFromFavoriteList(res, userId, listId, sceneId);
       }
       catch (e) {
         console.error(e);

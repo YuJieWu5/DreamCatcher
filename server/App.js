@@ -158,6 +158,21 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        //search scene by keyword
+        router.get('/app/scene/search/:keyword', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var keyword;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        keyword = req.params.keyword;
+                        console.log("passed in keyword: " + keyword);
+                        return [4 /*yield*/, this.Scenes.searchSceneByKeyword(res, keyword)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         //endpoint for user//
         //create a new user
         router.post('/app/user/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
@@ -237,13 +252,12 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
-        //get user favorite list
+        //get user all favorite list
         router.get('/app/user/:userId/favoritelist', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        console.log('Query the favoritelist by userID YAY');
                         id = req.params.userId;
                         console.log('Query single user with id: ' + id);
                         return [4 /*yield*/, this.Users.retrieveFavoriteList(res, id)];
@@ -253,16 +267,33 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        //get user's one favorite list by favListId & userId
+        router.get('/app/user/:userId/favoritelist/:favListId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var id, listId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = req.params.userId;
+                        listId = req.params.favListId;
+                        console.log('Query single user with id: ' + id + " and listId:" + listId);
+                        return [4 /*yield*/, this.Users.retrieveFavoriteListByListId(res, id, listId)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         //add scene to user favorite list
         router.patch('/app/user/:userId/addscene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, sceneId, e_5;
+            var userId, listId, sceneId, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userId = req.params.userId;
+                        listId = req.body.listId;
                         sceneId = req.body.sceneId;
-                        return [4 /*yield*/, this.Users.addSceneToFavorites(res, userId, sceneId)];
+                        return [4 /*yield*/, this.Users.addSceneToFavorites(res, userId, listId, sceneId)];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 3];
@@ -277,14 +308,15 @@ var App = /** @class */ (function () {
         }); });
         //delete scene to user favorite list
         router.patch('/app/user/:userId/deletescene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, sceneId, e_6;
+            var userId, listId, sceneId, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         userId = req.params.userId;
+                        listId = req.body.listId;
                         sceneId = req.body.sceneId;
-                        return [4 /*yield*/, this.Users.deleteSceneFromFavoriteList(res, userId, sceneId)];
+                        return [4 /*yield*/, this.Users.deleteSceneFromFavoriteList(res, userId, listId, sceneId)];
                     case 1:
                         _a.sent();
                         return [3 /*break*/, 3];
