@@ -1,19 +1,13 @@
 <div class="content">
   <div *ngIf="showResults" class="results-sidebar">
     <div id="results-title">Results:</div>
-    <div class="location-list">
-      <div *ngFor="let location of filteredLocations" class="location-card">
-        <div class="location-image-container">
-          <img [src]="location.image" alt="{{location.title}}" class="location-image">
-        </div>
-        <div class="location-info">
-          <div class="location-title">{{ location.title }}</div>
-          <div class="location-description">{{ location.description }}</div>
-          <button (click)="viewLocation(location)" class="view-button">View</button>
-        </div>
-      </div>
-    </div>
-  </div>
+    <app-scene-card
+      *ngFor="let location of filteredScenes"
+      [location]="location"
+      (viewLocation)="viewLocation($event)"
+  ></app-scene-card>
+</div>
   <div class="map-container" id="map"></div>
 </div>
+
 

@@ -4,16 +4,10 @@ import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationModalComponent } from '../location-modal/location-modal.component';
 import { environment } from '../../environments/environment';
+import { Scene } from '../../model/Scene';
+import { mockSceneList1, mockSceneList2 } from '../../mockdata/data';
 
 declare const google: any;
-
-interface Location {
-  title: string;
-  description: string;
-  position: { lat: number; lng: number };
-  image: string;
-}
-
 
 @Component({
   selector: 'app-mainpage',
@@ -26,73 +20,12 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private searchService: SearchService, public dialog: MatDialog) {}
 
-  locations: Location[] = [
-    {
-      title: 'Þingvellir National Park',
-      description: 'A UNESCO World Heritage Site known for its stunning landscapes and historical significance.',
-      position: { lat: 64.2559, lng: -21.1295 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Geysir',
-      description: 'Famous for its geothermal activity and the origin of the word "geyser."',
-      position: { lat: 64.3136, lng: -20.2995 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Gullfoss Waterfall',
-      description: 'A breathtaking waterfall located in the canyon of the Hvítá river.',
-      position: { lat: 64.3275, lng: -20.1218 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Reykjavik',
-      description: 'The vibrant capital city of Iceland, known for its culture and nightlife.',
-      position: { lat: 64.1466, lng: -21.9426 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Blue Lagoon',
-      description: 'A famous geothermal spa with milky-blue waters, located in a lava field.',
-      position: { lat: 63.8804, lng: -22.4495 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Jökulsárlón Glacier Lagoon',
-      description: 'A large glacial lake known for its floating icebergs and stunning views.',
-      position: { lat: 64.0485, lng: -16.1785 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Skógafoss Waterfall',
-      description: 'A majestic waterfall with a drop of 60 meters, offering a picturesque view.',
-      position: { lat: 63.5321, lng: -19.5119 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Vatnajökull National Park',
-      description: 'Home to Europe’s largest glacier and a variety of natural wonders.',
-      position: { lat: 64.4000, lng: -16.5000 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Akureyri',
-      description: 'A charming town in northern Iceland, known for its botanical gardens and cultural sites.',
-      position: { lat: 65.6885, lng: -18.1262 },
-      image: 'https://via.placeholder.com/100x100'
-    },
-    {
-      title: 'Skaftafell',
-      description: 'A nature reserve in Vatnajökull National Park, known for its hiking trails and waterfalls.',
-      position: { lat: 64.0173, lng: -16.9750 },
-      image: 'https://via.placeholder.com/100x100'
-    }
-  ];
+  sceneGroups: Scene[][] = [mockSceneList1, mockSceneList2];
   
-
-  filteredLocations = [...this.locations];
+  filteredScenes: Scene[] = [];
   map: any;
   showResults = false; 
+  markers: any[] = [];
 
   ngOnInit() {
     this.loadGoogleMapsScript().then(() => {
@@ -129,9 +62,13 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   filterLocations() {
+    this.clearMarkers();
+    this.filteredScenes = this.sceneGroups[0];
+    this.filteredScenes.forEach(scene => {
+      this.addMarker(scene);
+    })
     this.showResults = true 
   }
-
 
   ngAfterViewInit() {
     this.initializeMap();
@@ -143,17 +80,15 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
       zoom: 7
     };
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, mapOptions);
-
-    this.locations.forEach(location => {
-      const marker = new google.maps.Marker({
-        position: location.position,
-        map: this.map,
-        title: location.title
-      });
-
-      marker.addListener('click', () => {
-        this.viewLocation(location);
-      });
+    const categoryColors = [
+      'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+      'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+    ];
+    
+    this.sceneGroups.forEach((sceneGroup, index) => {
+      sceneGroup.forEach(scene => {
+        this.addMarker(scene, categoryColors[index])
+      })
     });
   }
 
@@ -162,5 +97,23 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.dialog.open(LocationModalComponent, {
       data: location
     });
+  }
+
+  clearMarkers() {
+    this.markers.forEach(marker => marker.setMap(null));
+    this.markers = [];
+  }
+  
+  addMarker(scene: Scene, icon: String = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png') {
+    const marker = new google.maps.Marker({
+      position: new google.maps.LatLng(scene.position.lat, scene.position.lng),
+      map:  this.map,
+      title: scene.title,
+      icon: icon
+    });
+    marker.addListener('click', () => {
+      this.viewLocation(scene);
+    });
+    this.markers.push(marker);
   }
 }

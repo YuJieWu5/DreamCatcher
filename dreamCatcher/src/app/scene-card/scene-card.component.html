@@ -1,0 +1,11 @@
+<div class="location-card">
+    <div class="location-image-container">
+      <img [src]="location.image" alt="{{ location.title }}" class="location-image" />
+    </div>
+    <div class="location-info">
+      <div class="location-title">{{ location.title }}</div>
+      <div class="location-description">{{ location.description }}</div>
+      <button (click)="onViewLocation()" class="view-button">View</button>
+    </div>
+  </div>
+  

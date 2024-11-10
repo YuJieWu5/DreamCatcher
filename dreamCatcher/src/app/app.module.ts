@@ -23,8 +23,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+
 import { LocationModalComponent } from './location-modal/location-modal.component';
+import { CreateListDialogComponent } from './create-list-dialog/create-list-dialog.component';
+import { SceneCardComponent } from './scene-card/scene-card.component';
 
 
 
@@ -36,7 +41,9 @@ import { LocationModalComponent } from './location-modal/location-modal.componen
     FavoritelistpageComponent,
     TripspageComponent,
     HeaderComponent,
-    LocationModalComponent
+    LocationModalComponent,
+    CreateListDialogComponent,
+    SceneCardComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +58,9 @@ import { LocationModalComponent } from './location-modal/location-modal.componen
     MatListModule,
     MatSidenavModule,
     MatCardModule,
-    MatFormFieldModule
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [
     provideHttpClient(),

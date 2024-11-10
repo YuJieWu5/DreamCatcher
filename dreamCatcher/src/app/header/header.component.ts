@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { SearchService } from '../../service/search-service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,8 +10,18 @@ import { SearchService } from '../../service/search-service';
 export class HeaderComponent {
   opened = false;
   searchQuery = '';
+  currentRoute = '';
+  logoUrl: string = 'assets/images/header-logo.png'; 
 
-  constructor(private searchService: SearchService) {}
+  constructor(
+    private searchService: SearchService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.router.events.subscribe(() => {
+      this.currentRoute = this.router.url;
+    });
+  }
 
   onSearch() {
     if (this.searchQuery.trim()) {

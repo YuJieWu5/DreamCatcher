@@ -30,11 +30,17 @@
   
   .search-button {
     position: absolute;
-    right: 50px; /* Adjust based on your padding */
+    right: 50px; 
     background: none;
     border: none;
     cursor: pointer;
     display: flex;
+  }
+
+  .header-logo {
+    width: 200px;
+    height: auto;
+    margin-left: 20px;
   }
 
 

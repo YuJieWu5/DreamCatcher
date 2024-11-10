@@ -1,1 +1,45 @@
-<p>favoritelistpage works!</p>
+<div class="favorite-list-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-header">
+        <div id="your-list-title">Your List(s)</div>
+        <button class="create-list-button" (click)="openCreateListDialog()">+ Create New List</button>
+      </div>
+      <div class="list-items">
+        <div
+          *ngFor="let list of favoriteLists"
+          class="list-item"
+          (click)="selectList(list)"
+          [class.selected]="list === selectedList"
+        >
+          <div class="list-icon">
+            <mat-icon>list</mat-icon>
+          </div>
+          <div class="list-details">
+            <div class="list-name">{{ list.name }}</div>
+            <div class="list-info">{{ list.scenes.length }} saved scenes</div>
+          </div>
+          <div class="list-menu">
+            <mat-icon (click)="openListMenu($event, list)">more_vert</mat-icon>
+            <div *ngIf="list.showMenu" class="menu-dropdown">
+              <button (click)="confirmDeleteList(list)">Delete</button>
+            </div>
+          </div>          
+        </div>
+      </div>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="main-content" *ngIf="selectedList">
+      <h2>{{ selectedList.name }}</h2>
+      <p>{{ selectedList.description }}</p>
+      <div class="location-list">
+        <app-scene-card
+          *ngFor="let location of selectedList.scenes"
+          [location]="location"
+          (viewLocation)="viewLocation($event)"
+        ></app-scene-card>
+      </div>
+    </div>
+  </div>
+  
