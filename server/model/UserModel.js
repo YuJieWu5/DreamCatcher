@@ -144,10 +144,37 @@ var UserModel = /** @class */ (function () {
             });
         });
     };
+    UserModel.prototype.userLogIn = function (response, email, password) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.model.findOne({ email: email }).exec()];
+                    case 1:
+                        result = _a.sent();
+                        console.log(result);
+                        if ((result === null || result === void 0 ? void 0 : result.password) === password) {
+                            response.status(200).json({ message: 'log in successfuly', id: result.userId });
+                        }
+                        else {
+                            response.status(404).json({ message: 'Incorrect password or email' });
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_4 = _a.sent();
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_4 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     // update userName, phone, or email by userId
     UserModel.prototype.updateUserById = function (response, userId, updateData) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, e_4;
+            var result, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -166,8 +193,9 @@ var UserModel = /** @class */ (function () {
                         }
                         return [3 /*break*/, 3];
                     case 2:
-                        e_4 = _a.sent();
-                        console.error(e_4);
+                        e_5 = _a.sent();
+                        console.error(e_5);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_5 });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -178,7 +206,7 @@ var UserModel = /** @class */ (function () {
     //get all favorite list data
     UserModel.prototype.retrieveFavoriteList = function (response, userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, e_5;
+            var result, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -194,8 +222,9 @@ var UserModel = /** @class */ (function () {
                         response.status(200).json({ success: true, favoriteList: (result === null || result === void 0 ? void 0 : result.favoriteList) || [] });
                         return [3 /*break*/, 4];
                     case 3:
-                        e_5 = _a.sent();
-                        console.error(e_5);
+                        e_6 = _a.sent();
+                        console.error(e_6);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_6 });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -205,7 +234,7 @@ var UserModel = /** @class */ (function () {
     //get one favorite list data by listId
     UserModel.prototype.retrieveFavoriteListByListId = function (response, userId, favListId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, e_6;
+            var result, e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -225,9 +254,9 @@ var UserModel = /** @class */ (function () {
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        e_6 = _a.sent();
-                        console.error(e_6);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_6 });
+                        e_7 = _a.sent();
+                        console.error(e_7);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -237,7 +266,7 @@ var UserModel = /** @class */ (function () {
     //add sceneId to favoriteList
     UserModel.prototype.addSceneToFavorites = function (response, userId, favListId, sceneId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, updatedUser, e_7;
+            var result, updatedUser, e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -265,9 +294,9 @@ var UserModel = /** @class */ (function () {
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
                     case 5:
-                        e_7 = _a.sent();
-                        console.error(e_7);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
+                        e_8 = _a.sent();
+                        console.error(e_8);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_8 });
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }
@@ -277,7 +306,7 @@ var UserModel = /** @class */ (function () {
     // delete a sceneId from favoriteList
     UserModel.prototype.deleteSceneFromFavoriteList = function (response, userId, favListId, sceneId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, updatedUser, e_8;
+            var result, updatedUser, e_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -305,9 +334,9 @@ var UserModel = /** @class */ (function () {
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
                     case 5:
-                        e_8 = _a.sent();
-                        console.error(e_8);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_8 });
+                        e_9 = _a.sent();
+                        console.error(e_9);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_9 });
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }

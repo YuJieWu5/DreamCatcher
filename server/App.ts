@@ -119,6 +119,17 @@ class App {
       }
     });
 
+    router.post('/app/user/login', async(req, res)=>{
+      const email = req.body.email;
+      const password = req.body.password;
+      try{
+        await this.Users.userLogIn(res, email, password);
+      }catch(e){
+        console.log('log in failed')
+        console.log(e);
+      }
+    });
+
     //get scene by userId
     router.get('/app/user/:userId', async (req, res) => {
       var id = req.params.userId;

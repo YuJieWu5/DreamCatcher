@@ -218,6 +218,29 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        router.post('/app/user/login', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var email, password, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        email = req.body.email;
+                        password = req.body.password;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.Users.userLogIn(res, email, password)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_4 = _a.sent();
+                        console.log('log in failed');
+                        console.log(e_4);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
         //get scene by userId
         router.get('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id;
@@ -248,7 +271,7 @@ var App = /** @class */ (function () {
         }); });
         //update user(phone || email || name) by userId
         router.patch('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, updateData, e_4;
+            var userId, updateData, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -262,8 +285,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        e_4 = _a.sent();
-                        console.error(e_4);
+                        e_5 = _a.sent();
+                        console.error(e_5);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -302,7 +325,7 @@ var App = /** @class */ (function () {
         }); });
         //add scene to user favorite list
         router.patch('/app/user/:userId/addscene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listId, sceneId, e_5;
+            var userId, listId, sceneId, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -315,8 +338,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_5 = _a.sent();
-                        console.error(e_5);
+                        e_6 = _a.sent();
+                        console.error(e_6);
                         console.log('add scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -325,7 +348,7 @@ var App = /** @class */ (function () {
         }); });
         //delete scene to user favorite list
         router.patch('/app/user/:userId/deletescene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listId, sceneId, e_6;
+            var userId, listId, sceneId, e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -338,8 +361,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_6 = _a.sent();
-                        console.error(e_6);
+                        e_7 = _a.sent();
+                        console.error(e_7);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];

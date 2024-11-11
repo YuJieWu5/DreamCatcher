@@ -82,6 +82,20 @@ class UserModel {
             console.error(e);
         }
     }
+
+    public async userLogIn(response: any, email: string, password: string){
+        try{
+            const result = await this.model.findOne({email: email}).exec();
+            console.log(result);
+            if(result?.password===password){
+                response.status(200).json({message: 'log in successfuly', id: result.userId});
+            }else{
+                response.status(404).json({message: 'Incorrect password or email'});
+            }
+        }catch(e){
+            response.status(500).json({ success: false, message: 'An error occurred', error: e });
+        }
+    }
     
     // update userName, phone, or email by userId
     public async updateUserById(response: any, userId: string, updateData: Partial<Pick<IUserModel, "userName" | "phone" | "email">>) {
@@ -100,6 +114,7 @@ class UserModel {
             }
         } catch (e) {
             console.error(e);
+            response.status(500).json({ success: false, message: 'An error occurred', error: e });
         }
     }
 
@@ -117,6 +132,7 @@ class UserModel {
             response.status(200).json({success: true, favoriteList: result?.favoriteList || []}); 
         } catch (e) {
             console.error(e);
+            response.status(500).json({ success: false, message: 'An error occurred', error: e });
         }
     }
 
