@@ -1,1 +1,14 @@
-<p>userpage works!</p>
+<div *ngIf="isObjectEmpty(userInfo); else content">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+
+<ng-template #content>
+    <!-- Content to show when userInfo is not empty -->
+    <div>
+        <h3>User Information</h3>
+        <p>User Name: {{ userInfo['userName'] }}</p>
+        <p>Phone: {{ userInfo['phone'] }}</p>
+        <p>Email: {{ userInfo['email'] }}</p>
+    </div>
+</ng-template>
+
