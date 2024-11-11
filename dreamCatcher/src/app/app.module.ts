@@ -26,10 +26,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 import { LocationModalComponent } from './location-modal/location-modal.component';
 import { CreateListDialogComponent } from './create-list-dialog/create-list-dialog.component';
 import { SceneCardComponent } from './scene-card/scene-card.component';
+import { LoginpageComponent } from './loginpage/loginpage.component';
+import { SignuppageComponent } from './signuppage/signuppage.component';
 
 
 
@@ -43,7 +46,9 @@ import { SceneCardComponent } from './scene-card/scene-card.component';
     HeaderComponent,
     LocationModalComponent,
     CreateListDialogComponent,
-    SceneCardComponent
+    SceneCardComponent,
+    LoginpageComponent,
+    SignuppageComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +65,8 @@ import { SceneCardComponent } from './scene-card/scene-card.component';
     MatCardModule,
     MatDialogModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     provideHttpClient(),
