@@ -80,7 +80,7 @@ var UserModel = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, Mongoose.connect(this.dbConnectionString)];
+                        return [4 /*yield*/, Mongoose.connect(this.dbConnectionString, { serverSelectionTimeoutMS: 20000 })];
                     case 1:
                         _a.sent();
                         this.model = Mongoose.model("Users", this.schema);

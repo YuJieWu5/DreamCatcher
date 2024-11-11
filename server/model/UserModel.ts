@@ -6,6 +6,7 @@ class UserModel {
     public schema:any;
     public favListSchema: any;
     public model:any;
+    public sceneModel: any;
     public dbConnectionString:string;
 
     public constructor(DB_CONNECTION_STRING:string) {
@@ -44,13 +45,13 @@ class UserModel {
                 });
             }
             next();
-        });
+        });        
         
     }
 
     public async createModel() {
         try {
-            await Mongoose.connect(this.dbConnectionString);
+            await Mongoose.connect(this.dbConnectionString,{serverSelectionTimeoutMS: 20000});
             this.model = Mongoose.model<IUserModel>("Users", this.schema);
         }
         catch (e) {
