@@ -21,38 +21,46 @@ export class DreamCatcherProxyServiceService {
       authorization: "general"  //default authorization is general
     };
 
-    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/user.json', req);
+    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/user', req);
+  }
+
+  userLogin(loginData: Record<string, string>){
+    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/user/login', loginData);
   }
 
   getUserInfo(userId: string){
-    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/user/'+userId+'.json');
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/user/'+userId);
   }
 
   //updateData only accept userName || phone || email, update user by userId
   updateUserInfo(updateData: Record<string, any>, userId: string){
-    return this.httpClient.patch<any[]>(this.hostUrl+'app/user/'+userId+'.json', updateData);
+    return this.httpClient.patch<any[]>(this.hostUrl+'app/user/'+userId, updateData);
   }
   
   /* API Regarding Scene */
   getScenes(){
-    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/scene.json');
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/scene');
   }
 
   getSceneById(sceneId: string){
-    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/scene/'+sceneId+'.json');
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/scene/'+sceneId);
   }
 
   searchScene(keyword: string){
-    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/scene/search/'+keyword+'.json');
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/scene/search/'+keyword);
+  }
+
+  getSceneByIds(sceneIds: string[]){
+    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/scenes', sceneIds);
   }
 
   /* API Regarding Favorite List */
   getAllFavoriteList(userId: string){
-    return this.httpClient.get<Record<string, any>>(this.hostUrl+'/app/user/'+userId+'/favoritelist.json');
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'/app/user/'+userId+'/favoritelist');
   }
 
   getFavoriteList(userId: string, listId: string){
-    return this.httpClient.get<Record<string, any>>(this.hostUrl+'/app/user/'+userId+'/favoritelist/'+listId+'.json');
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'/app/user/'+userId+'/favoritelist/'+listId);
   }
 
   addSceneToFavoriteList(userId: string, sceneId: string, listId: string){
@@ -60,7 +68,7 @@ export class DreamCatcherProxyServiceService {
       sceneId: sceneId,
       listId: listId
     };
-    const url = this.hostUrl+'/app/user/'+userId+'/addscene.json';
+    const url = this.hostUrl+'/app/user/'+userId+'/addscene';
 
     return this.httpClient.patch<Record<string, any>>(url, req);
   }
@@ -70,7 +78,7 @@ export class DreamCatcherProxyServiceService {
       sceneId: sceneId,
       listId: listId
     };
-    const url = this.hostUrl+'/app/user/'+userId+'/deletescene.json';
+    const url = this.hostUrl+'/app/user/'+userId+'/deletescene';
 
     return this.httpClient.patch<Record<string, any>>(url, req);
   }
