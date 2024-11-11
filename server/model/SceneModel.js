@@ -212,6 +212,35 @@ var SceneModel = /** @class */ (function () {
             });
         });
     };
+    //search by multiple sceneId
+    SceneModel.prototype.getSceneBysceneIds = function (response, sceneIds) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.model.find({ sceneId: { $in: sceneIds } }).exec()];
+                    case 1:
+                        result = _a.sent();
+                        console.log(result);
+                        if (result.length > 0) {
+                            response.status(200).json({ message: 'scenes found', data: result });
+                        }
+                        else {
+                            response.status(200).json({ message: 'no scenes data', data: result });
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_7 = _a.sent();
+                        console.error(e_7);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return SceneModel;
 }());
 exports.SceneModel = SceneModel;

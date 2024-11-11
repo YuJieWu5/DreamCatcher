@@ -108,5 +108,22 @@ class SceneModel {
             response.status(500).json({ success: false, message: 'An error occurred', error: e });
         }
     }
+
+    //search by multiple sceneId
+    public async getSceneBysceneIds(response: any, sceneIds: string[]) {
+        try {
+            const result = await this.model.find({ sceneId: { $in: sceneIds } }).exec();
+            console.log(result);
+            if(result.length>0){
+                response.status(200).json({message: 'scenes found', data: result});
+            }else{
+                response.status(200).json({message: 'no scenes data', data: result});
+            }
+        }
+        catch (e) {
+            console.error(e);
+            response.status(500).json({ success: false, message: 'An error occurred', error: e });
+        }
+    }
 }
 export {SceneModel};

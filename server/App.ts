@@ -92,7 +92,15 @@ class App {
       await this.Scenes.searchSceneByKeyword(res, keyword);
     });
 
-    //endpoint for user//
+    //query scenes by sceneIds
+    router.post('/app/scenes/', async(req, res) => {
+      var sceneIds = req.body.scenes;
+      console.log("passed in scenes: "+ sceneIds);
+      await this.Scenes.getSceneBysceneIds(res, sceneIds);
+    });
+
+
+    /*endpoint for user*/
 
     //create a new user
     router.post('/app/user/', async (req, res) => {

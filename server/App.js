@@ -174,7 +174,22 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
-        //endpoint for user//
+        //query scenes by sceneIds
+        router.post('/app/scenes/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var sceneIds;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        sceneIds = req.body.scenes;
+                        console.log("passed in scenes: " + sceneIds);
+                        return [4 /*yield*/, this.Scenes.getSceneBysceneIds(res, sceneIds)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        /*endpoint for user*/
         //create a new user
         router.post('/app/user/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id, jsonObj, e_3;
