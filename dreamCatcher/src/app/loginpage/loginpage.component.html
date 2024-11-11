@@ -1,0 +1,16 @@
+
+<mat-form-field>
+    <mat-label>Email</mat-label>
+    <input matInput [(ngModel)]="email" name="email" type="email">
+</mat-form-field>
+<mat-form-field>
+    <mat-label>Password</mat-label>
+    <input matInput [(ngModel)]="password" name="password" type="password">
+</mat-form-field>
+
+<p>{{message}}</p>
+
+<a mat-button [routerLink]="['/signup']">Create Account</a>
+
+<button mat-raised-button (click)="logIn()">Log In</button>
+<!-- <button mat-raised-button (click)="Test()">Testing</button> -->
