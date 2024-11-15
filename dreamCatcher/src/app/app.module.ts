@@ -27,6 +27,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { LocationModalComponent } from './location-modal/location-modal.component';
 import { CreateListDialogComponent } from './create-list-dialog/create-list-dialog.component';
@@ -66,7 +67,8 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatCheckboxModule
   ],
   providers: [
     provideHttpClient(),

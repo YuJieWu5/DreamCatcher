@@ -1,7 +1,86 @@
+
+/* Background */
 :host {
-    display: flex;
-    flex-direction: column;
-    align-items: center; 
-    justify-content: center;
-    margin-top: 20px;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height of the viewport */
+  width: 100vw;  /* Full width of the viewport */
+  margin: 0;     /* Remove default margins */
+  padding: 0;    /* Remove default padding */
+  background-image: url('/src/assets/images/background.png');
+  background-size: cover; /* Cover the entire page */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent repetition */
+  font-family: Arial, sans-serif; /* Optional for font styling */
+}
+
+
+/* Container Styling */
+/* .login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+} */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px; /* Retain padding for internal content spacing */
+  background: none; /* Remove background color */
+  box-shadow: none; /* Remove shadow */
+  border: none; /* Remove border */
+  width: auto; /* Allow it to adapt to content size */
+}
+
+
+/* Logo */
+.logo img {
+  width: 150px;
+  margin-bottom: 20px;
+}
+
+/* Adjust logo2.png styling if necessary */
+.logo-text img {
+  width: 200px; /* Adjust width to fit nicely */
+  margin-bottom: 20px; /* Add some spacing */
+}
+
+/* Title Styling */
+h1 {
+  font-family: 'Brush Script MT', cursive;
+  color: #00264D;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* Input Fields */
+.input-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Checkbox */
+.remember-me {
+  align-self: flex-start;
+  margin-bottom: 15px;
+}
+
+/* Button Styling */
+.login-button {
+  width: 100%;
+  background-color: #0066CC;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.create-account {
+  color: #0066CC;
+  font-size: 0.9em;
+}

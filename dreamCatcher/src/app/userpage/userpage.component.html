@@ -1,14 +1,70 @@
-<div *ngIf="isObjectEmpty(userInfo); else content">
+<!-- <div *ngIf="isObjectEmpty(userInfo); else content">
     <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
 </div>
 
-<ng-template #content>
+<ng-template #content> -->
     <!-- Content to show when userInfo is not empty -->
-    <div>
+    <!-- <div>
         <h3>User Information</h3>
         <p>User Name: {{ userInfo['userName'] }}</p>
         <p>Phone: {{ userInfo['phone'] }}</p>
         <p>Email: {{ userInfo['email'] }}</p>
     </div>
-</ng-template>
+</ng-template> -->
 
+
+<div *ngIf="isObjectEmpty(userInfo); else content" class="loading-container">
+    <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+  </div>
+  
+  <ng-template #content>
+    <!-- Main content box with adjusted spacing -->
+    <div class="profile-container">
+      <!-- Centered avatar and user information -->
+      <div class="profile-header">
+        <!-- Use default avatar image if user avatar is not set -->
+        <img
+          [src]="userInfo['avatar'] || 'assets/images/default-avatar.png'"
+          alt=""
+          class="profile-picture"
+        />
+        <h2>{{ userInfo['userName'] }}</h2>
+        <p class="membership-status">Premium Member</p>
+      </div>
+  
+      <!-- User details section with reduced spacing between columns -->
+      <div class="profile-details">
+        <div class="detail-row">
+          <p class="detail-label">Username</p>
+          <p class="detail-value">{{ userInfo['userName'] }}</p>
+          <button mat-icon-button class="edit-icon">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div class="detail-row">
+          <p class="detail-label">Email</p>
+          <p class="detail-value">{{ userInfo['email'] }}</p>
+          <button mat-icon-button class="edit-icon">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div class="detail-row">
+          <p class="detail-label">DOB</p>
+          <p class="detail-value">{{ userInfo['dob'] | date: 'MMM dd, yyyy' }}</p>
+          <button mat-icon-button class="edit-icon">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+        <div class="detail-row">
+          <p class="detail-label">Address</p>
+          <p class="detail-value">{{ userInfo['address'] }}</p>
+          <button mat-icon-button class="edit-icon">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </div>
+  
+      <!-- Save button -->
+      <button mat-button class="save-button">Save</button>
+    </div>
+  </ng-template>

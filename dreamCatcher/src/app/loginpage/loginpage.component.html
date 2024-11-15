@@ -1,16 +1,77 @@
+<!-- <div class="login-container"> -->
+<!-- <div class="login-container" style="background-image: url('assets/images/background.png'); background-size: cover; background-position: center;">
+    <div class="logo">
+        <img src="assets/images/logo.png" alt="DreamCatcher Logo">
+    </div>
+    <h1>DreamCatcher</h1>
 
-<mat-form-field>
-    <mat-label>Email</mat-label>
-    <input matInput [(ngModel)]="email" name="email" type="email">
-</mat-form-field>
-<mat-form-field>
-    <mat-label>Password</mat-label>
-    <input matInput [(ngModel)]="password" name="password" type="password">
-</mat-form-field>
+    <mat-form-field appearance="fill" class="input-field">
+        <mat-label>User Name</mat-label>
+        <input matInput [(ngModel)]="email" name="email" type="text">
+    </mat-form-field>
 
-<p>{{message}}</p>
+    <mat-form-field appearance="fill" class="input-field">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" type="password">
+    </mat-form-field>
 
-<a mat-button [routerLink]="['/signup']">Create Account</a>
+    <p>{{message}}</p>
 
-<button mat-raised-button (click)="logIn()">Log In</button>
-<!-- <button mat-raised-button (click)="Test()">Testing</button> -->
+    <mat-checkbox class="remember-me">Remember Me</mat-checkbox>
+
+    <button mat-raised-button color="primary" (click)="logIn()" class="login-button">Login</button>
+
+    <a mat-button [routerLink]="['/signup']" class="create-account">Create Account</a>
+</div> -->
+
+<!-- <div class="login-container">
+    <div class="logo">
+        <img src="assets/images/logo.png" alt="DreamCatcher Logo">
+    </div>
+    <h1>DreamCatcher</h1>
+
+    <mat-form-field appearance="fill" class="input-field">
+        <mat-label>User Name</mat-label>
+        <input matInput [(ngModel)]="email" name="email" type="text">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="input-field">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" type="password">
+    </mat-form-field>
+
+    <p>{{message}}</p>
+
+    <mat-checkbox class="remember-me">Remember Me</mat-checkbox>
+
+    <button mat-raised-button color="primary" (click)="logIn()" class="login-button">Login</button>
+
+    <a mat-button [routerLink]="['/signup']" class="create-account">Create Account</a>
+</div> -->
+
+<div class="login-container">
+    <div class="logo">
+        <img src="assets/images/logo.png" alt="DreamCatcher Logo">
+    </div>
+    <div class="logo-text">
+        <img src="assets/images/logo2.png" alt="DreamCatcher Text">
+    </div>
+
+    <mat-form-field appearance="fill" class="input-field">
+        <mat-label>User Name</mat-label>
+        <input matInput [(ngModel)]="email" name="email" type="text">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="input-field">
+        <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="password" name="password" type="password">
+    </mat-form-field>
+
+    <p>{{message}}</p>
+
+    <mat-checkbox class="remember-me">Remember Me</mat-checkbox>
+
+    <button mat-raised-button color="primary" (click)="logIn()" class="login-button">Login</button>
+
+    <a mat-button [routerLink]="['/signup']" class="create-account">Create Account</a>
+</div>
