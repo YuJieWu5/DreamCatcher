@@ -13,3 +13,6 @@
   mat-drawer {
     width: 250px;
   }
+  .content {
+    height: 100%;
+  }

@@ -3,15 +3,10 @@
 :host {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full height of the viewport */
   width: 100vw;  /* Full width of the viewport */
+  height: 100%;
   margin: 0;     /* Remove default margins */
   padding: 0;    /* Remove default padding */
-  background-image: url('/src/assets/images/background.png');
-  background-size: cover; /* Cover the entire page */
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Prevent repetition */
   font-family: Arial, sans-serif; /* Optional for font styling */
 }
 
@@ -27,15 +22,24 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   width: 300px;
 } */
+.login-content {
+  width: 100%; /* Allow it to adapt to content size */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: url('/assets/images/background.png');
+  background-size: cover; /* Cover the entire page */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Prevent repetition */
+}
+
 .login-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 40px; /* Retain padding for internal content spacing */
-  background: none; /* Remove background color */
-  box-shadow: none; /* Remove shadow */
   border: none; /* Remove border */
-  width: auto; /* Allow it to adapt to content size */
+  width: 200px;
 }
 
 
