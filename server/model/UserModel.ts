@@ -6,7 +6,6 @@ class UserModel {
     public schema:any;
     public favListSchema: any;
     public model:any;
-    public sceneModel: any;
     public dbConnectionString:string;
 
     public constructor(DB_CONNECTION_STRING:string) {
