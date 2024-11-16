@@ -1,5 +1,9 @@
-<div *ngIf="isObjectEmpty(userInfo); else content" class="loading-container">
+<!-- <div *ngIf="isObjectEmpty(userInfo); else content" class="loading-container">
   <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div> -->
+
+<div *ngIf="!isLogin; else content" class="loading-container">
+  <div><span [routerLink]="['/login']" >Log in</span> to see user information!</div>
 </div>
 
 <ng-template #content>
@@ -7,7 +11,7 @@
     <div class="profile-header">
       <img [src]="getAvatarUrl()" alt="Profile Picture" class="profile-picture" />
       <h2>{{ userInfo['userName'] }}</h2>
-      <p class="membership-status">{{ userInfo['membershipStatus'] }}</p>
+      <p class="membership-status">{{ userInfo['authorization']==="prime"? "Premium Member": "General User" }}</p>
     </div>
 
     <div class="profile-details">
@@ -42,9 +46,13 @@
       </div>
     </div>
 
-    <!-- Edit/Save Button -->
-    <button mat-button class="edit-button" (click)="toggleEdit()">
-      {{ isEditing ? 'Save' : 'Edit' }}
+    <!-- Edit Button -->
+    <button *ngIf="!isEditing" mat-button class="edit-button" (click)="toggleEdit()">
+      Edit
+    </button>
+    <!-- Save Button -->
+    <button *ngIf="isEditing" mat-button class="edit-button" (click)="saveUpdate()">
+      Save
     </button>
   </div>
 </ng-template>
