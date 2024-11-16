@@ -3,7 +3,7 @@
 </div> -->
 
 <div *ngIf="!isLogin; else content" class="loading-container">
-  <div><span [routerLink]="['/login']" >Log in</span> to see user information!</div>
+  <div><span class="login-text" [routerLink]="['/login']" >Log in</span> to see user information!</div>
 </div>
 
 <ng-template #content>
