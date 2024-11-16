@@ -8,10 +8,11 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  opened = false;
-  searchQuery = '';
+  opened: boolean = false;
+  searchQuery: string = '';
   currentRoute = '';
   logoUrl: string = 'assets/images/header-logo.png'; 
+  isLogIn: boolean = false;
 
   constructor(
     private searchService: SearchService,
@@ -31,9 +32,20 @@ export class HeaderComponent {
 
   toggleDrawer() {
     this.opened = !this.opened;
+    const userIdFromCache = localStorage.getItem('userId');
+    if (userIdFromCache) {
+      this.isLogIn = true;
+    }else{
+      this.isLogIn = false;
+    }
   }
   
   closeDrawer() {
+    this.opened = false;
+  }
+
+  logOut(){
+    localStorage.clear();
     this.opened = false;
   }
   
