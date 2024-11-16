@@ -15,7 +15,6 @@ export class LoginpageComponent {
 
   constructor(private proxy$: DreamCatcherProxyServiceService, private router: Router){}
 
-  //does this function set correctly?
   logIn(){
     const data: Record<string, string> ={
       email: this.email,
