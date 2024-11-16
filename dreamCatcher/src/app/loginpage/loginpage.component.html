@@ -19,9 +19,7 @@
 
         <p>{{message}}</p>
 
-        <mat-checkbox class="remember-me">Remember Me</mat-checkbox>
-
-        <button mat-raised-button color="primary" (click)="logIn()" class="login-button">Login</button>
+        <button mat-raised-button class="login-button" color="primary" (click)="logIn()">Login</button>
 
         <a mat-button [routerLink]="['/signup']" class="create-account">Create Account</a>
     </div>

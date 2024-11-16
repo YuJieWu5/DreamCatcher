@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DreamCatcherProxyServiceService } from '../dream-catcher-proxy-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-loginpage',
@@ -12,7 +13,7 @@ export class LoginpageComponent {
   password: string="";
   message: string = "";
 
-  constructor(private proxy$: DreamCatcherProxyServiceService){}
+  constructor(private proxy$: DreamCatcherProxyServiceService, private router: Router){}
 
   //does this function set correctly?
   logIn(){
@@ -27,6 +28,7 @@ export class LoginpageComponent {
       this.message = result['message'];
       if(this.userId!=""){
         localStorage.setItem('userId', this.userId);
+        this.router.navigate(['/']);
       }
     })
   }
