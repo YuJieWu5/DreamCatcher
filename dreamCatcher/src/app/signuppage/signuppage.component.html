@@ -15,4 +15,6 @@
     <input matInput [(ngModel)]="password" name="password" type="password">
 </mat-form-field>
 
-<button mat-raised-button>Create</button>
+<p>{{message}}</p>
+
+<button mat-raised-button (click)="createAccount()">Create</button>
