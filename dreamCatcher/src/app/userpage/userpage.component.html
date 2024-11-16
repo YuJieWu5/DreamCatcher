@@ -3,49 +3,46 @@
 </div>
 
 <ng-template #content>
-  <!-- Main content box with adjusted spacing -->
   <div class="profile-container">
-    <!-- Centered avatar and user information -->
     <div class="profile-header">
-      <!-- Use default avatar image if user avatar is not set -->
-      <img
-        [src]="userInfo['avatar'] || 'assets/images/default-avatar.png'"
-        alt=""
-        class="profile-picture"
-      />
+      <img [src]="getAvatarUrl()" alt="Profile Picture" class="profile-picture" />
       <h2>{{ userInfo['userName'] }}</h2>
-      <p class="membership-status">Premium Member</p>
+      <p class="membership-status">{{ userInfo['membershipStatus'] }}</p>
     </div>
 
-    <!-- User details section -->
     <div class="profile-details">
+      <!-- Username Field -->
       <div class="detail-row">
-        <p class="detail-label">Username</p>
-        <p class="detail-value" *ngIf="!isEditing">{{ userInfo['userName'] }}</p>
-        <input
-          *ngIf="isEditing"
-          [(ngModel)]="userInfo['userName']"
-          type="text"
-          class="detail-input"
-        />
+        <p class="detail-label" *ngIf="!isEditing">Name:</p>
+        <mat-form-field appearance="outline" class="input-field" *ngIf="isEditing">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="userInfo['userName']" />
+        </mat-form-field>
+        <p *ngIf="!isEditing" class="detail-value">{{ userInfo['userName'] }}</p>
       </div>
+
+      <!-- Email Field (Non-editable, gray background when editing) -->
       <div class="detail-row">
-        <p class="detail-label">Email</p>
-        <p class="detail-value">{{ userInfo['email'] }}</p> <!-- Always display email as non-editable -->
+        <p class="detail-label" *ngIf="!isEditing">Email:</p>
+        <mat-form-field appearance="outline" class="input-field" *ngIf="isEditing">
+          <mat-label>Email</mat-label>
+          <input matInput [value]="userInfo['email']" readonly class="non-editable-email" />
+        </mat-form-field>
+        <p *ngIf="!isEditing" class="detail-value">{{ userInfo['email'] }}</p>
       </div>
+
+      <!-- Phone Field -->
       <div class="detail-row">
-        <p class="detail-label">Phone</p>
-        <p class="detail-value" *ngIf="!isEditing">{{ userInfo['phone'] }}</p>
-        <input
-          *ngIf="isEditing"
-          [(ngModel)]="userInfo['phone']"
-          type="text"
-          class="detail-input"
-        />
+        <p class="detail-label" *ngIf="!isEditing">Phone:</p>
+        <mat-form-field appearance="outline" class="input-field" *ngIf="isEditing">
+          <mat-label>Phone</mat-label>
+          <input matInput [(ngModel)]="userInfo['phone']" />
+        </mat-form-field>
+        <p *ngIf="!isEditing" class="detail-value">{{ userInfo['phone'] }}</p>
       </div>
     </div>
 
-    <!-- Edit/Save button -->
+    <!-- Edit/Save Button -->
     <button mat-button class="edit-button" (click)="toggleEdit()">
       {{ isEditing ? 'Save' : 'Edit' }}
     </button>

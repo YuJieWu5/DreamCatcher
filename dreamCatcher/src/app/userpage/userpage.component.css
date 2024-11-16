@@ -1,13 +1,13 @@
 /* Main container for the profile section */
 .profile-container {
   max-width: 600px;
-  margin: 50px auto; /* Adjusted margin to move the box down */
+  margin: 50px auto;
   padding: 20px;
   border: 1px solid #d3d3d3;
   border-radius: 8px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
-  min-height: 500px; /* Increased minimum height to provide more space */
+  min-height: 500px;
 }
 
 /* Profile header styles */
@@ -23,7 +23,7 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  object-fit: cover; /* Ensures the default avatar or uploaded images fit within the circle */
+  object-fit: cover;
   margin-bottom: 10px;
 }
 
@@ -34,12 +34,15 @@
 
 .membership-status {
   color: #6c757d;
+  font-size: 1.0em; 
+  font-weight: bold; 
+  margin-top: 5px; 
 }
 
-/* Profile details section with increased padding from border */
+/* Profile details section */
 .profile-details {
   margin-top: 10px;
-  padding: 0 40px; /* Increased padding to create more space from the border */
+  padding: 0 40px;
   text-align: left;
 }
 
@@ -49,40 +52,46 @@
   padding: 10px 0;
 }
 
+/* Styling for field labels */
 .detail-label {
   font-weight: bold;
   flex: 1;
-  margin-right: 30px; /* Increased distance from the border */
+  margin-right: 10px; 
+  color: #333; 
 }
 
+/* Styling for displayed values */
 .detail-value {
   flex: 1.5;
-  text-align: left; /* Aligns text to the left in the right column */
+  text-align: left;
   color: #6c757d;
-  margin-left: 30px; /* Reduces distance between columns */
 }
 
 /* Input styling for edit mode */
 .detail-input {
   flex: 1.5;
-  padding: 5px;
-  margin-left: 30px;
+  padding: 10px;
   font-size: 1em;
+  width: 100%; 
+  border: 1px solid #ccc; 
+  border-radius: 4px;
+  margin-left: 30px;
+  box-shadow: inset 0px 1px 3px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
 
 /* Save/Edit button styling */
 .edit-button {
   margin-top: 20px;
-  background-color: #007bff; /* Blue background */
-  color: #ffffff !important; /* Ensures text color is white */
-  border: none; /* Removes default border */
-  font-weight: bold; /* Makes the text stand out */
-  position: relative; /* Ensures the text is above the button */
-  z-index: 1; /* Stacks text above any background layers */
+  background-color: #0066CC;
+  color: #ffffff !important;
+  border: none;
+  font-weight: bold;
+  position: relative;
+  z-index: 1;
 }
 
 .edit-button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+  background-color: #0056b3;
 }
 
 /* Loading spinner container */
@@ -91,4 +100,34 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
+}
+
+
+/* Input field styling */
+.input-field {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* Gray background for non-editable email input in edit mode */
+.non-editable-email {
+  background-color: #ababab; 
+  color: #6c757d; 
+  cursor: not-allowed; 
+}
+
+.mat-form-field {
+  width: 100%;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  color: #ccc; /* Light gray outline */
+}
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline {
+  color: #0066CC; /* Blue outline on focus */
+}
+
+.mat-form-field-label {
+  color: #6c757d; /* Label color */
 }

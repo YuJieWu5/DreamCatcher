@@ -13,8 +13,11 @@ export class UserpageComponent {
 
   constructor(private proxy$: DreamCatcherProxyServiceService) {
     proxy$.getUserInfo(this.userId).subscribe((result: Record<string, any>) => {
-      console.log(result);
-      this.userInfo = result;
+      console.log('User Info API Response:', result);
+      this.userInfo = {
+        ...result,
+        membershipStatus: this.getMembershipLabel(result['authorization']) // Map authorization to user-friendly label
+      };
     });
   }
 
@@ -28,11 +31,24 @@ export class UserpageComponent {
     if (this.isEditing) {
       // Save logic
       console.log('Saving:', this.userInfo);
-      // Call updateUserInfo with two arguments
       this.proxy$.updateUserInfo(this.userInfo, this.userId).subscribe(result => {
         console.log('Save successful:', result);
       });
     }
-    this.isEditing = !this.isEditing;
+    this.isEditing = !this.isEditing; // Toggle between edit and view mode
+  }
+
+  getAvatarUrl(): string {
+    if (this.userInfo['authorization'] === 'prime') {
+      return 'assets/images/gold-avatar.png';
+    }
+    return 'assets/images/default-avatar.png';
+  }
+
+  getMembershipLabel(authorization: string): string {
+    if (authorization === 'prime') {
+      return 'Premium Member';
+    }
+    return 'Normal User';
   }
 }
