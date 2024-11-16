@@ -1,8 +1,8 @@
 import * as express from 'express';
-// import express from 'express';
 import * as bodyParser from 'body-parser';
 import {SceneModel} from './model/SceneModel';
 import {UserModel} from './model/UserModel';
+import { TripModel } from './model/TripModel';
 import * as crypto from 'crypto';
 
 // Creates and configures an ExpressJS web server.
@@ -29,6 +29,7 @@ class App {
     this.expressApp.use(bodyParser.urlencoded({ extended: false }));
     this.expressApp.use( (req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*");
+      res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });

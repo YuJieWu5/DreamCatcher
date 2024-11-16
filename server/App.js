@@ -38,7 +38,6 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
 var express = require("express");
-// import express from 'express';
 var bodyParser = require("body-parser");
 var SceneModel_1 = require("./model/SceneModel");
 var UserModel_1 = require("./model/UserModel");
@@ -59,6 +58,7 @@ var App = /** @class */ (function () {
         this.expressApp.use(bodyParser.urlencoded({ extended: false }));
         this.expressApp.use(function (req, res, next) {
             res.header("Access-Control-Allow-Origin", "*");
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             next();
         });
