@@ -80,19 +80,10 @@
 }
 
 /* Save/Edit button styling */
-.edit-button {
-  margin-top: 20px;
-  background-color: #0066CC;
-  color: #ffffff !important;
-  border: none;
-  font-weight: bold;
-  position: relative;
-  z-index: 1;
+.cancel-button {
+  margin-left: 10px;
 }
 
-.edit-button:hover {
-  background-color: #0056b3;
-}
 
 /* Loading spinner container */
 .loading-container {

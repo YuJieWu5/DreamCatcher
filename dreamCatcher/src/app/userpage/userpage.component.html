@@ -47,12 +47,18 @@
     </div>
 
     <!-- Edit Button -->
-    <button *ngIf="!isEditing" mat-button class="edit-button" (click)="toggleEdit()">
+    <button *ngIf="!isEditing" mat-flat-button (click)="toggleEdit()">
       Edit
     </button>
     <!-- Save Button -->
-    <button *ngIf="isEditing" mat-button class="edit-button" (click)="saveUpdate()">
-      Save
-    </button>
+    <div *ngIf="isEditing">
+      <button  mat-flat-button  (click)="saveUpdate()">
+        Save
+      </button>
+      <button mat-stroked-button class="cancel-button" (click)="toggleEdit()">
+        Cancel
+      </button>
+    </div>
+    
   </div>
 </ng-template>

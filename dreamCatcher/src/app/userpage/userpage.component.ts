@@ -8,27 +8,25 @@ import { DreamCatcherProxyServiceService } from '../dream-catcher-proxy-service.
 })
 export class UserpageComponent {
   userInfo: Record<string, any> = {}; 
-  userId: string = "a81f83a2-243f-451f-bc4a-fab6538c103d"; // Replace with the current userId
+  userId: string = "";
   isEditing: boolean = false;
   isLogin: boolean = false;
 
   constructor(private proxy$: DreamCatcherProxyServiceService) {
-    proxy$.getUserInfo(this.userId).subscribe((result: Record<string, any>) => {
-      console.log('User Info API Response:', result);
-      this.userInfo = result;
-      // this.userInfo = {
-      //   ...result,
-      //   authorization: this.getMembershipLabel(result['authorization'])
-      // };
-    });
-  }
-
-  ngOnInit() {
     const userIdFromCache = localStorage.getItem('userId');
+    console.log(userIdFromCache);
     if (userIdFromCache) {
       this.userId = userIdFromCache;
       this.isLogin = true;
+      proxy$.getUserInfo(this.userId).subscribe((result: Record<string, any>) => {
+        console.log('User Info API Response:', result);
+        this.userInfo = result;
+      });
     }
+    
+  }
+
+  ngOnInit() {
   }
 
   isObjectEmpty(obj: any): boolean {
@@ -37,8 +35,6 @@ export class UserpageComponent {
 
   saveUpdate(){
     if (this.isEditing) {
-      // Save logic
-      // console.log('Saving:', this.userInfo);
       const data = {
         "userName": this.userInfo['userName'],
         "phone": this.userInfo['phone']
@@ -51,7 +47,7 @@ export class UserpageComponent {
   }
 
   toggleEdit() {
-    this.isEditing = !this.isEditing; // Toggle between edit and view mode
+    this.isEditing = !this.isEditing;
   }
 
   getAvatarUrl(): string {
