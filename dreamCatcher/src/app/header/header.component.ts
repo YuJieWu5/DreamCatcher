@@ -21,6 +21,7 @@ export class HeaderComponent {
   ) {
     this.router.events.subscribe(() => {
       this.currentRoute = this.router.url;
+      this.opened = false;
     });
   }
 
