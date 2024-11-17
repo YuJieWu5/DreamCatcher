@@ -17,7 +17,6 @@ describe('Test Scenes result', function () {
 			.end(function (err, res) {
 				requestResult = res.body;
 				response = res;
-				console.log(requestResult.length);
                 expect(err).to.be.null;
                 expect(res).to.have.status(200);
 				done();
