@@ -89,7 +89,7 @@ var SceneModel = /** @class */ (function () {
                         return [4 /*yield*/, query.exec()];
                     case 2:
                         itemArray = _a.sent();
-                        response.json(itemArray);
+                        response.status(200).json(itemArray);
                         return [3 /*break*/, 4];
                     case 3:
                         e_2 = _a.sent();

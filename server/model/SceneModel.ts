@@ -40,7 +40,7 @@ class SceneModel {
         var query = this.model.find({});
         try {
             const itemArray = await query.exec();
-            response.json(itemArray);
+            response.status(200).json(itemArray);
         }
         catch(e) {
             console.error(e);
