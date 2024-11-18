@@ -5,9 +5,12 @@ scenesCollection.remove({})
 scenesCollection.insert(
 {
     sceneId: "667afdf9-ef9e-42bd-88ed-4a8aa03fb030",
-    sceneName: "Game of Thrones - Kirkjufell Mountain ",
+    sceneName: "Kirkjufell Mountain ",
     address: "Snæfellsnesvegur, Grundarfjörður, Western Region, 350, Iceland",
-    mediaName: "",
+    mediaName: "Game of Thrones",
+    url: "", 
+    lat: 0, 
+    ing: 0,
     type: "Film",
     description: "Featured as 'Arrowhead Mountain' in Seasons 6 and 7, notably in the episode 'Beyond the Wall.'",
     review: []
@@ -16,9 +19,12 @@ scenesCollection.insert(
 scenesCollection.insert(
 {
     sceneId: "94eea855-e787-40d4-92a0-afa63f7a0986",
-    sceneName: "Game of Thrones - Grjótagjá Cave",
+    sceneName: "Grjótagjá Cave",
     address: "Grjótagjá, Mývatn, Northeastern Region, Iceland",
-    mediaName: "",
+    mediaName: "Game of Thrones",
+    url: "", 
+    lat: 0, 
+    ing: 0,
     type: "Film",
     description: "The setting for Jon Snow and Ygritte's intimate scene in Season 3, Episode 5, 'Kissed by Fire.'",
     review: []
@@ -27,9 +33,12 @@ scenesCollection.insert(
 scenesCollection.insert(
 {
     sceneId: "42b7c6bb-e74d-4523-85d5-5f09a264ec57",
-    sceneName: "Game of Thrones - Dimmuborgir Lava Field",
+    sceneName: "Dimmuborgir Lava Field",
     address: "Dimmuborgir, Mývatn, Northeastern Region, Iceland",
-    mediaName: "",
+    mediaName: "Game of Thrones",
+    url: "", 
+    lat: 0, 
+    ing: 0,
     type: "Film",
     description: "Served as Mance Rayder's Wildling camp in Season 3, Episode 1, 'Valar Dohaeris.'",
     review: []
@@ -38,9 +47,12 @@ scenesCollection.insert(
 scenesCollection.insert(
 {
     sceneId: "911eba29-ee15-4e48-a726-fd806df8c87a",
-    sceneName: "Game of Thrones - Þingvellir National Park",
+    sceneName: "Þingvellir National Park",
     address: "Þingvellir, Þingvellir, Southwestern Region, 801, Iceland",
-    mediaName: "",
+    mediaName: "Game of Thrones",
+    url: "", 
+    lat: 0, 
+    ing: 0,
     type: "Film",
     description: "Featured in multiple scenes, including the fight between Brienne of Tarth and the Hound in Season 4, Episode 10, 'The Children.'",
     review: []
@@ -76,7 +88,11 @@ usersCollection.insert(
         email: "ivy@seattleu.edu",
         password: "123",
         authorization: "prime",
-        favoriteList: [{}]
+        favoriteList: [{
+            favListId: "9049ae66-77c7-4863-90f1-add207c8d081",
+            listName: "Default",
+            scenes: []
+        }]
     }
 )
 usersCollection.insert(

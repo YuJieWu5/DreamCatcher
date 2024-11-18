@@ -50,6 +50,9 @@ var SceneModel = /** @class */ (function () {
             sceneName: String,
             address: String,
             mediaName: String,
+            url: String,
+            lat: Number,
+            ing: Number,
             type: String,
             description: String,
             review: [String]
@@ -189,7 +192,8 @@ var SceneModel = /** @class */ (function () {
                         return [4 /*yield*/, this.model.find({
                                 $or: [
                                     { sceneName: { $regex: keyword, $options: 'i' } }, // 'i' for case-insensitive
-                                    { address: { $regex: keyword, $options: 'i' } }
+                                    { address: { $regex: keyword, $options: 'i' } },
+                                    { mediaName: { $regex: keyword, $options: 'i' } }
                                 ]
                             })];
                     case 1:

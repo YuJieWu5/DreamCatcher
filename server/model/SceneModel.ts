@@ -19,6 +19,9 @@ class SceneModel {
                 sceneName: String,
                 address: String,
                 mediaName: String,
+                url: String, 
+                lat: Number, 
+                ing: Number,
                 type: String,
                 description: String,
                 review: [String]
@@ -93,7 +96,8 @@ class SceneModel {
             const result = await this.model.find({
                 $or: [
                     { sceneName: { $regex: keyword, $options: 'i' } }, // 'i' for case-insensitive
-                    { address: { $regex: keyword, $options: 'i' } }
+                    { address: { $regex: keyword, $options: 'i' } },
+                    { mediaName: { $regex: keyword, $options: 'i' } }
                 ]
             });
 
