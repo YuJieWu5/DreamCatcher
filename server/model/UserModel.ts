@@ -139,7 +139,7 @@ class UserModel {
     public async retrieveFavoriteListByListId(response:any, userId:string, favListId:string) {
         console.log("Find favorite data by userId: "+ userId + " and favListId: "+ favListId);
         try {
-            const result = await this.model.findOne({ userId: userId, "favoriteList.favListId": favListId }).lean().exec();
+            const result = await this.model.findOne({ userId: userId, "favoriteList.favListId": favListId },{ "favoriteList.$": 1 }).lean().exec();
 
             console.log(result?.favoriteList);
             if(result && result.favoriteList){

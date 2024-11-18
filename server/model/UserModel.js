@@ -242,7 +242,7 @@ var UserModel = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.model.findOne({ userId: userId, "favoriteList.favListId": favListId }).lean().exec()];
+                        return [4 /*yield*/, this.model.findOne({ userId: userId, "favoriteList.favListId": favListId }, { "favoriteList.$": 1 }).lean().exec()];
                     case 2:
                         result = _a.sent();
                         console.log(result === null || result === void 0 ? void 0 : result.favoriteList);
