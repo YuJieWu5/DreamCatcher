@@ -40,10 +40,13 @@ describe('Test Single Scene result', function () {
             expect(scene).to.have.property('sceneId').that.is.a('string');
             expect(scene).to.have.property('sceneName').that.is.a('string');
             expect(scene).to.have.property('address').that.is.a('string');
-            expect(scene).to.have.property('mediaName');
+            expect(scene).to.have.property('mediaName').that.is.a('string');
+            expect(scene).to.have.property('url').that.is.a('string');
+            expect(scene).to.have.property('lat').that.is.a('number');
+            expect(scene).to.have.property('ing').that.is.a('number');
             expect(scene).to.have.property('type').that.is.a('string');
             expect(scene).to.have.property('description').that.is.a('string');
-            expect(scene).to.have.property('review');
+            expect(scene).to.have.property('review').that.is.an('array');
             return true;
         });
     });
