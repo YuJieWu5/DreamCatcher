@@ -1,4 +1,0 @@
-mongo --port 3000 --authenticationDatabase admin 
-mongodb://127.0.0.1:27017
-
-
