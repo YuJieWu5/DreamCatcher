@@ -106,3 +106,15 @@
     flex-direction: column;
   }
   
+  .loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+
+  .login-text{
+    color: #0066CC;
+    font-weight: 800;
+    cursor: pointer;
+  }
