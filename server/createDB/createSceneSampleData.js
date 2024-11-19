@@ -197,11 +197,11 @@ usersCollection.insert(
         favoriteList: [{
             favListId: "2b8ecb29-d911-4387-9c6d-95fd1ec795b2",
             listName: "list1",
-            scenes: ["911eba29-ee15-4e48-a726-fd806df8c87a", "94eea855-e787-40d4-92a0-afa63f7a0986"]
+            scenes: ["32ab8a17-e92a-4b0d-a42f-ca5e5537db65", "4a0dea22-f38d-4bbf-b5ec-5f28615f3e87"]
         },{
             favListId: "880d4f4a-a959-4229-b5d6-b3df107839fb",
             listName: "list2",
-            scenes: ["42b7c6bb-e74d-4523-85d5-5f09a264ec57"]
+            scenes: ["c3e79b56-7fd8-47e3-8413-e2dace2c91d2"]
         } ]
     }
 )
@@ -231,7 +231,7 @@ usersCollection.insert(
         favoriteList: [{
             favListId: "9049ae66-77c7-4863-90f1-add207c8d087",
             listName: "Default",
-            scenes: ["667afdf9-ef9e-42bd-88ed-4a8aa03fb030"]
+            scenes: ["d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648"]
         }]
     }
 )

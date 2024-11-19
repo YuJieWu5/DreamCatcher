@@ -14,9 +14,15 @@ import { Scene } from '../../model/Scene'
 export class FavoritelistpageComponent implements OnInit {
   favoriteLists: FavoriteListSummary[] = [];
   selectedList: FavoriteList | null = null;
-  userId: string = localStorage.getItem('userId') ?? "";
+  userId: string;
+  isLogin: boolean = false;
 
-  constructor(private dialog: MatDialog, private favoriteListService: FavoriteListService) {}
+  constructor(private dialog: MatDialog, private favoriteListService: FavoriteListService) {
+    this.userId = localStorage.getItem('userId') ?? ""
+    if (this.userId !== "") {
+      this.isLogin = true;
+    }
+  }
 
   ngOnInit(): void {
     this.loadFavoriteLists();
