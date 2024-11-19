@@ -5,7 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LocationModalComponent } from '../location-modal/location-modal.component';
 import { environment } from '../../environments/environment';
 import { Scene } from '../../model/Scene';
-import { mockSceneList1, mockSceneList2 } from '../../mockdata/data';
+// import { mockSceneList1, mockSceneList2 } from '../../mockdata/data';
 
 declare const google: any;
 
@@ -20,7 +20,7 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private searchService: SearchService, public dialog: MatDialog) {}
 
-  sceneGroups: Scene[][] = [mockSceneList1, mockSceneList2];
+  sceneGroups: Scene[][] = [];
   
   filteredScenes: Scene[] = [];
   map: any;
@@ -106,9 +106,9 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
   
   addMarker(scene: Scene, icon: String = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png') {
     const marker = new google.maps.Marker({
-      position: new google.maps.LatLng(scene.position.lat, scene.position.lng),
+      position: new google.maps.LatLng(scene.lat, scene.ing),
       map:  this.map,
-      title: scene.title,
+      title: scene.sceneName,
       icon: icon
     });
     marker.addListener('click', () => {

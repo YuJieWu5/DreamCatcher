@@ -8,14 +8,12 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateListDialogComponent {
   listName: string = '';
-  listDescription: string = '';
 
   constructor(public dialogRef: MatDialogRef<CreateListDialogComponent>) {}
 
   createList() {
     this.dialogRef.close({
       name: this.listName,
-      description: this.listDescription,
     });
   }
 }
