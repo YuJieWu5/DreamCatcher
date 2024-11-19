@@ -19,8 +19,6 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription!: Subscription;
 
   constructor(private searchService: SearchService, public dialog: MatDialog) {}
-
-  sceneGroups: Scene[][] = [];
   
   filteredScenes: Scene[] = [];
   map: any;
@@ -36,7 +34,7 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.subscription = this.searchService.searchObservable$.subscribe(query => {
       this.searchQuery = query;
-      this.filterLocations();
+      this.triggerSearch(query);
     });
   }
 
@@ -61,13 +59,28 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  filterLocations() {
+  triggerSearch(query: string) {
+    if (!query) return;
+
+    this.searchService.searchScenes(query).subscribe(
+      (results: Scene[]) => {
+        console.log('=====')
+        console.log(results)
+        this.updateMarkers(results);
+      },
+      error => {
+        console.error('Error fetching search results:', error);
+      }
+    );
+  }
+
+  updateMarkers(scenes: Scene[]) {
     this.clearMarkers();
-    this.filteredScenes = this.sceneGroups[0];
+    this.filteredScenes = scenes;
     this.filteredScenes.forEach(scene => {
       this.addMarker(scene);
-    })
-    this.showResults = true 
+    });
+    this.showResults = true;
   }
 
   ngAfterViewInit() {
@@ -80,16 +93,10 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
       zoom: 7
     };
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, mapOptions);
-    const categoryColors = [
-      'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-      'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-    ];
-    
-    this.sceneGroups.forEach((sceneGroup, index) => {
-      sceneGroup.forEach(scene => {
-        this.addMarker(scene, categoryColors[index])
-      })
-    });
+    // const categoryColors = [
+    //   'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+    //   'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+    // ];
   }
 
   viewLocation(location: any) {

@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node AppServer.js",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "keywords": [],
   "author": "",
