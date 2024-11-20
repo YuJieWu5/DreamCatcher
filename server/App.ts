@@ -197,6 +197,31 @@ class App {
         console.log('delete scene failed');
       }
     });
+
+    //create favorite list
+    router.post('/app/user/addList', async(req, res)=>{
+      try{
+        const { userId, listName } = req.body;
+        // console.log(userId+" , ", listName);
+        await this.Users.createFavoriteList(res, userId, listName);
+      }catch(e){
+        console.log(e);
+        console.log('create favorite failed');
+      }
+    });
+
+    //delete favorite list
+    router.post('/app/user/deleteList', async (req, res) => {
+      try {
+        const{ userId, listId } = req.body;
+        console.log(userId+ " , "+ listId);
+        await this.Users.deleteFavoriteList(res, userId, listId);
+      }
+      catch (e) {
+        console.error(e);
+        console.log('delete favorite list failed');
+      }
+    });
   
 
     this.expressApp.use('/', router);

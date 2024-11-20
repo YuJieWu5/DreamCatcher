@@ -120,6 +120,36 @@ class UserModel {
 
     //FUNCTION REGARDING FAVORITE LIST
 
+    //create new favorite list
+    public async createFavoriteList(response: any, userId: string, listName: string){
+        try {
+            // Generate a unique favListId
+            const favListId = crypto.randomBytes(16).toString("hex");
+            const newFavoriteList = {
+                favListId: favListId,
+                listName: listName,
+                scenes: []
+            };
+    
+            // pushing the new favorite list to their favoriteList array
+            const result = await this.model.updateOne(
+                { userId: userId },
+                { $push: { favoriteList: newFavoriteList } }
+            );
+            console.log(result);
+            // Check if the user was found and updated
+            if (result.modifiedCount > 0) {
+                response.status(200).json({ success: true, message: "new list created successfully", favoriteList: newFavoriteList });
+            } else {
+                response.status(404).json({ success: false, message: "User not found" });
+            }
+        } catch (e) {
+            console.error("Error creating favorite list:", e);
+            response.status(500).json({ success: false, message: "An error occurred while creating the favorite list", error: e });
+        }
+
+    }
+
     //get all favorite list data
     public async retrieveFavoriteList(response:any, userId:string) {
         console.log("Model reveived userId:"+ userId);
@@ -150,6 +180,24 @@ class UserModel {
         } catch (e) {
             console.error(e);
             response.status(500).json({ success: false, message: 'An error occurred', error: e });
+        }
+    }
+
+    public async deleteFavoriteList(response: any, userId: string, favListId: string){
+        try{
+            const result = await this.model.updateOne(
+                { userId: userId },
+                { $pull: { favoriteList: { favListId: favListId } } } 
+            );
+            console.log(result);
+            if (result.modifiedCount > 0) {
+                response.status(200).json({success: true, message: `Favorite list ${favListId} deleted successfully`, id: favListId});
+            } else {
+                response.status(404).json({ success: false, message: "User or favorite list not found" });
+            }
+        }catch(e){
+            console.error("Error deleting favorite list:", e);
+            response.status(500).json({ success: false, message: "An error occurred while deleting the favorite list", error: e });
         }
     }
 

@@ -369,6 +369,51 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        //create favorite list
+        router.post('/app/user/addList', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, userId, listName, e_8;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.body, userId = _a.userId, listName = _a.listName;
+                        // console.log(userId+" , ", listName);
+                        return [4 /*yield*/, this.Users.createFavoriteList(res, userId, listName)];
+                    case 1:
+                        // console.log(userId+" , ", listName);
+                        _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_8 = _b.sent();
+                        console.log(e_8);
+                        console.log('create favorite failed');
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        //delete favorite list
+        router.post('/app/user/deleteList', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, userId, listId, e_9;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.body, userId = _a.userId, listId = _a.listId;
+                        console.log(userId + " , " + listId);
+                        return [4 /*yield*/, this.Users.deleteFavoriteList(res, userId, listId)];
+                    case 1:
+                        _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_9 = _b.sent();
+                        console.error(e_9);
+                        console.log('delete favorite list failed');
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
         this.expressApp.use('/', router);
         // this.expressApp.use('/app/json/', express.static(__dirname+'/app/json'));
         // this.expressApp.use('/images', express.static(__dirname+'/img'));

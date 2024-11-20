@@ -18,7 +18,7 @@ To execute the server db and then the node server with the following commands:
 1. start.DreamCatcher.cmd
 
 //populate the DB server with sample data
-2. startdbClient.DreamCatcher2.cmd
+2. startdb.Client.DreamCatcher2.cmd
 >load ('createDB/createSceneSampleData.js');
 >load ('createDB/createAdminUser.js');
 >exit

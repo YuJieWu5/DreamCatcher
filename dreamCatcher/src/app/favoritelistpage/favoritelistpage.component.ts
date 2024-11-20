@@ -69,17 +69,27 @@ export class FavoritelistpageComponent implements OnInit {
       width: '300px',
     });
 
-    dialogRef.afterClosed().subscribe((result: { listName: string; }) => {
+    dialogRef.afterClosed().subscribe((result: { name: string; }) => {
+      console.log(result.name);
       if (result) {
         // Check for duplicate names
-        const duplicate = this.favoriteLists.some((list) => list.listName === result.listName);
+        const duplicate = this.favoriteLists.some((list) => list.listName === result.name);
         if (duplicate) {
           alert('List name already exists. Please choose a different name.');
         } else {
           // Create the new list via the API
-          this.favoriteListService.createFavoriteList(this.userId, result).subscribe({
-            next: (newList) => {
-              this.favoriteLists.push(newList);
+          this.favoriteListService.createFavoriteList(this.userId, result.name).subscribe({
+            next: (res) => {
+              if(res['success']){
+                const ls = res['favoriteList'];
+                console.log(ls);
+                const newList: FavoriteListSummary = {
+                  favListId: ls.favListId,
+                  listName: ls.listName,
+                  scenes: ls.scene
+                };
+                this.favoriteLists.push(newList);
+              }
             },
             error: (error) => {
               console.error('Error creating favorite list:', error);
@@ -100,9 +110,10 @@ export class FavoritelistpageComponent implements OnInit {
     if (confirmed) {
       // Call API to delete the list
       this.favoriteListService.deleteFavoriteList(this.userId, list.favListId).subscribe({
-        next: () => {
+        next: (res) => {
+          console.log(res);
           // Remove from favoriteLists
-          this.favoriteLists = this.favoriteLists.filter((l) => l.favListId !== list.favListId);
+          this.favoriteLists = this.favoriteLists.filter((l) => l.favListId !== res['id']);
           if (this.selectedList?.favListId === list.favListId) {
             this.selectedList = null;
           }

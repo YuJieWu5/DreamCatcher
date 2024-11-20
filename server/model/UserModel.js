@@ -203,10 +203,46 @@ var UserModel = /** @class */ (function () {
         });
     };
     //FUNCTION REGARDING FAVORITE LIST
+    //create new favorite list
+    UserModel.prototype.createFavoriteList = function (response, userId, listName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var favListId, newFavoriteList, result, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        favListId = crypto.randomBytes(16).toString("hex");
+                        newFavoriteList = {
+                            favListId: favListId,
+                            listName: listName,
+                            scenes: []
+                        };
+                        return [4 /*yield*/, this.model.updateOne({ userId: userId }, { $push: { favoriteList: newFavoriteList } })];
+                    case 1:
+                        result = _a.sent();
+                        console.log(result);
+                        // Check if the user was found and updated
+                        if (result.modifiedCount > 0) {
+                            response.status(200).json({ success: true, message: "new list created successfully", favoriteList: newFavoriteList });
+                        }
+                        else {
+                            response.status(404).json({ success: false, message: "User not found" });
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_6 = _a.sent();
+                        console.error("Error creating favorite list:", e_6);
+                        response.status(500).json({ success: false, message: "An error occurred while creating the favorite list", error: e_6 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     //get all favorite list data
     UserModel.prototype.retrieveFavoriteList = function (response, userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, e_6;
+            var result, e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -222,9 +258,9 @@ var UserModel = /** @class */ (function () {
                         response.status(200).json({ success: true, favoriteList: (result === null || result === void 0 ? void 0 : result.favoriteList) || [] });
                         return [3 /*break*/, 4];
                     case 3:
-                        e_6 = _a.sent();
-                        console.error(e_6);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_6 });
+                        e_7 = _a.sent();
+                        console.error(e_7);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -234,7 +270,7 @@ var UserModel = /** @class */ (function () {
     //get one favorite list data by listId
     UserModel.prototype.retrieveFavoriteListByListId = function (response, userId, favListId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, e_7;
+            var result, e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -254,11 +290,39 @@ var UserModel = /** @class */ (function () {
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        e_7 = _a.sent();
-                        console.error(e_7);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
+                        e_8 = _a.sent();
+                        console.error(e_8);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_8 });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    UserModel.prototype.deleteFavoriteList = function (response, userId, favListId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.model.updateOne({ userId: userId }, { $pull: { favoriteList: { favListId: favListId } } })];
+                    case 1:
+                        result = _a.sent();
+                        console.log(result);
+                        if (result.modifiedCount > 0) {
+                            response.status(200).json({ success: true, message: "Favorite list ".concat(favListId, " deleted successfully"), id: favListId });
+                        }
+                        else {
+                            response.status(404).json({ success: false, message: "User or favorite list not found" });
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_9 = _a.sent();
+                        console.error("Error deleting favorite list:", e_9);
+                        response.status(500).json({ success: false, message: "An error occurred while deleting the favorite list", error: e_9 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -266,7 +330,7 @@ var UserModel = /** @class */ (function () {
     //add sceneId to favoriteList
     UserModel.prototype.addSceneToFavorites = function (response, userId, favListId, sceneId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, updatedUser, e_8;
+            var result, updatedUser, e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -294,9 +358,9 @@ var UserModel = /** @class */ (function () {
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
                     case 5:
-                        e_8 = _a.sent();
-                        console.error(e_8);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_8 });
+                        e_10 = _a.sent();
+                        console.error(e_10);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_10 });
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }
@@ -306,7 +370,7 @@ var UserModel = /** @class */ (function () {
     // delete a sceneId from favoriteList
     UserModel.prototype.deleteSceneFromFavoriteList = function (response, userId, favListId, sceneId) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, updatedUser, e_9;
+            var result, updatedUser, e_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -334,9 +398,9 @@ var UserModel = /** @class */ (function () {
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
                     case 5:
-                        e_9 = _a.sent();
-                        console.error(e_9);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_9 });
+                        e_11 = _a.sent();
+                        console.error(e_11);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_11 });
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }

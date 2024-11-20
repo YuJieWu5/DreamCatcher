@@ -31,16 +31,37 @@ export class FavoriteListService {
   /**
    * Create a new favorite list.
    */
-  createFavoriteList(userId: string, listData: { listName: string }): Observable<FavoriteListSummary> {
-    const url = `${this.baseUrl}/app/user/${userId}/favoritelist`;
-    return this.http.post<FavoriteListSummary>(url, listData);
+  createFavoriteList(userId: string, listName: string){
+    console.log("calling create favorite list");
+    const data = {
+      userId: userId,
+      listName: listName
+    };
+    return this.http.post<Record<string, any>>(this.baseUrl+'/app/user/addList', data);
   }
 
   /**
    * Delete a favorite list.
    */
-  deleteFavoriteList(userId: string, favListId: string): Observable<void> {
-    const url = `${this.baseUrl}/app/user/${userId}/favoritelist/${favListId}`;
-    return this.http.delete<void>(url);
+  deleteFavoriteList(userId: string, favListId: string){
+    const data = {
+      userId: userId,
+      listId: favListId
+    }
+    const url = `${this.baseUrl}/app/user/deleteList`;
+    return this.http.post<Record<string, any>>(url, data);
+  }
+
+  /**
+   * Delete a scene from favorite list.
+   */
+  deleteSceneFromFavoriteList(userId: string, sceneId: string, listId: string){
+    const req = {
+      sceneId: sceneId,
+      listId: listId
+    };
+    const url = this.baseUrl+'/app/user/'+userId+'/deletescene';
+
+    return this.http.patch<Record<string, any>>(url, req);
   }
 }
