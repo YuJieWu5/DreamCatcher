@@ -38,7 +38,7 @@ describe('Test Scenes result', function () {
 	});
 
 	it('The scene in the array have the expected properties', function(){
-		expect(response.body).to.have.length(4);
+		expect(response.body).to.have.length(12);
 		expect(response.body).to.satisfy(
 			function (body) {
 				for (var i = 0; i < body.length; i++) {
