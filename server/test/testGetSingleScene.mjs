@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 describe('Test Single Scene result', function () {
     var requestResult;
     var response;
-    const validSceneId = "667afdf9-ef9e-42bd-88ed-4a8aa03fb030";
+    const validSceneId = "32ab8a17-e92a-4b0d-a42f-ca5e5537db65";
     const invalidSceneId = "invalid-scene-id";
 
     before(function (done) {
@@ -43,7 +43,7 @@ describe('Test Single Scene result', function () {
             expect(scene).to.have.property('mediaName').that.is.a('string');
             expect(scene).to.have.property('url').that.is.a('string');
             expect(scene).to.have.property('lat').that.is.a('number');
-            expect(scene).to.have.property('ing').that.is.a('number');
+            expect(scene).to.have.property('lng').that.is.a('number');
             expect(scene).to.have.property('type').that.is.a('string');
             expect(scene).to.have.property('description').that.is.a('string');
             expect(scene).to.have.property('review').that.is.an('array');

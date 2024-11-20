@@ -7,7 +7,7 @@ interface ISceneModel extends Mongoose.Document {
     mediaName: string;
     url: String; 
     lat: number; 
-    ing:number;
+    lng:number;
     type: string;
     description: string;
     review: string[];

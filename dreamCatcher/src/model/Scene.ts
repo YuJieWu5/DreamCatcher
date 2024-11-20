@@ -5,13 +5,15 @@ export interface Scene {
     mediaName: string;
     url: string;
     lat: number;
-    ing: number;
+    lng: number;
     type: string;
     description: string;
     review: string[];
+    markerColor: string | undefined;
 }
 
 export interface GetScenesResponse {
+    success: boolean;
     message: string;
     data: Scene[];
 }

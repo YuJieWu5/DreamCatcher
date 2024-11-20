@@ -21,7 +21,7 @@ class SceneModel {
                 mediaName: String,
                 url: String, 
                 lat: Number, 
-                ing: Number,
+                lng: Number,
                 type: String,
                 description: String,
                 review: [String]
@@ -43,7 +43,7 @@ class SceneModel {
         var query = this.model.find({});
         try {
             const itemArray = await query.exec();
-            response.status(200).json(itemArray);
+            response.status(200).json({success: true, message: '', data: itemArray});
         }
         catch(e) {
             console.error(e);
@@ -103,9 +103,9 @@ class SceneModel {
 
             console.log(result);
             if (result.length > 0) {
-                response.status(200).json(result);
+                response.status(200).json({success: true, data: result, message: ''});
             } else {
-                response.status(404).json({ message: 'No matching scenes found' });
+                response.status(404).json({ success: true, data: [], message: 'No matching scenes found' });
             }
         }catch(e){
             console.error(e);
@@ -119,14 +119,14 @@ class SceneModel {
             const result = await this.model.find({ sceneId: { $in: sceneIds } }).exec();
             console.log(result);
             if(result.length>0){
-                response.status(200).json({message: 'scenes found', data: result});
+                response.status(200).json({success: true, message: 'scenes found', data: result});
             }else{
-                response.status(200).json({message: 'no scenes data', data: result});
+                response.status(200).json({success: true, message: 'no scenes data', data: result});
             }
         }
         catch (e) {
             console.error(e);
-            response.status(500).json({ success: false, message: 'An error occurred', error: e });
+            response.status(500).json({ success: false, message: `An error occurred: ${e}` });
         }
     }
 }

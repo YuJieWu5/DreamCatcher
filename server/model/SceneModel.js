@@ -52,7 +52,7 @@ var SceneModel = /** @class */ (function () {
             mediaName: String,
             url: String,
             lat: Number,
-            ing: Number,
+            lng: Number,
             type: String,
             description: String,
             review: [String]
@@ -92,7 +92,7 @@ var SceneModel = /** @class */ (function () {
                         return [4 /*yield*/, query.exec()];
                     case 2:
                         itemArray = _a.sent();
-                        response.status(200).json(itemArray);
+                        response.status(200).json({ success: true, message: '', data: itemArray });
                         return [3 /*break*/, 4];
                     case 3:
                         e_2 = _a.sent();
@@ -200,10 +200,10 @@ var SceneModel = /** @class */ (function () {
                         result = _a.sent();
                         console.log(result);
                         if (result.length > 0) {
-                            response.status(200).json(result);
+                            response.status(200).json({ success: true, data: result, message: '' });
                         }
                         else {
-                            response.status(404).json({ message: 'No matching scenes found' });
+                            response.status(404).json({ success: true, data: [], message: 'No matching scenes found' });
                         }
                         return [3 /*break*/, 3];
                     case 2:
@@ -229,16 +229,16 @@ var SceneModel = /** @class */ (function () {
                         result = _a.sent();
                         console.log(result);
                         if (result.length > 0) {
-                            response.status(200).json({ message: 'scenes found', data: result });
+                            response.status(200).json({ success: true, message: 'scenes found', data: result });
                         }
                         else {
-                            response.status(200).json({ message: 'no scenes data', data: result });
+                            response.status(200).json({ success: true, message: 'no scenes data', data: result });
                         }
                         return [3 /*break*/, 3];
                     case 2:
                         e_7 = _a.sent();
                         console.error(e_7);
-                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
+                        response.status(500).json({ success: false, message: "An error occurred: ".concat(e_7) });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

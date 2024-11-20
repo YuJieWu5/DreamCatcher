@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { GetScenesResponse } from '../model/Scene'
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,13 @@ export class SearchService {
     this.searchSubject.next(query);
   }
 
-  searchScenes(keyword: string): Observable<any> {
+  searchScenes(keyword: string): Observable<GetScenesResponse> {
     const url = `http://localhost:8080/app/scene/search/${keyword}`; 
-    return this.http.get<any>(url);
+    return this.http.get<GetScenesResponse>(url);
+  }
+
+  getAllScenes(): Observable<GetScenesResponse> {
+    const url = `http://localhost:8080/app/scene`; 
+    return this.http.get<GetScenesResponse>(url);
   }
 }

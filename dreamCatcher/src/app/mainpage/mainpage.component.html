@@ -2,7 +2,7 @@
   <div *ngIf="showResults" class="results-sidebar">
     <div id="results-title">Results:</div>
     <app-scene-card
-      *ngFor="let location of filteredScenes"
+      *ngFor="let location of scenes"
       [location]="location"
       (viewLocation)="viewLocation($event)"
   ></app-scene-card>

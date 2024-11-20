@@ -4,10 +4,33 @@ import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationModalComponent } from '../location-modal/location-modal.component';
 import { environment } from '../../environments/environment';
-import { Scene } from '../../model/Scene';
+import { GetScenesResponse, Scene } from '../../model/Scene';
 // import { mockSceneList1, mockSceneList2 } from '../../mockdata/data';
 
 declare const google: any;
+
+const categoryColors = [
+  'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
+  'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+  'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+  'http://maps.google.com/mapfiles/ms/icons/yellow-dot.png',
+  'http://maps.google.com/mapfiles/ms/icons/purple-dot.png'
+];
+
+function assignColorsToScenes(scenes: Scene[]): Scene[] {
+  const mediaNameToColor: { [key: string]: string } = {};
+  let colorIndex = 0;
+
+  scenes.forEach(scene => {
+    if (!mediaNameToColor[scene.mediaName]) {
+      mediaNameToColor[scene.mediaName] = categoryColors[colorIndex];
+      colorIndex = (colorIndex + 1) % categoryColors.length;
+    }
+    scene.markerColor = mediaNameToColor[scene.mediaName];
+  });
+
+  return scenes;
+}
 
 @Component({
   selector: 'app-mainpage',
@@ -20,7 +43,7 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(private searchService: SearchService, public dialog: MatDialog) {}
   
-  filteredScenes: Scene[] = [];
+  scenes: Scene[] = [];
   map: any;
   showResults = false; 
   markers: any[] = [];
@@ -62,22 +85,20 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
   triggerSearch(query: string) {
     if (!query) return;
 
-    this.searchService.searchScenes(query).subscribe(
-      (results: Scene[]) => {
-        console.log('=====')
-        console.log(results)
-        this.updateMarkers(results);
+    this.searchService.searchScenes(query).subscribe({
+      next: (res: GetScenesResponse) => {
+        this.updateMarkers(res.data);
       },
-      error => {
+      error: error => {
         console.error('Error fetching search results:', error);
       }
-    );
+   });
   }
 
   updateMarkers(scenes: Scene[]) {
     this.clearMarkers();
-    this.filteredScenes = scenes;
-    this.filteredScenes.forEach(scene => {
+    this.scenes = scenes;
+    this.scenes.forEach(scene => {
       this.addMarker(scene);
     });
     this.showResults = true;
@@ -93,10 +114,17 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
       zoom: 7
     };
     this.map = new google.maps.Map(document.getElementById('map') as HTMLElement, mapOptions);
-    // const categoryColors = [
-    //   'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-    //   'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-    // ];
+    this.searchService.getAllScenes().subscribe({
+      next: (res: GetScenesResponse) => {
+        this.scenes = assignColorsToScenes(res.data);
+        this.scenes.forEach(scene => {
+          this.addMarker(scene);
+        });
+      },
+      error: error => {
+        console.error('Error fetching search results:', error);
+      }
+   });
   }
 
   viewLocation(location: any) {
@@ -111,12 +139,13 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.markers = [];
   }
   
-  addMarker(scene: Scene, icon: String = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png') {
+  addMarker(scene: Scene) {
+    console.log(scene)
     const marker = new google.maps.Marker({
-      position: new google.maps.LatLng(scene.lat, scene.ing),
+      position: new google.maps.LatLng(scene.lat, scene.lng),
       map:  this.map,
       title: scene.sceneName,
-      icon: icon
+      icon: scene.markerColor ?? 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
     });
     marker.addListener('click', () => {
       this.viewLocation(scene);

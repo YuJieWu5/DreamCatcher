@@ -45,11 +45,15 @@
   .location-description {
     color: #757575;
     overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* Number of lines to show before truncating */
+    -webkit-box-orient: vertical;
     text-overflow: ellipsis;
     font-size: 0.8rem;
     margin-bottom: auto;
     line-height: 1.3rem;
-  }
+}
+
   
   .view-button {
     align-self: flex-start;
