@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 describe('Test Single Scene result', function () {
     var requestResult;
     var response;
-    const validSceneId = "32ab8a17-e92a-4b0d-a42f-ca5e5537db65";
+    const validSceneId = "6dc652f2-4667-4379-bc58-14d3fd5ee30d";
     const invalidSceneId = "invalid-scene-id";
 
     before(function (done) {
