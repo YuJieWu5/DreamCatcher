@@ -34,6 +34,7 @@ import { CreateListDialogComponent } from './create-list-dialog/create-list-dial
 import { SceneCardComponent } from './scene-card/scene-card.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
+import { ScenelistComponent } from './scenelist/scenelist.component';
 
 
 
@@ -49,7 +50,8 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
     CreateListDialogComponent,
     SceneCardComponent,
     LoginpageComponent,
-    SignuppageComponent
+    SignuppageComponent,
+    ScenelistComponent
   ],
   imports: [
     BrowserModule,

@@ -31,8 +31,8 @@ export class FavoriteListService {
    /**
    * Get scenes in the list
    */
-  getFavoriteList(userId: string, listId: string): Observable<GetScenesResponse>{
-    return this.http.get<GetScenesResponse>(this.baseUrl+'/app/user/'+userId+'/favoritelist/'+listId);
+  getFavoriteList(userId: string, listId: string): Observable<FavoriteListSummary>{
+    return this.http.get<FavoriteListSummary>(this.baseUrl+'/app/user/'+userId+'/favoritelist/'+listId);
   }
 
   /**

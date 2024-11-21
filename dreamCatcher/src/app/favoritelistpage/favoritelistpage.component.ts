@@ -57,10 +57,9 @@ export class FavoritelistpageComponent implements OnInit {
           error: (error) => {
             console.error('Error loading scenes:', error);
           }
-      }
-      )
+      })
     } else {
-
+      console.log('No scenes data');
     }
   }
 
