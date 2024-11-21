@@ -12,6 +12,14 @@ export class FavoriteListService {
 
   constructor(private http: HttpClient) {}
 
+   /**
+   * Get detailed information for a list of scenes.
+   */
+   getScenes(sceneIds: string[]): Observable<GetScenesResponse> {
+    const url = `${this.baseUrl}/app/scenes/`;
+    return this.http.post<GetScenesResponse>(url, { scenes: sceneIds });
+  }
+
   /**
    * Get all favorite lists for a user.
    */
@@ -20,12 +28,24 @@ export class FavoriteListService {
     return this.http.get<FavoriteListSummaryResponse>(url);
   }
 
-  /**
-   * Get detailed information for a list of scenes.
+   /**
+   * Get scenes in the list
    */
-  getScenes(sceneIds: string[]): Observable<GetScenesResponse> {
-    const url = `${this.baseUrl}/app/scenes/`;
-    return this.http.post<GetScenesResponse>(url, { scenes: sceneIds });
+  getFavoriteList(userId: string, listId: string): Observable<GetScenesResponse>{
+    return this.http.get<GetScenesResponse>(this.baseUrl+'/app/user/'+userId+'/favoritelist/'+listId);
+  }
+
+  /**
+   * Add a scene to favorite list.
+   */
+  addSceneToFavoriteList(userId: string, sceneId: string, listId: string): Observable<GetScenesResponse>{
+    const req = {
+      sceneId: sceneId,
+      listId: listId
+    };
+    const url = this.baseUrl+'/app/user/'+userId+'/addscene';
+
+    return this.http.patch<GetScenesResponse>(url, req);
   }
 
   /**

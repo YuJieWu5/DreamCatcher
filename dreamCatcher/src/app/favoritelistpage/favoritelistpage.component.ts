@@ -42,7 +42,7 @@ export class FavoritelistpageComponent implements OnInit {
   }
 
   selectList(list: FavoriteListSummary) {
-      if (list.scenes && list.scenes.length > 0) {
+      if (list.scenes) {
         this.favoriteListService.getScenes(list.scenes).subscribe({
           next: (res) =>  {
             const scenes = res.data

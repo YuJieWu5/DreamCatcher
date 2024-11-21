@@ -283,10 +283,10 @@ var UserModel = /** @class */ (function () {
                         result = _a.sent();
                         console.log(result === null || result === void 0 ? void 0 : result.favoriteList);
                         if (result && result.favoriteList) {
-                            response.status(200).json({ success: true, favoriteList: result.favoriteList });
+                            response.status(200).json({ success: true, message: 'Favorite list found', data: result.favoriteList });
                         }
                         else {
-                            response.status(404).json({ success: false, message: 'Favorite list not found' });
+                            response.status(404).json({ success: false, message: 'Favorite list not found', data: [] });
                         }
                         return [3 /*break*/, 4];
                     case 3:
@@ -345,16 +345,17 @@ var UserModel = /** @class */ (function () {
                         updatedUser = _a.sent();
                         if (updatedUser) {
                             response.status(200).json({
+                                success: true,
                                 message: sceneId + ' added to ' + favListId,
-                                favoriteList: updatedUser.favoriteList
+                                data: updatedUser.favoriteList
                             });
                         }
                         else {
-                            response.status(404).json({ message: 'User not found after update' });
+                            response.status(404).json({ success: false, message: 'User not found after update', data: [] });
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        response.status(404).json({ message: 'User not found or SceneId already in favoriteList' });
+                        response.status(404).json({ success: false, message: 'User not found or SceneId already in favoriteList', data: [] });
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
                     case 5:
@@ -385,16 +386,17 @@ var UserModel = /** @class */ (function () {
                         updatedUser = _a.sent();
                         if (updatedUser) {
                             response.status(200).json({
+                                success: true,
                                 message: sceneId + ' deleted from ' + favListId,
-                                favoriteList: updatedUser.favoriteList
+                                data: updatedUser.favoriteList
                             });
                         }
                         else {
-                            response.status(404).json({ message: 'User not found after update' });
+                            response.status(404).json({ success: false, message: 'User not found after update', data: [] });
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        response.status(404).json({ message: 'User not found or SceneId already in favoriteList' });
+                        response.status(404).json({ success: false, message: 'User not found or SceneId already in favoriteList', data: [] });
                         _a.label = 4;
                     case 4: return [3 /*break*/, 6];
                     case 5:
