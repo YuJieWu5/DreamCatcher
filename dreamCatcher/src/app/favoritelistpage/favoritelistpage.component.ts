@@ -86,7 +86,7 @@ export class FavoritelistpageComponent implements OnInit {
                 const newList: FavoriteListSummary = {
                   favListId: ls.favListId,
                   listName: ls.listName,
-                  scenes: ls.scene
+                  scenes: ls.scenes
                 };
                 this.favoriteLists.push(newList);
               }
