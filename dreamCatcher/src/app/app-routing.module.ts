@@ -7,13 +7,12 @@ import {FavoritelistpageComponent} from  './favoritelistpage/favoritelistpage.co
 import {UserpageComponent} from  './userpage/userpage.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
-import { ScenelistComponent } from './scenelist/scenelist.component';
 
 const routes: Routes = [
   {path: '', component: MainpageComponent},
   {path: 'user', component: UserpageComponent},
   {path: 'favlist', component: FavoritelistpageComponent},
-  {path: 'favlist/:id', component: ScenelistComponent},
+  {path: 'favlist/:id', component: FavoritelistpageComponent},
   {path: 'trips', component: TripspageComponent},
   {path: 'login', component: LoginpageComponent},
   {path: 'signup', component: SignuppageComponent}

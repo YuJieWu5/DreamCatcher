@@ -5,6 +5,9 @@ import { LocationModalComponent } from '../location-modal/location-modal.compone
 import { CreateListDialogComponent } from '../create-list-dialog/create-list-dialog.component';
 import { FavoriteList, FavoriteListSummary } from '../../model/FavoriteList'
 import { Scene } from '../../model/Scene'
+import { Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
+
 
 @Component({
   selector: 'app-favorite-list',
@@ -17,7 +20,11 @@ export class FavoritelistpageComponent implements OnInit {
   userId: string;
   isLogin: boolean = false;
 
-  constructor(private dialog: MatDialog, private favoriteListService: FavoriteListService) {
+  constructor(
+    private dialog: MatDialog, 
+    private favoriteListService: FavoriteListService, 
+    private router: Router,
+    private route: ActivatedRoute) {
     this.userId = localStorage.getItem('userId') ?? ""
     if (this.userId !== "") {
       this.isLogin = true;
@@ -26,6 +33,7 @@ export class FavoritelistpageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadFavoriteLists();
+    this.loadSelectList();
   }
 
   loadFavoriteLists() {
@@ -33,33 +41,50 @@ export class FavoritelistpageComponent implements OnInit {
       {
       next: (res) => {
         this.favoriteLists = res.favoriteList;
-        console.log(this.favoriteLists)
       },
       error: (error) => {
         console.error('Error loading favorite lists:', error);
       }
-  });
+    });
+  }
+
+  loadSelectList(){
+    this.route.params.subscribe((params) => {
+      const listId = params['id'];
+      if (listId) {
+        this.favoriteListService.getFavoriteList(this.userId, listId).subscribe(
+          {
+          next: (res) => {
+            // console.log(res['data'][0]);
+            const list = res['data'][0];
+            const favListId = list['favListId'];
+            const listName = list['listName'];
+            this.favoriteListService.getScenes(list['scenes']).subscribe({
+              next: (res) =>  {
+                const scenes = res.data
+                const selectedList: FavoriteList = {
+                  favListId: favListId,
+                  listName: listName,
+                  scenes: scenes
+                };
+                this.selectedList = selectedList;
+              },
+              error: (error) => {
+                console.error('Error loading scenes:', error);
+              }
+           })
+          },
+          error: (error) => {
+            console.error('Error loading favorite lists:', error);
+          }
+        });
+      }
+    });
   }
 
   selectList(list: FavoriteListSummary) {
-      if (list.scenes) {
-        this.favoriteListService.getScenes(list.scenes).subscribe({
-          next: (res) =>  {
-            const scenes = res.data
-            const selectedList: FavoriteList = {
-              favListId: list.favListId,
-              listName: list.listName,
-              scenes: scenes
-            };
-            selectedList.scenes = scenes;
-            this.selectedList = selectedList
-          },
-          error: (error) => {
-            console.error('Error loading scenes:', error);
-          }
-      })
-    } else {
-      console.log('No scenes data');
+    if (list.scenes) {
+      this.router.navigate(['favlist', list.favListId]);
     }
   }
 
@@ -110,12 +135,13 @@ export class FavoritelistpageComponent implements OnInit {
       // Call API to delete the list
       this.favoriteListService.deleteFavoriteList(this.userId, list.favListId).subscribe({
         next: (res) => {
-          console.log(res);
+          // console.log(res);
           // Remove from favoriteLists
           this.favoriteLists = this.favoriteLists.filter((l) => l.favListId !== res['id']);
           if (this.selectedList?.favListId === list.favListId) {
             this.selectedList = null;
           }
+          this.router.navigate(['favlist']);
         },
         error: (error) => {
           console.error('Error deleting favorite list:', error);
