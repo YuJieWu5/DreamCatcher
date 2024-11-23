@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FavoriteListSummary, FavoriteListSummaryResponse } from '../model/FavoriteList'
+import { FavoriteListSummaryResponse } from '../model/FavoriteList'
 import { GetScenesResponse } from '../model/Scene'
 
 @Injectable({
@@ -64,24 +64,15 @@ export class FavoriteListService {
    * Delete a favorite list.
    */
   deleteFavoriteList(userId: string, favListId: string){
-    const data = {
-      userId: userId,
-      listId: favListId
-    }
-    const url = `${this.baseUrl}/app/user/deleteList`;
-    return this.http.post<Record<string, any>>(url, data);
+    const url = `${this.baseUrl}/app/user/${userId}/deleteList/${favListId}`;
+    return this.http.delete<Record<string, any>>(url);
   }
 
   /**
    * Delete a scene from favorite list.
    */
   deleteSceneFromFavoriteList(userId: string, sceneId: string, listId: string){
-    const req = {
-      sceneId: sceneId,
-      listId: listId
-    };
-    const url = this.baseUrl+'/app/user/'+userId+'/deletescene';
-
-    return this.http.patch<Record<string, any>>(url, req);
+    const url = `${this.baseUrl}/app/user/${userId}/list/${listId}/deletescene/${sceneId}`;
+    return this.http.delete<Record<string, any>>(url);
   }
 }

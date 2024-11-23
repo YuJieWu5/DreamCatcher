@@ -185,11 +185,9 @@ class App {
     });
 
     //delete scene to user favorite list
-    router.patch('/app/user/:userId/deletescene', async (req, res) => {
+    router.delete('/app/user/:userId/list/:listId/deletescene/:sceneId', async (req, res) => {
       try {
-        const userId = req.params.userId;
-        const{ listId } = req.body;
-        const{ sceneId } = req.body;
+        const { userId, listId, sceneId } = req.params;
         await this.Users.deleteSceneFromFavoriteList(res, userId, listId, sceneId);
       }
       catch (e) {
@@ -211,9 +209,9 @@ class App {
     });
 
     //delete favorite list
-    router.post('/app/user/deleteList', async (req, res) => {
+    router.delete('/app/user/:userId/deleteList/:listId', async (req, res) => {
       try {
-        const{ userId, listId } = req.body;
+        const{ userId, listId } = req.params;
         console.log(userId+ " , "+ listId);
         await this.Users.deleteFavoriteList(res, userId, listId);
       }

@@ -347,21 +347,19 @@ var App = /** @class */ (function () {
             });
         }); });
         //delete scene to user favorite list
-        router.patch('/app/user/:userId/deletescene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listId, sceneId, e_7;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+        router.delete('/app/user/:userId/list/:listId/deletescene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, userId, listId, sceneId, e_7;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        userId = req.params.userId;
-                        listId = req.body.listId;
-                        sceneId = req.body.sceneId;
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.params, userId = _a.userId, listId = _a.listId, sceneId = _a.sceneId;
                         return [4 /*yield*/, this.Users.deleteSceneFromFavoriteList(res, userId, listId, sceneId)];
                     case 1:
-                        _a.sent();
+                        _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_7 = _a.sent();
+                        e_7 = _b.sent();
                         console.error(e_7);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
@@ -393,13 +391,13 @@ var App = /** @class */ (function () {
             });
         }); });
         //delete favorite list
-        router.post('/app/user/deleteList', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.delete('/app/user/:userId/deleteList/:listId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, userId, listId, e_9;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
-                        _a = req.body, userId = _a.userId, listId = _a.listId;
+                        _a = req.params, userId = _a.userId, listId = _a.listId;
                         console.log(userId + " , " + listId);
                         return [4 /*yield*/, this.Users.deleteFavoriteList(res, userId, listId)];
                     case 1:
