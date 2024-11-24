@@ -235,3 +235,23 @@ usersCollection.insert(
         }]
     }
 )
+db.createCollection('trips')
+tripsCollection = db.getCollection("trips")
+tripsCollection.remove({})
+tripsCollection.insert(
+{
+  tripId: "ab0b358d-7b22-4631-93a0-b9d891ddd8f8",
+  userId: "a81f83a2-243f-451f-bc4a-fab6538c103d",
+  tripName: "trip1",
+  scenes: ["d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51", "a1f42c3b-3a47-4f7b-8149-cf34e1c8c7d6", "c3e79b56-7fd8-47e3-8413-e2dace2c91d2","a1f42c3b-3a47-4f7b-8149-cf34e1c8c7d6"],
+  routes: []
+})
+
+tripsCollection.insert(
+  {
+    tripId: "7ddc4d5f-d84a-4930-85ba-45c06c",
+    userId: "a81f83a2-243f-451f-bc4a-fab6538c103d",
+    tripName: "trip2",
+    scenes: ["c3e79b56-7fd8-47e3-8413-e2dace2c91d2", "d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648"],
+    routes: []
+})

@@ -52,8 +52,8 @@ var TripModel = /** @class */ (function () {
         });
         this.schema = new Mongoose.Schema({
             tripId: { type: String, required: true, unique: true },
+            userId: { type: String, required: true },
             tripName: { type: String, required: true },
-            phone: { type: Number, required: true },
             scenes: { type: [String], required: true },
             routes: { type: [this.routeSchema], default: [] }
         }, { collection: 'trips', strict: false, versionKey: false });
@@ -79,29 +79,192 @@ var TripModel = /** @class */ (function () {
             });
         });
     };
-    //should check if routeSchema is empty or not
-    //if isEmpty, called google map api to get the info
-    //add the info to json then return to user
-    TripModel.prototype.retrieveUser = function (response, value) {
+    //get all trips by userId
+    TripModel.prototype.retrieveTrips = function (response, userId) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, result, e_2;
+            var results, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = this.model.findOne({ tripId: value });
-                        _a.label = 1;
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.model.find({ userId: userId }).lean().exec()];
                     case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, query.exec()];
+                        results = _a.sent();
+                        if (results && results.length > 0) {
+                            response.status(200).json({ success: true, message: 'Trips found', data: results });
+                        }
+                        else {
+                            response.status(404).json({ success: false, message: 'No records found for the given userId', data: [] });
+                        }
+                        return [3 /*break*/, 3];
                     case 2:
+                        e_2 = _a.sent();
+                        console.error('Error finding records by userId:', e_2);
+                        response.status(500).json({ success: false, message: 'An error occurred', e: e_2 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //should check if routeSchema is empty or not
+    //if isEmpty, called google map api to get the info
+    //add the info to json then return to user
+    TripModel.prototype.retrieveTrip = function (response, tripId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.model.findOne({ tripId: tripId }).exec()];
+                    case 1:
                         result = _a.sent();
                         response.json(result);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_3 = _a.sent();
+                        console.error(e_3);
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // update trip name by tripId
+    TripModel.prototype.updateTripName = function (response, tripId, updateData) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.model.findOneAndUpdate({ tripId: tripId }, // filter by tripId
+                            { $set: updateData }, // update specific fields
+                            { new: true } //new=true returns updated document
+                            )];
+                    case 1:
+                        result = _a.sent();
+                        if (result) {
+                            response.status(200).json({ message: 'Trip updated successfully', data: result });
+                        }
+                        else {
+                            response.status(404).json({ message: 'Trip not found', data: [] });
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_4 = _a.sent();
+                        console.error(e_4);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_4 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //delete trip
+    TripModel.prototype.deleteTrip = function (response, tripId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.model.deleteOne({ tripId: tripId })];
+                    case 1:
+                        result = _a.sent();
+                        console.log(result);
+                        if (result.deletedCount > 0) {
+                            response.status(200).json({ success: true, message: 'Trip deleted successfully' });
+                        }
+                        else {
+                            response.status(404).json({ success: false, message: 'Trip not found' });
+                        }
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_5 = _a.sent();
+                        console.error("Error deleting trip:", e_5);
+                        response.status(500).json({ success: false, message: 'An error occurred while deleting the trip', e: e_5 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    //add sceneId to trip
+    TripModel.prototype.addSceneTotrip = function (response, tripId, sceneId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, updatedTrip, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        console.log(' Trip ID:', tripId, ' Scene ID:', sceneId);
+                        return [4 /*yield*/, this.model.updateOne({ tripId: tripId }, { $addToSet: { scenes: sceneId } })];
+                    case 1:
+                        result = _a.sent();
+                        if (!(result.modifiedCount > 0)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.model.findOne({ tripId: tripId })];
+                    case 2:
+                        updatedTrip = _a.sent();
+                        if (updatedTrip) {
+                            response.status(200).json({ success: true, message: 'Scene added to trip successfully', data: updatedTrip.scenes });
+                        }
+                        else {
+                            response.status(404).json({ success: false, message: 'Trip not found after update', data: [] });
+                        }
                         return [3 /*break*/, 4];
                     case 3:
-                        e_2 = _a.sent();
-                        console.error(e_2);
+                        response.status(404).json({ success: false, message: 'Trip not found or scene already exists', data: [] });
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        e_6 = _a.sent();
+                        console.error(e_6);
+                        response.status(500).json({ success: false, message: 'An error occurred while adding the scene to the trip', e: e_6 });
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // delete a sceneId from trip
+    TripModel.prototype.deleteSceneFromTrip = function (response, tripId, sceneId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, updatedTrip, e_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 5, , 6]);
+                        console.log('Trip ID:', tripId, ' Scene ID:', sceneId);
+                        return [4 /*yield*/, this.model.updateOne({ tripId: tripId }, { $pull: { scenes: sceneId } })];
+                    case 1:
+                        result = _a.sent();
+                        if (!(result.modifiedCount > 0)) return [3 /*break*/, 3];
+                        return [4 /*yield*/, this.model.findOne({ tripId: tripId })];
+                    case 2:
+                        updatedTrip = _a.sent();
+                        if (updatedTrip) {
+                            response.status(200).json({
+                                success: true,
+                                message: 'Scene deleted from trip successfully',
+                                data: updatedTrip.scenes
+                            });
+                        }
+                        else {
+                            response.status(404).json({ success: false, message: 'Trip not found after update', data: [] });
+                        }
                         return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
+                    case 3:
+                        response.status(404).json({ success: false, message: 'Trip not found or sceneId not in Trip', data: [] });
+                        _a.label = 4;
+                    case 4: return [3 /*break*/, 6];
+                    case 5:
+                        e_7 = _a.sent();
+                        console.error(e_7);
+                        response.status(500).json({ success: false, message: 'An error occurred', error: e_7 });
+                        return [3 /*break*/, 6];
+                    case 6: return [2 /*return*/];
                 }
             });
         });

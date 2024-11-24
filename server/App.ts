@@ -4,6 +4,11 @@ import {SceneModel} from './model/SceneModel';
 import {UserModel} from './model/UserModel';
 import { TripModel } from './model/TripModel';
 import * as crypto from 'crypto';
+// import * as cors from 'cors';
+// import * as passport from 'passport';
+// import GooglePassport from './GooglePassport';
+// import * as session from 'express-session';
+// import * as cookieParser from 'cookie-parser';
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -12,32 +17,70 @@ class App {
   public expressApp: express.Application;
   public Scenes:SceneModel;
   public Users:UserModel;
+  public Trips: TripModel;
+  // public googlePassportObj:GooglePassport;
 
   //Run configuration methods on the Express instance.
   constructor(mongoDBConnection:string)
   {
+    // this.googlePassportObj = new GooglePassport();
+
     this.expressApp = express();
     this.middleware();
     this.routes();
     this.Scenes = new SceneModel(mongoDBConnection);
     this.Users = new UserModel(mongoDBConnection);
+    this.Trips = new TripModel(mongoDBConnection);
   }
 
   // Configure Express middleware.
   private middleware(): void {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: false }));
+    // Add CORS middleware here
+    // this.expressApp.use(cors({
+    //   origin: 'http://localhost:4200', // Allow requests from client-side
+    //   credentials: true               // Allow cookies and authentication headers
+    // }));
+
     this.expressApp.use( (req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*");
       res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
+    // this.expressApp.use(session({ secret: 'keyboard cat' }));
+    // this.expressApp.use(cookieParser());
+    // this.expressApp.use(passport.initialize());
+    // this.expressApp.use(passport.session());
   }
+
+  // private validateAuth(req, res, next):void {
+  //   if (req.isAuthenticated()) { 
+  //     console.log("user is authenticated"); 
+  //     console.log(JSON.stringify(req.user));
+  //     return next(); }
+  //   console.log("user is not authenticated");
+  //   res.redirect('/');
+  // }
 
   // Configure API endpoints.
   private routes(): void {
     let router = express.Router();
+
+    // router.get('/auth/google', 
+    // passport.authenticate('google', {scope: ['profile']}));
+
+    // router.get('/auth/google/callback', 
+    //   passport.authenticate('google', 
+    //     { failureRedirect: '/' }
+    //   ),
+    //   (req, res) => {
+    //     console.log("successfully authenticated user and returned to callback page.");
+    //     console.log("redirecting to /#/user");
+    //     res.redirect('http://localhost:4200/#/user');
+    //   }
+    // );
 
     //get scene by sceneId
     router.get('/app/scene/:sceneId', async (req, res) => {
@@ -131,7 +174,7 @@ class App {
       }
     });
 
-    //get scene by userId
+    //get user info by userId
     router.get('/app/user/:userId', async (req, res) => {
       var id = req.params.userId;
       console.log('Query single user with id: ' + id);
@@ -220,6 +263,86 @@ class App {
         console.log('delete favorite list failed');
       }
     });
+
+    /*API for Trips*/
+     //create new scene
+    router.post('/app/trip/', async (req, res) => {
+      const id = crypto.randomBytes(16).toString("hex");
+      console.log(req.body);
+      var jsonObj = req.body;
+      jsonObj.tripId = id;
+      try {
+        await this.Trips.model.create([jsonObj]);
+        res.status(200).json({message: 'trip creation success', id: id});
+      }
+      catch (e) {
+        console.error(e);
+        console.log('trip creation failed');
+        res.status(404).json({message: 'trip creation failed'})
+      }
+    });
+
+    //get all trip by userId
+    router.get('/app/user/:userId/trip', async(req, res)=>{
+      const userId = req.params.userId;
+      console.log('query trips by userId: '+ userId);
+      await this.Trips.retrieveTrips(res, userId);
+    });
+
+    //get trip by tripId
+    router.get('/app/trip/:tripId', async(req, res)=>{
+      const tripId = req.params.tripId;
+      await this.Trips.retrieveTrip(res, tripId);
+    });
+
+    //update trip name
+    router.patch('/app/trip/:tripId', async (req, res) => {
+      const tripId = req.params.tripId;
+      const updateData = req.body; // e.g., { tripName }
+      try{
+        await this.Trips.updateTripName(res, tripId, updateData);
+      }catch(e){
+        console.error(e);
+      }
+    });
+
+    //delete trip
+    router.delete('/app/trip/:tripId/delete', async (req, res) => {
+      try {
+        const { tripId } = req.params;
+        await this.Trips.deleteTrip(res, tripId);
+      }
+      catch (e) {
+        console.error(e);
+        console.log('delete scene failed');
+      }
+    });
+
+    //add scene to trip
+    router.patch('/app/trip/:tripId/addscene', async (req, res) => {  
+      try {
+        const tripId = req.params.tripId;
+        const{ sceneId } = req.body;
+        await this.Trips.addSceneTotrip(res, tripId, sceneId);
+      }
+      catch (e) {
+        console.error(e);
+        console.log('add scene failed');
+      }
+    });
+
+     //delete scene from trip
+    router.delete('/app/trip/:tripId/deletescene/:sceneId', async (req, res) => {
+      try {
+        const { tripId, sceneId } = req.params;
+        await this.Trips.deleteSceneFromTrip(res, tripId, sceneId);
+      }
+      catch (e) {
+        console.error(e);
+        console.log('delete scene failed');
+      }
+    });
+
   
 
     this.expressApp.use('/', router);
