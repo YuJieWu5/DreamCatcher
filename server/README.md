@@ -15,10 +15,10 @@ To execute the server db and then the node server with the following commands:
 0. md db
 
 //Starts the DB server on port 3000
-1. start.DreamCatcher.cmd
+1.bash start.DreamCatcher.cmd
 
 //populate the DB server with sample data
-2. startdb.Client.DreamCatcher2.cmd
+2.bash startdb.Client.DreamCatcher2.cmd
 >load ('createDB/createSceneSampleData.js');
 >load ('createDB/createAdminUser.js');
 >exit
@@ -37,3 +37,16 @@ To test server #3, try the following URL on the browser, while the server is run
 
 //To run the test
 6. npx mocha --reporter spec test/
+
+To setup the .env file
+ ```sh
+    PORT=8080
+    DB_USER=<db username>
+    DB_PASSWORD=<db password>
+    DB_INFO=<db info>
+    GOOGLE_MAPS_API_KEY = <google maps api key>
+
+    OAUTH_ID = <client id from google oauth2.0 api>
+    OAUTH_SECRET = <client secret from google oauth2.0 api>
+    GOOGLE_APP_NAME = <google app name>
+```
