@@ -1,5 +1,10 @@
-Client File: /dreamCatcher
-Client Environment Setup: /dreamCatcher/README.md
+# Project Setup Guide
 
-Server FIle: /server
-Server Environment Setup: /server/README.md
+## Client
+- **File Path**: `/dreamCatcher`
+- **Environment Setup**: [Client README.md](/dreamCatcher/README.md)
+
+## Server
+- **File Path**: `/server`
+- **Environment Setup**: [Server README.md](/server/README.md)
+
