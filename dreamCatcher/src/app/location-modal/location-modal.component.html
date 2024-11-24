@@ -1,7 +1,7 @@
 <mat-card>
-    <img mat-card-image [src]="data.url" alt="{{ data.title }}">
-    <mat-card-title>{{ data.title }}</mat-card-title>
-    <mat-card-content>
+    <img mat-card-image [src]="data.url" alt="{{ data.sceneName }}">
+    <mat-card-title class="title">{{ data.sceneName }}</mat-card-title>
+    <mat-card-content class="content">
       <p>Address: {{ data.address }}</p>
       <p>Description: {{ data.description }}</p>
     </mat-card-content>
@@ -16,5 +16,5 @@
         </div>
       </div>
     </mat-card-actions>
-  </mat-card>
+</mat-card>
   
