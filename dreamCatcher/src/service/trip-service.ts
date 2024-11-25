@@ -61,4 +61,10 @@ export class TripService {
     const url = `${this.baseUrl}/app/trip/${tripId}/deletescene/${sceneId}`;
     return this.http.delete<Record<string, any>>(url);
   }
+
+   /* Get detailed information for a list of scenes */
+   getScenes(sceneIds: string[]){
+    const url = `${this.baseUrl}/app/scenes/`;
+    return this.http.post<Record<string, any>>(url, { scenes: sceneIds });
+  }
 }

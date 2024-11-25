@@ -1,1 +1,13 @@
-<p>tripspage works!</p>
+<div *ngIf="!isLogin; else content" class="loading-container">
+    <div><span class="login-text" [routerLink]="['/login']" >Log in</span> to see user information!</div>
+</div>
+<ng-template #content>
+    <div *ngIf="trips" class="card-container">
+        <mat-card class="card" *ngFor="let trip of trips" [routerLink]="['/trip', trip.tripId]" appearance="outlined">
+            <mat-card-content>{{trip.tripName}}</mat-card-content>
+        </mat-card>
+        <mat-card class="card" appearance="outlined">
+            <mat-card-content>+ Create Trip</mat-card-content>
+        </mat-card>
+    </div>
+</ng-template>

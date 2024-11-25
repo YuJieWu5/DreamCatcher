@@ -1,0 +1,28 @@
+
+<div *ngIf="!scenes; else content" class="loading-container">
+  <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+</div>
+<ng-template #content>
+    <div class="title" *ngIf="tripDetails" >
+        <a [routerLink]="['/trip']">Trips</a>
+         / {{tripDetails['tripName']}}
+    </div>
+    <div *ngIf="scenes.length>0">
+        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+            @for (scene of scenes; track scene) {
+                <div class="example-box" cdkDrag>
+                    <img mat-card-image class="scene-image" [src]="scene['url']" alt="{{ scene['sceneName'] }}">
+                    <p class="scene-name">{{scene['sceneName']}}</p>
+                    <mat-icon class="delete-icon" aria-hidden="false" fontIcon="delete" (click)="deleteScene(scene)"></mat-icon>
+                </div>
+            }
+        </div>
+    </div>
+    <div *ngIf="scenes.length==0">
+        NO scene in this trip.
+    </div>
+</ng-template>
+
+
+
+  
