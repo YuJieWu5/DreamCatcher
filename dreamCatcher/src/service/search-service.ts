@@ -26,8 +26,4 @@ export class SearchService {
     const url = `${this.baseUrl}/app/scene`; 
     return this.http.get<GetScenesResponse>(url);
   }
-
-  getSceneByIds(sceneIds: string[]): Observable<GetScenesResponse>{
-    return this.http.get<GetScenesResponse>(`${this.baseUrl}/app/scenes/${sceneIds}`);
-  }
 }
