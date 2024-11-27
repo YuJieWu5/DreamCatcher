@@ -156,7 +156,7 @@ var UserModel = /** @class */ (function () {
                         result = _a.sent();
                         console.log(result);
                         if ((result === null || result === void 0 ? void 0 : result.password) === password) {
-                            response.status(200).json({ message: 'log in successfuly', id: result.userId });
+                            response.status(200).json({ message: 'log in successfuly', data : result });
                         }
                         else {
                             response.status(404).json({ message: 'Incorrect password or email' });

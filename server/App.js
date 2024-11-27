@@ -42,6 +42,7 @@ var bodyParser = require("body-parser");
 var SceneModel_1 = require("./model/SceneModel");
 var UserModel_1 = require("./model/UserModel");
 var TripModel_1 = require("./model/TripModel");
+var ReviewModel_1 = require("./model/ReviewModel");
 var crypto = require("crypto");
 // import * as cors from 'cors';
 // import * as passport from 'passport';
@@ -60,6 +61,7 @@ var App = /** @class */ (function () {
         this.Scenes = new SceneModel_1.SceneModel(mongoDBConnection);
         this.Users = new UserModel_1.UserModel(mongoDBConnection);
         this.Trips = new TripModel_1.TripModel(mongoDBConnection);
+        this.Reviews = new ReviewModel_1.ReviewModel(mongoDBConnection);
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
@@ -82,8 +84,8 @@ var App = /** @class */ (function () {
         // this.expressApp.use(passport.session());
     };
     // private validateAuth(req, res, next):void {
-    //   if (req.isAuthenticated()) { 
-    //     console.log("user is authenticated"); 
+    //   if (req.isAuthenticated()) {
+    //     console.log("user is authenticated");
     //     console.log(JSON.stringify(req.user));
     //     return next(); }
     //   console.log("user is not authenticated");
@@ -93,10 +95,10 @@ var App = /** @class */ (function () {
     App.prototype.routes = function () {
         var _this = this;
         var router = express.Router();
-        // router.get('/auth/google', 
+        // router.get('/auth/google',
         // passport.authenticate('google', {scope: ['profile']}));
-        // router.get('/auth/google/callback', 
-        //   passport.authenticate('google', 
+        // router.get('/auth/google/callback',
+        //   passport.authenticate('google',
         //     { failureRedirect: '/' }
         //   ),
         //   (req, res) => {
@@ -227,6 +229,19 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+
+        // add review to scene
+        router.post('/app/review', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const reviewData = req.body;
+            console.log('Adding new review:', reviewData);
+            yield this.Reviews.addReviews(res, reviewData);
+        }));
+        // display all reveiws by sceneId
+        router.get('/app/review/:sceneId', (req, res) => __awaiter(this, void 0, void 0, function* () {
+            const { sceneId } = req.params;
+            console.log('Fetching reviews for sceneId:', sceneId);
+            yield this.Reviews.retrieveReviewsBySceneId(res, sceneId);
+        }));
         /*endpoint for user*/
         //create a new user
         router.post('/app/user/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {

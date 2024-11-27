@@ -1,8 +1,9 @@
-import * as express from 'express';
+import express from 'express';
 import * as bodyParser from 'body-parser';
 import {SceneModel} from './model/SceneModel';
 import {UserModel} from './model/UserModel';
 import { TripModel } from './model/TripModel';
+import { ReviewModel } from './model/ReviewModel';
 import * as crypto from 'crypto';
 // import * as cors from 'cors';
 // import * as passport from 'passport';
@@ -18,6 +19,7 @@ class App {
   public Scenes:SceneModel;
   public Users:UserModel;
   public Trips: TripModel;
+  public Reviews:ReviewModel;
   // public googlePassportObj:GooglePassport;
 
   //Run configuration methods on the Express instance.
@@ -31,6 +33,7 @@ class App {
     this.Scenes = new SceneModel(mongoDBConnection);
     this.Users = new UserModel(mongoDBConnection);
     this.Trips = new TripModel(mongoDBConnection);
+    this.Reviews = new ReviewModel(mongoDBConnection);
   }
 
   // Configure Express middleware.
@@ -56,8 +59,8 @@ class App {
   }
 
   // private validateAuth(req, res, next):void {
-  //   if (req.isAuthenticated()) { 
-  //     console.log("user is authenticated"); 
+  //   if (req.isAuthenticated()) {
+  //     console.log("user is authenticated");
   //     console.log(JSON.stringify(req.user));
   //     return next(); }
   //   console.log("user is not authenticated");
@@ -68,11 +71,11 @@ class App {
   private routes(): void {
     let router = express.Router();
 
-    // router.get('/auth/google', 
+    // router.get('/auth/google',
     // passport.authenticate('google', {scope: ['profile']}));
 
-    // router.get('/auth/google/callback', 
-    //   passport.authenticate('google', 
+    // router.get('/auth/google/callback',
+    //   passport.authenticate('google',
     //     { failureRedirect: '/' }
     //   ),
     //   (req, res) => {
@@ -88,7 +91,7 @@ class App {
       console.log('Query single scene with id: ' + id);
       await this.Scenes.retrieveScenes(res, id);
     });
-    
+
     //create new scene
     router.post('/app/scene/', async (req, res) => {
       const id = crypto.randomBytes(16).toString("hex");
@@ -142,6 +145,20 @@ class App {
       console.log("passed in scenes: "+ sceneIds);
       await this.Scenes.getSceneBysceneIds(res, sceneIds);
     });
+    // add review to scene
+    router.post('/app/review', async (req, res) => {
+      const reviewData = req.body;
+      console.log('Adding new review:', reviewData);
+      await this.Reviews.addReviews(res, reviewData);
+  });
+
+    // display all reveiws by sceneId
+    router.get('/app/review/:sceneId', async (req, res) => {
+      const { sceneId } = req.params;
+      console.log('Fetching reviews for sceneId:', sceneId);
+      await this.Reviews.retrieveReviewsBySceneId(res, sceneId);
+    });
+
 
 
     /*endpoint for user*/
@@ -214,7 +231,7 @@ class App {
     });
 
     //add scene to user favorite list
-    router.patch('/app/user/:userId/addscene', async (req, res) => {  
+    router.patch('/app/user/:userId/addscene', async (req, res) => {
       try {
         const userId = req.params.userId;
         const{ listId } = req.body;
@@ -319,7 +336,7 @@ class App {
     });
 
     //add scene to trip
-    router.patch('/app/trip/:tripId/addscene', async (req, res) => {  
+    router.patch('/app/trip/:tripId/addscene', async (req, res) => {
       try {
         const tripId = req.params.tripId;
         const{ sceneId } = req.body;
@@ -343,14 +360,14 @@ class App {
       }
     });
 
-  
+
 
     this.expressApp.use('/', router);
 
     // this.expressApp.use('/app/json/', express.static(__dirname+'/app/json'));
     // this.expressApp.use('/images', express.static(__dirname+'/img'));
     this.expressApp.use('/', express.static(__dirname+'/pages'));
-    
+
   }
 
 }
