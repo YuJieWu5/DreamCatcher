@@ -30,6 +30,7 @@
         <mat-icon>close</mat-icon>
       </button>
       <mat-nav-list>
+        <mat-list-item [routerLink]="['/']" (click)="closeDrawer()">Home</mat-list-item>
         <mat-list-item [routerLink]="['/user']" (click)="closeDrawer()">User Info</mat-list-item>
         <mat-list-item [routerLink]="['/favlist']" (click)="closeDrawer()">Favorite List</mat-list-item>
         <mat-list-item [routerLink]="['/trip']" (click)="closeDrawer()">Trips</mat-list-item>
