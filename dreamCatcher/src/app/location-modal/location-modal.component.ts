@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { ReviewDialogComponent } from '../review-dialog/review-dialog.component';
-import {DreamCatcherProxyServiceService} from '../dream-catcher-proxy-service.service'; // 确保路径正确
+import {DreamCatcherProxyServiceService} from '../dream-catcher-proxy-service.service'; // make sure the path is correct
 
 @Component({
   selector: 'app-location-modal',
@@ -18,7 +18,7 @@ export class LocationModalComponent {
     public dialogRef: MatDialogRef<LocationModalComponent>,
     private router: Router,
     private proxy$: DreamCatcherProxyServiceService,
-    private dialog: MatDialog, // 注入MatDialog服务
+    private dialog: MatDialog, // inject MatDialog service
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
@@ -33,9 +33,9 @@ export class LocationModalComponent {
 
   openReviewDialog() {
     this.dialogRef.close();
-    // 假设sceneId是从data中获取的
+    // Assume sceneId is achieved from data
 
-    // 用户已登录，打开评论对话框
+    // User have already login and open the review box
     const reviewDialogRef = this.dialog.open(ReviewDialogComponent, {
       width: '800px',
       data: { reviews: [], sceneData: this.data },

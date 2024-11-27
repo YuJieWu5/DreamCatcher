@@ -26,7 +26,7 @@ export class ReviewDialogComponent {
     private router: Router,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.reviews = data.reviews || []; // 确保有默认值
+    this.reviews = data.reviews || []; // Make sure there is a default value
     this.sceneData = data.sceneData;
   }
 
@@ -35,16 +35,16 @@ export class ReviewDialogComponent {
   }
 
   initializeComponent() {
-    // 在这里编写你需要执行的逻辑
+    // Write the logic you need to execute here
     console.log('Component initialized');
-    // 例如，获取数据、设置初始状态等
+    // For example, getting data, setting initial status, etc.
 
     const sceneId = this.sceneData.sceneId;
     if (sceneId) {
       this.proxy$.getReview(sceneId).subscribe(response => {
         if (response['success']) {
           this.reviews = response['data'];
-          // 用户已登录，打开评论对话框
+          // User logged in, open comment dialog
           // const reviewDialogRef = this.dialog.open(ReviewDialogComponent, {
           //   width: '800px',
           //   data: { reviews: this.reviews, sceneData: this.data },
@@ -63,10 +63,10 @@ export class ReviewDialogComponent {
     const userId = localStorage.getItem('userId');
     if (!userId) {
       this.dialogRef.close();
-      // 用户未登录，跳转到登录页面
+      // The user is not logged in, jump to the login page
       this.router.navigate(['/login']);
     }else {
-      // 实现添加评论的逻辑
+      // Implementing the logic for adding comments
       this.showAddReviewForm = !this.showAddReviewForm;
     }
 
@@ -74,11 +74,11 @@ export class ReviewDialogComponent {
   }
 
   onClose(): void {
-    this.dialogRef.close(null); // 关闭对话框，不传回任何数据
+    this.dialogRef.close(null); // Close the dialog box without returning any data
     this.showAddReviewForm = !this.showAddReviewForm;
-    this.dialogRef.close(null); // 关闭对话框，不传回任何数据
+    this.dialogRef.close(null); // Close the dialog box without returning any data
 
-    // 延迟1秒后关闭对话框
+    // Close the dialog box after a delay of 1 second
     setTimeout(() => {
       this.dialogRef.close(null);
     }, 1);
@@ -121,9 +121,9 @@ export class ReviewDialogComponent {
         console.log(result);
         const success = result && result['success'] ? result['success'] : "";
         if(success == true){
-          this.reviews.push(this.newReview); // 添加新评论到列表
-          this.newReview = { userName: '', rating: '', comment: '' }; // 重置表单
-          this.showAddReviewForm = false; // 隐藏表单
+          this.reviews.push(this.newReview); // Add new comment to list
+          this.newReview = { userName: '', rating: '', comment: '' }; // Reset Form
+          this.showAddReviewForm = false; // Hide Form
         }else{
           this.message =result['message'];
         }

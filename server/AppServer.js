@@ -21,9 +21,9 @@ console.log("server running in port " + port);
 // var port = process.env.PORT;
 // var dbUser = process.env.DB_USER;
 // var dbPassword = process.env.DB_PASSWORD;
-// var dbProtocol = process.env.DB_PROTOCOL;  // 从 .env 中获取 DB_PROTOCOL         // 从 .env 中获取 DB_INFO
+// var dbProtocol = process.env.DB_PROTOCOL;  // get DB_PROTOCOL from .env         // get DB_INFO from .env 
 
-// // 构建MongoDB连接字符串
+// // Constructing the MongoDB connection string
 // var mongoDBConnection = dbProtocol + dbUser + ':' + encodeURIComponent(dbPassword) + process.env.DB_INFO;
 // console.log("server db connection URL " + mongoDBConnection);
 

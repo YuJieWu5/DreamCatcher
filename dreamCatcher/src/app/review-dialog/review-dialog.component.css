@@ -1,14 +1,14 @@
 .review-dialog {
-  max-width: 800px; /* 调整弹窗的最大宽度 */
+  max-width: 800px; /* adjust the max width of pop window */
   width: 100%;
-  min-height: 500px; /* 设置弹窗的最小高度 */
+  min-height: 500px; /* adjust the min width of pop window */
   padding: 30px;
-  border-radius: 8px; /* 圆角边框 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 轻微的阴影 */
+  border-radius: 8px; /* Rounded border */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
   background: white;
   color: #333;
   font-family: 'Arial', sans-serif;
-  overflow-y: auto; /* 允许内容滚动 */
+  overflow-y: auto; /* Allow content to scroll */
 }
 
 .review-dialog h2 {
@@ -18,8 +18,8 @@
 }
 
 .review-dialog ul {
-  max-height: 400px; /* 设置评论列表的最大高度 */
-  overflow-y: auto; /* 允许评论列表滚动 */
+  max-height: 400px; /* Set the maximum height of the comment list */
+  overflow-y: auto; /* Allow scrolling of comment list */
   margin-bottom: 20px;
 }
 
@@ -30,13 +30,13 @@
   border-radius: 4px;
 }
 
-/* 其他样式保持不变 */
+/* Other styles remain unchanged */
 .review-dialog li:last-child {
   margin-bottom: 0;
 }
 
 .review-dialog button {
-  background-color: #5cb85c; /* 绿色按钮 */
+  background-color: rgb(92, 111, 146); /* grey button */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -44,20 +44,20 @@
   cursor: pointer;
   font-size: 1em;
   transition: background-color 0.3s ease;
-  position: absolute; /* 设置绝对定位 */
-  bottom: 0; /* 距离容器底部0距离 */
-  left: 50%; /* 水平居中 */
-  transform: translateX(-50%); /* 使用transform调整位置，使其完全居中 */
+  position: absolute; /* Set absolute positioning */
+  bottom: 0; /* 0 distance from the bottom of the container */
+  left: 50%; /* Horizontal Center */
+  transform: translateX(-50%); /* Use transform to adjust the position so that it is completely centered */
 }
 
 .review-dialog button:hover {
-  background-color: #4cae4c; /* 鼠标悬浮时按钮颜色变深 */
+  background-color: #4e506b; /* The button becomes darker when the mouse is hovering */
 }
 
 .custom-dialog-container .mat-dialog-container {
-  padding: 0; /* 去除默认的padding */
-  border-radius: 8px; /* 应用圆角 */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 应用阴影 */
+  padding: 0; /* Remove the default padding */
+  border-radius: 8px; /* Apply rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Applying shadows */
 }
 
 
