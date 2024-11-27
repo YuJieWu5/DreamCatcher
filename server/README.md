@@ -15,25 +15,49 @@ To execute the server db and then the node server with the following commands:
 0. md db
 
 //Starts the DB server on port 3000
-1. start.DreamCatcher.cmd
+1.bash start.DreamCatcher.cmd
 
-//populate the DB server with sample data
-2. startdb.Client.DreamCatcher2.cmd
->load ('createDB/createSceneSampleData.js');
->load ('createDB/createAdminUser.js');
->exit
+2. populate the DB server with sample data
+```sh
+    bash startdb.Client.DreamCatcher2.cmd
+    >load ('createDB/createSceneSampleData.js');
+    >load ('createDB/createAdminUser.js');
+    >exit
+```
 
-//install npm packages
-3. npm install
 
-//Compile Node/Express Server.  You may need to go to all subdirectories and compile the ts files.
-4. tsc AppServer.ts
+3. install npm packages
+```sh
+    npm install
+```
 
-//Execute Node/Express server on port 8080
-5. node AppServer.js 
+4. Compile Node/Express Server.  You may need to go to all subdirectories and compile the ts files. 
+```sh
+    tsc AppServer.ts
+```
+
+5. Execute Node/Express server on port 8080
+```sh
+    node AppServer.js 
+```
 
 To test server #3, try the following URL on the browser, while the server is running:
 * http://localhost:8080/
 
-//To run the test
-6. npx mocha --reporter spec test/
+6. To run the test 
+```sh
+    npx mocha --reporter spec test/
+```
+
+7. To setup the .env file
+```sh
+    PORT=8080
+    DB_USER=<db username>
+    DB_PASSWORD=<db password>
+    DB_INFO=<db info>
+    GOOGLE_MAPS_API_KEY = <google maps api key>
+
+    OAUTH_ID = <client id from google oauth2.0 api>
+    OAUTH_SECRET = <client secret from google oauth2.0 api>
+    GOOGLE_APP_NAME = <google app name>
+```

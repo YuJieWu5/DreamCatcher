@@ -41,32 +41,70 @@ var express = require("express");
 var bodyParser = require("body-parser");
 var SceneModel_1 = require("./model/SceneModel");
 var UserModel_1 = require("./model/UserModel");
+var TripModel_1 = require("./model/TripModel");
 var crypto = require("crypto");
+// import * as cors from 'cors';
+// import * as passport from 'passport';
+// import GooglePassport from './GooglePassport';
+// import * as session from 'express-session';
+// import * as cookieParser from 'cookie-parser';
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
+    // public googlePassportObj:GooglePassport;
     //Run configuration methods on the Express instance.
     function App(mongoDBConnection) {
+        // this.googlePassportObj = new GooglePassport();
         this.expressApp = express();
         this.middleware();
         this.routes();
         this.Scenes = new SceneModel_1.SceneModel(mongoDBConnection);
         this.Users = new UserModel_1.UserModel(mongoDBConnection);
+        this.Trips = new TripModel_1.TripModel(mongoDBConnection);
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: false }));
+        // Add CORS middleware here
+        // this.expressApp.use(cors({
+        //   origin: 'http://localhost:4200', // Allow requests from client-side
+        //   credentials: true               // Allow cookies and authentication headers
+        // }));
         this.expressApp.use(function (req, res, next) {
             res.header("Access-Control-Allow-Origin", "*");
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             next();
         });
+        // this.expressApp.use(session({ secret: 'keyboard cat' }));
+        // this.expressApp.use(cookieParser());
+        // this.expressApp.use(passport.initialize());
+        // this.expressApp.use(passport.session());
     };
+    // private validateAuth(req, res, next):void {
+    //   if (req.isAuthenticated()) { 
+    //     console.log("user is authenticated"); 
+    //     console.log(JSON.stringify(req.user));
+    //     return next(); }
+    //   console.log("user is not authenticated");
+    //   res.redirect('/');
+    // }
     // Configure API endpoints.
     App.prototype.routes = function () {
         var _this = this;
         var router = express.Router();
+        // router.get('/auth/google', 
+        // passport.authenticate('google', {scope: ['profile']}));
+        // router.get('/auth/google/callback', 
+        //   passport.authenticate('google', 
+        //     { failureRedirect: '/' }
+        //   ),
+        //   (req, res) => {
+        //     console.log("successfully authenticated user and returned to callback page.");
+        //     console.log("redirecting to /#/user");
+        //     res.redirect('http://localhost:4200/#/user');
+        //   }
+        // );
         //get scene by sceneId
         router.get('/app/scene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id;
@@ -241,7 +279,7 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
-        //get scene by userId
+        //get user info by userId
         router.get('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id;
             return __generator(this, function (_a) {
@@ -347,21 +385,19 @@ var App = /** @class */ (function () {
             });
         }); });
         //delete scene to user favorite list
-        router.patch('/app/user/:userId/deletescene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listId, sceneId, e_7;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+        router.delete('/app/user/:userId/list/:listId/deletescene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, userId, listId, sceneId, e_7;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        userId = req.params.userId;
-                        listId = req.body.listId;
-                        sceneId = req.body.sceneId;
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.params, userId = _a.userId, listId = _a.listId, sceneId = _a.sceneId;
                         return [4 /*yield*/, this.Users.deleteSceneFromFavoriteList(res, userId, listId, sceneId)];
                     case 1:
-                        _a.sent();
+                        _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_7 = _a.sent();
+                        e_7 = _b.sent();
                         console.error(e_7);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
@@ -393,13 +429,13 @@ var App = /** @class */ (function () {
             });
         }); });
         //delete favorite list
-        router.post('/app/user/deleteList', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.delete('/app/user/:userId/deleteList/:listId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var _a, userId, listId, e_9;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
-                        _a = req.body, userId = _a.userId, listId = _a.listId;
+                        _a = req.params, userId = _a.userId, listId = _a.listId;
                         console.log(userId + " , " + listId);
                         return [4 /*yield*/, this.Users.deleteFavoriteList(res, userId, listId)];
                     case 1:
@@ -409,6 +445,151 @@ var App = /** @class */ (function () {
                         e_9 = _b.sent();
                         console.error(e_9);
                         console.log('delete favorite list failed');
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        /*API for Trips*/
+        //create new scene
+        router.post('/app/trip/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var id, jsonObj, e_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        id = crypto.randomBytes(16).toString("hex");
+                        console.log(req.body);
+                        jsonObj = req.body;
+                        jsonObj.tripId = id;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.Trips.model.create([jsonObj])];
+                    case 2:
+                        _a.sent();
+                        res.status(200).json({ message: 'trip creation success', id: id });
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_10 = _a.sent();
+                        console.error(e_10);
+                        console.log('trip creation failed');
+                        res.status(404).json({ message: 'trip creation failed' });
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        //get all trip by userId
+        router.get('/app/user/:userId/trip', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userId = req.params.userId;
+                        console.log('query trips by userId: ' + userId);
+                        return [4 /*yield*/, this.Trips.retrieveTrips(res, userId)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        //get trip by tripId
+        router.get('/app/trip/:tripId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var tripId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        tripId = req.params.tripId;
+                        return [4 /*yield*/, this.Trips.retrieveTrip(res, tripId)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        //update trip name
+        router.patch('/app/trip/:tripId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var tripId, updateData, e_11;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        tripId = req.params.tripId;
+                        updateData = req.body;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.Trips.updateTripName(res, tripId, updateData)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_11 = _a.sent();
+                        console.error(e_11);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
+        //delete trip
+        router.delete('/app/trip/:tripId/delete', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var tripId, e_12;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        tripId = req.params.tripId;
+                        return [4 /*yield*/, this.Trips.deleteTrip(res, tripId)];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_12 = _a.sent();
+                        console.error(e_12);
+                        console.log('delete scene failed');
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        //add scene to trip
+        router.patch('/app/trip/:tripId/addscene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var tripId, sceneId, e_13;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        tripId = req.params.tripId;
+                        sceneId = req.body.sceneId;
+                        return [4 /*yield*/, this.Trips.addSceneTotrip(res, tripId, sceneId)];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_13 = _a.sent();
+                        console.error(e_13);
+                        console.log('add scene failed');
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        //delete scene from trip
+        router.delete('/app/trip/:tripId/deletescene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, tripId, sceneId, e_14;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.params, tripId = _a.tripId, sceneId = _a.sceneId;
+                        return [4 /*yield*/, this.Trips.deleteSceneFromTrip(res, tripId, sceneId)];
+                    case 1:
+                        _b.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_14 = _b.sent();
+                        console.error(e_14);
+                        console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

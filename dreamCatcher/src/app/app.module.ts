@@ -28,12 +28,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 import { LocationModalComponent } from './location-modal/location-modal.component';
 import { CreateListDialogComponent } from './create-list-dialog/create-list-dialog.component';
 import { SceneCardComponent } from './scene-card/scene-card.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
+import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.component';
 
 
 
@@ -49,7 +51,8 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
     CreateListDialogComponent,
     SceneCardComponent,
     LoginpageComponent,
-    SignuppageComponent
+    SignuppageComponent,
+    TripDetailspageComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +71,8 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
     MatFormFieldModule,
     MatInputModule,
     MatProgressSpinnerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DragDropModule
   ],
   providers: [
     provideHttpClient(),

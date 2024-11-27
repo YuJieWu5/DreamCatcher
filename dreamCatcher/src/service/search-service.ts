@@ -9,6 +9,7 @@ import { GetScenesResponse } from '../model/Scene'
 export class SearchService {
   private searchSubject = new Subject<string>();
   searchObservable$ = this.searchSubject.asObservable();
+  private baseUrl = 'http://localhost:8080'; 
 
   constructor(private http: HttpClient) {}
 
@@ -17,12 +18,12 @@ export class SearchService {
   }
 
   searchScenes(keyword: string): Observable<GetScenesResponse> {
-    const url = `http://localhost:8080/app/scene/search/${keyword}`; 
+    const url = `${this.baseUrl}/app/scene/search/${keyword}`; 
     return this.http.get<GetScenesResponse>(url);
   }
 
   getAllScenes(): Observable<GetScenesResponse> {
-    const url = `http://localhost:8080/app/scene`; 
+    const url = `${this.baseUrl}/app/scene`; 
     return this.http.get<GetScenesResponse>(url);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FavoriteListSummary, FavoriteListSummaryResponse } from '../model/FavoriteList'
+import { FavoriteListSummaryResponse } from '../model/FavoriteList'
 import { GetScenesResponse } from '../model/Scene'
 
 @Injectable({
@@ -12,6 +12,14 @@ export class FavoriteListService {
 
   constructor(private http: HttpClient) {}
 
+   /**
+   * Get detailed information for a list of scenes.
+   */
+   getScenes(sceneIds: string[]): Observable<GetScenesResponse> {
+    const url = `${this.baseUrl}/app/scenes/`;
+    return this.http.post<GetScenesResponse>(url, { scenes: sceneIds });
+  }
+
   /**
    * Get all favorite lists for a user.
    */
@@ -20,12 +28,24 @@ export class FavoriteListService {
     return this.http.get<FavoriteListSummaryResponse>(url);
   }
 
-  /**
-   * Get detailed information for a list of scenes.
+   /**
+   * Get scenes in the list
    */
-  getScenes(sceneIds: string[]): Observable<GetScenesResponse> {
-    const url = `${this.baseUrl}/app/scenes/`;
-    return this.http.post<GetScenesResponse>(url, { scenes: sceneIds });
+  getFavoriteList(userId: string, listId: string): Observable<Record<string, any>>{
+    return this.http.get<Record<string, any>>(this.baseUrl+'/app/user/'+userId+'/favoritelist/'+listId);
+  }
+
+  /**
+   * Add a scene to favorite list.
+   */
+  addSceneToFavoriteList(userId: string, sceneId: string, listId: string): Observable<GetScenesResponse>{
+    const req = {
+      sceneId: sceneId,
+      listId: listId
+    };
+    const url = this.baseUrl+'/app/user/'+userId+'/addscene';
+
+    return this.http.patch<GetScenesResponse>(url, req);
   }
 
   /**
@@ -44,24 +64,15 @@ export class FavoriteListService {
    * Delete a favorite list.
    */
   deleteFavoriteList(userId: string, favListId: string){
-    const data = {
-      userId: userId,
-      listId: favListId
-    }
-    const url = `${this.baseUrl}/app/user/deleteList`;
-    return this.http.post<Record<string, any>>(url, data);
+    const url = `${this.baseUrl}/app/user/${userId}/deleteList/${favListId}`;
+    return this.http.delete<Record<string, any>>(url);
   }
 
   /**
    * Delete a scene from favorite list.
    */
   deleteSceneFromFavoriteList(userId: string, sceneId: string, listId: string){
-    const req = {
-      sceneId: sceneId,
-      listId: listId
-    };
-    const url = this.baseUrl+'/app/user/'+userId+'/deletescene';
-
-    return this.http.patch<Record<string, any>>(url, req);
+    const url = `${this.baseUrl}/app/user/${userId}/list/${listId}/deletescene/${sceneId}`;
+    return this.http.delete<Record<string, any>>(url);
   }
 }

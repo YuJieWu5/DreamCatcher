@@ -173,9 +173,9 @@ class UserModel {
 
             console.log(result?.favoriteList);
             if(result && result.favoriteList){
-                response.status(200).json({ success: true, favoriteList: result.favoriteList });
+                response.status(200).json({ success: true, message: 'Favorite list found', data: result.favoriteList });
             } else {
-                response.status(404).json({ success: false, message: 'Favorite list not found' });
+                response.status(404).json({ success: false, message: 'Favorite list not found', data: [] });
             }
         } catch (e) {
             console.error(e);
@@ -217,14 +217,15 @@ class UserModel {
                 const updatedUser = await this.model.findOne({ userId: userId });
                 if (updatedUser) {
                     response.status(200).json({
+                        success: true,
                         message: sceneId +' added to '+ favListId,
-                        favoriteList: updatedUser.favoriteList
+                        data: updatedUser.favoriteList
                     });
                 } else {
-                    response.status(404).json({ message: 'User not found after update' });
+                    response.status(404).json({ success: false, message: 'User not found after update', data: [] });
                 }
             } else {
-                response.status(404).json({ message: 'User not found or SceneId already in favoriteList' });
+                response.status(404).json({ success: false, message: 'User not found or SceneId already in favoriteList', data: [] });
             }
         } catch (e) {
             console.error(e);
@@ -249,14 +250,15 @@ class UserModel {
                 const updatedUser = await this.model.findOne({ userId: userId });
                 if (updatedUser) {
                     response.status(200).json({
+                        success: true,
                         message: sceneId +' deleted from '+ favListId,
-                        favoriteList: updatedUser.favoriteList
+                        data: updatedUser.favoriteList
                     });
                 } else {
-                    response.status(404).json({ message: 'User not found after update' });
+                    response.status(404).json({ success: false, message: 'User not found after update', data: [] });
                 }
             } else {
-                response.status(404).json({ message: 'User not found or SceneId already in favoriteList' });
+                response.status(404).json({ success: false, message: 'User not found or SceneId already in favoriteList', data: [] });
             }
         } catch (e) {
             console.error(e);

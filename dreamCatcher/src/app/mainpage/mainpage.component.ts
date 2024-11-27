@@ -128,7 +128,7 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   viewLocation(location: any) {
-    console.log('Viewing location:', location.title);
+    // console.log('Viewing location:', location.title);
     this.dialog.open(LocationModalComponent, {
       data: location
     });
@@ -140,7 +140,7 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
   
   addMarker(scene: Scene) {
-    console.log(scene)
+    // console.log(scene)
     const marker = new google.maps.Marker({
       position: new google.maps.LatLng(scene.lat, scene.lng),
       map:  this.map,

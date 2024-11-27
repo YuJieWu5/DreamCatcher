@@ -7,18 +7,21 @@ import {FavoritelistpageComponent} from  './favoritelistpage/favoritelistpage.co
 import {UserpageComponent} from  './userpage/userpage.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
+import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.component';
 
 const routes: Routes = [
   {path: '', component: MainpageComponent},
   {path: 'user', component: UserpageComponent},
   {path: 'favlist', component: FavoritelistpageComponent},
-  {path: 'trips', component: TripspageComponent},
+  {path: 'favlist/:id', component: FavoritelistpageComponent},
+  {path: 'trip', component: TripspageComponent},
+  {path: 'trip/:id', component: TripDetailspageComponent},
   {path: 'login', component: LoginpageComponent},
   {path: 'signup', component: SignuppageComponent}
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
   exports: [RouterModule]
 })
 export class AppRoutingModule {
