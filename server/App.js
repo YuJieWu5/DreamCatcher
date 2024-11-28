@@ -229,19 +229,36 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
-
         // add review to scene
-        router.post('/app/review', (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const reviewData = req.body;
-            console.log('Adding new review:', reviewData);
-            yield this.Reviews.addReviews(res, reviewData);
-        }));
+        router.post('/app/review', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var reviewData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        reviewData = req.body;
+                        console.log('Adding new review:', reviewData);
+                        return [4 /*yield*/, this.Reviews.addReviews(res, reviewData)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         // display all reveiws by sceneId
-        router.get('/app/review/:sceneId', (req, res) => __awaiter(this, void 0, void 0, function* () {
-            const { sceneId } = req.params;
-            console.log('Fetching reviews for sceneId:', sceneId);
-            yield this.Reviews.retrieveReviewsBySceneId(res, sceneId);
-        }));
+        router.get('/app/review/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var sceneId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        sceneId = req.params.sceneId;
+                        console.log('Fetching reviews for sceneId:', sceneId);
+                        return [4 /*yield*/, this.Reviews.retrieveReviewsBySceneId(res, sceneId)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
         /*endpoint for user*/
         //create a new user
         router.post('/app/user/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
