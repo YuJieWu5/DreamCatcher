@@ -467,13 +467,13 @@ var App = /** @class */ (function () {
                         return [4 /*yield*/, this.Trips.model.create([jsonObj])];
                     case 2:
                         _a.sent();
-                        res.status(200).json({ message: 'trip creation success', id: id });
+                        res.status(200).json({ success: true, message: 'trip creation success', id: id });
                         return [3 /*break*/, 4];
                     case 3:
                         e_10 = _a.sent();
                         console.error(e_10);
                         console.log('trip creation failed');
-                        res.status(404).json({ message: 'trip creation failed' });
+                        res.status(404).json({ success: false, message: 'trip creation failed' });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }

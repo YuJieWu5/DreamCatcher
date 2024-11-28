@@ -273,12 +273,12 @@ class App {
       jsonObj.tripId = id;
       try {
         await this.Trips.model.create([jsonObj]);
-        res.status(200).json({message: 'trip creation success', id: id});
+        res.status(200).json({success: true, message: 'trip creation success', id: id});
       }
       catch (e) {
         console.error(e);
         console.log('trip creation failed');
-        res.status(404).json({message: 'trip creation failed'})
+        res.status(404).json({success: false, message: 'trip creation failed'})
       }
     });
 

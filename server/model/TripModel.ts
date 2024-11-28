@@ -65,7 +65,7 @@ class TripModel{
     public async retrieveTrip(response:any, tripId:string) {
         try {
             const result = await this.model.findOne({ tripId: tripId}).exec();
-            response.json(result) ;
+            response.status(200).json({ success: true, message: 'Trip found', data: result });
         }
         catch (e) {
             console.error(e);

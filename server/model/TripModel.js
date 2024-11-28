@@ -120,7 +120,7 @@ var TripModel = /** @class */ (function () {
                         return [4 /*yield*/, this.model.findOne({ tripId: tripId }).exec()];
                     case 1:
                         result = _a.sent();
-                        response.json(result);
+                        response.status(200).json({ success: true, message: 'Trip found', data: result });
                         return [3 /*break*/, 3];
                     case 2:
                         e_3 = _a.sent();

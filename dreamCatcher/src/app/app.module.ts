@@ -35,8 +35,8 @@ import { CreateListDialogComponent } from './create-list-dialog/create-list-dial
 import { SceneCardComponent } from './scene-card/scene-card.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
-import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.component';
-
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
 
 
 @NgModule({
@@ -51,8 +51,7 @@ import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.co
     CreateListDialogComponent,
     SceneCardComponent,
     LoginpageComponent,
-    SignuppageComponent,
-    TripDetailspageComponent
+    SignuppageComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +71,9 @@ import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.co
     MatInputModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
-    DragDropModule
+    DragDropModule,
+    MatOption,
+    MatSelect
   ],
   providers: [
     provideHttpClient(),

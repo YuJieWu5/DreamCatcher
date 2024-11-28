@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { GetTripListResponse, GetTripResponse } from '../model/Trip';
 
 
 @Injectable({
@@ -31,13 +32,13 @@ export class TripService {
   }
 
   /* Get trips by userId */
-  getUserTrips(userId: string){
+  getUserTrips(userId: string): Observable<GetTripListResponse>{
     const url = `${this.baseUrl}/app/user/${userId}/trip`
-    return this.http.get<Record<string, any>>(url);
+    return this.http.get<GetTripListResponse>(url);
   }
 
   /* Get one trip by tripId */
-  getSelectedTrip(tripId: string){
+  getSelectedTrip(tripId: string): Observable<Record<string, any>> {
     const url = `${this.baseUrl}/app/trip/${tripId}`
     return this.http.get<Record<string, any>>(url);
   }
