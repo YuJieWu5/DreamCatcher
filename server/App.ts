@@ -1,8 +1,9 @@
 import * as express from 'express';
 import * as bodyParser from 'body-parser';
-import {SceneModel} from './model/SceneModel';
-import {UserModel} from './model/UserModel';
+import { SceneModel } from './model/SceneModel';
+import { UserModel } from './model/UserModel';
 import { TripModel } from './model/TripModel';
+import { ReviewModel } from './model/ReviewModel';
 import * as crypto from 'crypto';
 // import * as cors from 'cors';
 // import * as passport from 'passport';
@@ -15,14 +16,14 @@ class App {
 
   // ref to Express instance
   public expressApp: express.Application;
-  public Scenes:SceneModel;
-  public Users:UserModel;
+  public Scenes: SceneModel;
+  public Users: UserModel;
   public Trips: TripModel;
+  public Reviews: ReviewModel;
   // public googlePassportObj:GooglePassport;
 
   //Run configuration methods on the Express instance.
-  constructor(mongoDBConnection:string)
-  {
+  constructor(mongoDBConnection: string) {
     // this.googlePassportObj = new GooglePassport();
 
     this.expressApp = express();
@@ -31,6 +32,7 @@ class App {
     this.Scenes = new SceneModel(mongoDBConnection);
     this.Users = new UserModel(mongoDBConnection);
     this.Trips = new TripModel(mongoDBConnection);
+    this.Reviews = new ReviewModel(mongoDBConnection);
   }
 
   // Configure Express middleware.
@@ -43,7 +45,7 @@ class App {
     //   credentials: true               // Allow cookies and authentication headers
     // }));
 
-    this.expressApp.use( (req, res, next) => {
+    this.expressApp.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*");
       res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -56,8 +58,8 @@ class App {
   }
 
   // private validateAuth(req, res, next):void {
-  //   if (req.isAuthenticated()) { 
-  //     console.log("user is authenticated"); 
+  //   if (req.isAuthenticated()) {
+  //     console.log("user is authenticated");
   //     console.log(JSON.stringify(req.user));
   //     return next(); }
   //   console.log("user is not authenticated");
@@ -68,11 +70,11 @@ class App {
   private routes(): void {
     let router = express.Router();
 
-    // router.get('/auth/google', 
+    // router.get('/auth/google',
     // passport.authenticate('google', {scope: ['profile']}));
 
-    // router.get('/auth/google/callback', 
-    //   passport.authenticate('google', 
+    // router.get('/auth/google/callback',
+    //   passport.authenticate('google',
     //     { failureRedirect: '/' }
     //   ),
     //   (req, res) => {
@@ -88,39 +90,39 @@ class App {
       console.log('Query single scene with id: ' + id);
       await this.Scenes.retrieveScenes(res, id);
     });
-    
+
     //create new scene
     router.post('/app/scene/', async (req, res) => {
       const id = crypto.randomBytes(16).toString("hex");
       console.log(req.body);
-        var jsonObj = req.body;
-        jsonObj.sceneId = id;
-        try {
-          await this.Scenes.model.create([jsonObj]);
-          res.status(200).json({message: 'scene creation success', id: id});
-        }
-        catch (e) {
-          console.error(e);
-          console.log('scene creation failed');
-          res.status(404).json({message: 'scene creation failed'})
-        }
+      var jsonObj = req.body;
+      jsonObj.sceneId = id;
+      try {
+        await this.Scenes.model.create([jsonObj]);
+        res.status(200).json({ message: 'scene creation success', id: id });
+      }
+      catch (e) {
+        console.error(e);
+        console.log('scene creation failed');
+        res.status(404).json({ message: 'scene creation failed' })
+      }
     });
 
     // delete scene by sceneId
     router.delete('/app/scene/:sceneId', async (req, res) => {
-        var id = req.params.sceneId;
-        console.log('Attempting to delete scene with id: ' + id);
-        try {
-            await this.Scenes.deleteSceneById(res, id);
-        } catch (e) {
-            console.error(e);
-        }
+      var id = req.params.sceneId;
+      console.log('Attempting to delete scene with id: ' + id);
+      try {
+        await this.Scenes.deleteSceneById(res, id);
+      } catch (e) {
+        console.error(e);
+      }
     });
 
     //display all scene
     router.get('/app/scene/', async (req, res) => {
-        console.log('Query All Scenes');
-        await this.Scenes.retrieveAllScenes(res);
+      console.log('Query All Scenes');
+      await this.Scenes.retrieveAllScenes(res);
     });
 
     //get scene count
@@ -132,16 +134,30 @@ class App {
     //search scene by keyword
     router.get('/app/scene/search/:keyword', async (req, res) => {
       var keyword = req.params.keyword;
-      console.log("passed in keyword: "+ keyword);
+      console.log("passed in keyword: " + keyword);
       await this.Scenes.searchSceneByKeyword(res, keyword);
     });
 
     //query scenes by sceneIds
-    router.post('/app/scenes/', async(req, res) => {
+    router.post('/app/scenes/', async (req, res) => {
       var sceneIds = req.body.scenes;
-      console.log("passed in scenes: "+ sceneIds);
+      console.log("passed in scenes: " + sceneIds);
       await this.Scenes.getSceneBysceneIds(res, sceneIds);
     });
+    // add review to scene
+    router.post('/app/review', async (req, res) => {
+      const reviewData = req.body;
+      console.log('Adding new review:', reviewData);
+      await this.Reviews.addReviews(res, reviewData);
+    });
+
+    // display all reveiws by sceneId
+    router.get('/app/review/:sceneId', async (req, res) => {
+      const { sceneId } = req.params;
+      console.log('Fetching reviews for sceneId:', sceneId);
+      await this.Reviews.retrieveReviewsBySceneId(res, sceneId);
+    });
+
 
 
     /*endpoint for user*/
@@ -154,21 +170,21 @@ class App {
       console.log(req.body);
       try {
         await this.Users.model.create([jsonObj]);
-        res.status(200).json({message: 'user creation success', id: id});
+        res.status(200).json({ message: 'user creation success', id: id });
       }
       catch (e) {
         console.error(e);
         console.log('object creation failed');
-        res.status(404).json({message: 'user creation failed'});
+        res.status(404).json({ message: 'user creation failed' });
       }
     });
 
-    router.post('/app/user/login', async(req, res)=>{
+    router.post('/app/user/login', async (req, res) => {
       const email = req.body.email;
       const password = req.body.password;
-      try{
+      try {
         await this.Users.userLogIn(res, email, password);
-      }catch(e){
+      } catch (e) {
         console.log('log in failed')
         console.log(e);
       }
@@ -191,9 +207,9 @@ class App {
     router.patch('/app/user/:userId', async (req, res) => {
       const userId = req.params.userId;
       const updateData = req.body; // e.g., { userName, phone, email })
-      try{
+      try {
         await this.Users.updateUserById(res, userId, updateData);
-      }catch(e){
+      } catch (e) {
         console.error(e);
       }
     });
@@ -209,16 +225,16 @@ class App {
     router.get('/app/user/:userId/favoritelist/:favListId', async (req, res) => {
       var id = req.params.userId;
       var listId = req.params.favListId;
-      console.log('Query single user with id: ' + id+" and listId:"+ listId);
+      console.log('Query single user with id: ' + id + " and listId:" + listId);
       await this.Users.retrieveFavoriteListByListId(res, id, listId);
     });
 
     //add scene to user favorite list
-    router.patch('/app/user/:userId/addscene', async (req, res) => {  
+    router.patch('/app/user/:userId/addscene', async (req, res) => {
       try {
         const userId = req.params.userId;
-        const{ listId } = req.body;
-        const{ sceneId } = req.body;
+        const { listId } = req.body;
+        const { sceneId } = req.body;
         await this.Users.addSceneToFavorites(res, userId, listId, sceneId);
       }
       catch (e) {
@@ -240,12 +256,12 @@ class App {
     });
 
     //create favorite list
-    router.post('/app/user/addList', async(req, res)=>{
-      try{
+    router.post('/app/user/addList', async (req, res) => {
+      try {
         const { userId, listName } = req.body;
         // console.log(userId+" , ", listName);
         await this.Users.createFavoriteList(res, userId, listName);
-      }catch(e){
+      } catch (e) {
         console.log(e);
         console.log('create favorite failed');
       }
@@ -254,8 +270,8 @@ class App {
     //delete favorite list
     router.delete('/app/user/:userId/deleteList/:listId', async (req, res) => {
       try {
-        const{ userId, listId } = req.params;
-        console.log(userId+ " , "+ listId);
+        const { userId, listId } = req.params;
+        console.log(userId + " , " + listId);
         await this.Users.deleteFavoriteList(res, userId, listId);
       }
       catch (e) {
@@ -265,7 +281,7 @@ class App {
     });
 
     /*API for Trips*/
-     //create new scene
+    //create new scene
     router.post('/app/trip/', async (req, res) => {
       const id = crypto.randomBytes(16).toString("hex");
       console.log(req.body);
@@ -283,14 +299,14 @@ class App {
     });
 
     //get all trip by userId
-    router.get('/app/user/:userId/trip', async(req, res)=>{
+    router.get('/app/user/:userId/trip', async (req, res) => {
       const userId = req.params.userId;
-      console.log('query trips by userId: '+ userId);
+      console.log('query trips by userId: ' + userId);
       await this.Trips.retrieveTrips(res, userId);
     });
 
     //get trip by tripId
-    router.get('/app/trip/:tripId', async(req, res)=>{
+    router.get('/app/trip/:tripId', async (req, res) => {
       const tripId = req.params.tripId;
       await this.Trips.retrieveTrip(res, tripId);
     });
@@ -299,9 +315,9 @@ class App {
     router.patch('/app/trip/:tripId', async (req, res) => {
       const tripId = req.params.tripId;
       const updateData = req.body; // e.g., { tripName }
-      try{
+      try {
         await this.Trips.updateTripName(res, tripId, updateData);
-      }catch(e){
+      } catch (e) {
         console.error(e);
       }
     });
@@ -319,10 +335,10 @@ class App {
     });
 
     //add scene to trip
-    router.patch('/app/trip/:tripId/addscene', async (req, res) => {  
+    router.patch('/app/trip/:tripId/addscene', async (req, res) => {
       try {
         const tripId = req.params.tripId;
-        const{ sceneId } = req.body;
+        const { sceneId } = req.body;
         await this.Trips.addSceneTotrip(res, tripId, sceneId);
       }
       catch (e) {
@@ -331,7 +347,7 @@ class App {
       }
     });
 
-     //delete scene from trip
+    //delete scene from trip
     router.delete('/app/trip/:tripId/deletescene/:sceneId', async (req, res) => {
       try {
         const { tripId, sceneId } = req.params;
@@ -343,16 +359,16 @@ class App {
       }
     });
 
-  
+
 
     this.expressApp.use('/', router);
 
     // this.expressApp.use('/app/json/', express.static(__dirname+'/app/json'));
     // this.expressApp.use('/images', express.static(__dirname+'/img'));
-    this.expressApp.use('/', express.static(__dirname+'/pages'));
-    
+    this.expressApp.use('/', express.static(__dirname + '/pages'));
+
   }
 
 }
 
-export {App};
+export { App };

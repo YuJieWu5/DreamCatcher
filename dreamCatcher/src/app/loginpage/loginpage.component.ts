@@ -12,6 +12,7 @@ export class LoginpageComponent {
   email: string="";
   password: string="";
   message: string = "";
+  userName : string = "";
 
   constructor(private proxy$: DreamCatcherProxyServiceService, private router: Router){}
 
@@ -22,11 +23,14 @@ export class LoginpageComponent {
     }
 
     this.proxy$.userLogin(data).subscribe((result: Record<string, any>)=>{
-      console.log(result);
-      this.userId = result && result['id'] ? result['id'] : "";
+      console.log(result['data']['userId']);
+      console.log(result['data']['userName']);
+      this.userId = result && result['data']['userId'] ? result['data']['userId'] : "";
+      this.userName = result && result['data']['userName'] ? result['data']['userName'] : "";
       this.message = result['message'];
       if(this.userId!=""){
         localStorage.setItem('userId', this.userId);
+        localStorage.setItem('userName', this.userName);
         this.router.navigate(['/']);
       }
     })

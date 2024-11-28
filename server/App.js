@@ -42,6 +42,7 @@ var bodyParser = require("body-parser");
 var SceneModel_1 = require("./model/SceneModel");
 var UserModel_1 = require("./model/UserModel");
 var TripModel_1 = require("./model/TripModel");
+var ReviewModel_1 = require("./model/ReviewModel");
 var crypto = require("crypto");
 // import * as cors from 'cors';
 // import * as passport from 'passport';
@@ -60,6 +61,7 @@ var App = /** @class */ (function () {
         this.Scenes = new SceneModel_1.SceneModel(mongoDBConnection);
         this.Users = new UserModel_1.UserModel(mongoDBConnection);
         this.Trips = new TripModel_1.TripModel(mongoDBConnection);
+        this.Reviews = new ReviewModel_1.ReviewModel(mongoDBConnection);
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
@@ -82,8 +84,8 @@ var App = /** @class */ (function () {
         // this.expressApp.use(passport.session());
     };
     // private validateAuth(req, res, next):void {
-    //   if (req.isAuthenticated()) { 
-    //     console.log("user is authenticated"); 
+    //   if (req.isAuthenticated()) {
+    //     console.log("user is authenticated");
     //     console.log(JSON.stringify(req.user));
     //     return next(); }
     //   console.log("user is not authenticated");
@@ -93,10 +95,10 @@ var App = /** @class */ (function () {
     App.prototype.routes = function () {
         var _this = this;
         var router = express.Router();
-        // router.get('/auth/google', 
+        // router.get('/auth/google',
         // passport.authenticate('google', {scope: ['profile']}));
-        // router.get('/auth/google/callback', 
-        //   passport.authenticate('google', 
+        // router.get('/auth/google/callback',
+        //   passport.authenticate('google',
         //     { failureRedirect: '/' }
         //   ),
         //   (req, res) => {
@@ -221,6 +223,36 @@ var App = /** @class */ (function () {
                         sceneIds = req.body.scenes;
                         console.log("passed in scenes: " + sceneIds);
                         return [4 /*yield*/, this.Scenes.getSceneBysceneIds(res, sceneIds)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        // add review to scene
+        router.post('/app/review', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var reviewData;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        reviewData = req.body;
+                        console.log('Adding new review:', reviewData);
+                        return [4 /*yield*/, this.Reviews.addReviews(res, reviewData)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        }); });
+        // display all reveiws by sceneId
+        router.get('/app/review/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var sceneId;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        sceneId = req.params.sceneId;
+                        console.log('Fetching reviews for sceneId:', sceneId);
+                        return [4 /*yield*/, this.Reviews.retrieveReviewsBySceneId(res, sceneId)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];

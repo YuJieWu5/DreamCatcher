@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,6 +37,8 @@ import { LoginpageComponent } from './loginpage/loginpage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
+import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
+
 
 
 @NgModule({
@@ -51,7 +53,8 @@ import { MatSelect } from '@angular/material/select';
     CreateListDialogComponent,
     SceneCardComponent,
     LoginpageComponent,
-    SignuppageComponent
+    SignuppageComponent,
+    ReviewDialogComponent,
   ],
   imports: [
     BrowserModule,

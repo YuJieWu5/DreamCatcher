@@ -1,0 +1,36 @@
+<div class="review-dialog">
+  <h2>Reviews</h2>
+  <ul>
+    <li *ngFor="let review of reviews">
+      <div class="review-item">
+        <strong>{{ review.userName }}</strong>: {{ review.rating }}🌟 <span>{{ review.comment }}</span>
+      </div>
+    </li>
+  </ul>
+  <!-- button group -->
+  <div class="button-group">
+    <button (click)="onAddReview()">Add Review</button>
+    <button style="margin-left: 130px" (click)="onClose()">Close</button> <!-- 关闭按钮 -->
+  </div>
+
+
+
+  <!-- Add comment and rating forms -->
+  <div *ngIf="showAddReviewForm" class="add-review-form">
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea id="comment" [(ngModel)]="newReview.comment" name="comment" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="rating">Rating:</label>
+      <select id="rating" [(ngModel)]="newReview.rating" name="rating" required>
+        <option value="1">1🌟</option>
+        <option value="2">2🌟</option>
+        <option value="3">3🌟</option>
+        <option value="4">4🌟</option>
+        <option value="5">5🌟</option>
+      </select>
+    </div>
+    <button (click)="submitReview()">Submit Review</button>
+  </div>
+</div>
