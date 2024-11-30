@@ -38,6 +38,7 @@ import { SignuppageComponent } from './signuppage/signuppage.component';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
+import { SelectListDialogComponent } from './select-list-dialog/select-list-dialog.component';
 
 
 
@@ -55,6 +56,7 @@ import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
     LoginpageComponent,
     SignuppageComponent,
     ReviewDialogComponent,
+    SelectListDialogComponent,
   ],
   imports: [
     BrowserModule,

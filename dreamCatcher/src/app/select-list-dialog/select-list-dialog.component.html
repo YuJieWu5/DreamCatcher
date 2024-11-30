@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ data.title }}</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill" class="dropdown">
+    <mat-label>Select a List</mat-label>
+    <mat-select [(value)]="selectedListId">
+      <mat-option *ngFor="let list of data.lists" [value]="list.id">{{ list.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onConfirm()" [disabled]="!selectedListId">Confirm</button>
+</div>
