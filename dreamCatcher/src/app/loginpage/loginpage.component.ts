@@ -22,11 +22,10 @@ export class LoginpageComponent {
       password: this.password
     }
 
-    this.proxy$.userLogin(data).subscribe((result: Record<string, any>)=>{
-      console.log(result['data']['userId']);
-      console.log(result['data']['userName']);
-      this.userId = result && result['data']['userId'] ? result['data']['userId'] : "";
-      this.userName = result && result['data']['userName'] ? result['data']['userName'] : "";
+    this.proxy$.userLogin(data).subscribe((result: any)=>{
+      console.log(result)
+      this.userId = result?.data?.userId ?? "";
+      this.userName = result?.data?.userName ?? "";
       this.message = result['message'];
       if(this.userId!=""){
         localStorage.setItem('userId', this.userId);
