@@ -316,7 +316,7 @@ class App {
       const tripId = req.params.tripId;
       const updateData = req.body; // e.g., { tripName }
       try {
-        await this.Trips.updateTripName(res, tripId, updateData);
+        await this.Trips.updateTripScenes(res, tripId, updateData);
       } catch (e) {
         console.error(e);
       }

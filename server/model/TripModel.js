@@ -131,8 +131,8 @@ var TripModel = /** @class */ (function () {
             });
         });
     };
-    // update trip name by tripId
-    TripModel.prototype.updateTripName = function (response, tripId, updateData) {
+    // update trip by tripId
+    TripModel.prototype.updateTripScenes = function (response, tripId, updateData) {
         return __awaiter(this, void 0, void 0, function () {
             var result, e_4;
             return __generator(this, function (_a) {
@@ -146,10 +146,10 @@ var TripModel = /** @class */ (function () {
                     case 1:
                         result = _a.sent();
                         if (result) {
-                            response.status(200).json({ message: 'Trip updated successfully', data: result });
+                            response.status(200).json({ success: true, message: 'Trip updated successfully', data: result });
                         }
                         else {
-                            response.status(404).json({ message: 'Trip not found', data: [] });
+                            response.status(404).json({ success: false, message: 'Trip not found', data: [] });
                         }
                         return [3 /*break*/, 3];
                     case 2:

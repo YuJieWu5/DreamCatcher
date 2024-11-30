@@ -19,7 +19,7 @@ export class TripspageComponent {
   isLogin: boolean = false;
   tripList: TripSummary[] = [];
   selectedTrip: Trip | null = null;
-  isAutoGenerate: boolean = true; 
+  isAutoGenerate: boolean = true;
 
   constructor(
     private dialog: MatDialog,
@@ -199,18 +199,18 @@ export class TripspageComponent {
   }
 
   saveTrip() {
-    // if (this.selectedTrip) {
-    //   this.tripService.saveTrip(this.selectedTrip).subscribe({
-    //     next: (res) => {
-    //       if (res['success']) {
-    //         alert('Trip saved successfully');
-    //       }
-    //     },
-    //     error: (error) => {
-    //       console.error('Error saving trip:', error);
-    //     }
-    //   });
-    // }
+    if (this.selectedTrip) {
+      this.tripService.updateTrip(this.selectedTrip.tripId, { scenes: this.selectedTrip.scenes.map(item => item.sceneId) }).subscribe({
+        next: (res) => {
+          if (res['success']) {
+            alert('Trip saved successfully');
+          }
+        },
+        error: (error) => {
+          console.error('Error saving trip:', error);
+        }
+      });
+    }
   }
 
   trackByScene(index: number, scene: Scene): string {

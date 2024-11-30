@@ -551,7 +551,7 @@ var App = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.Trips.updateTripName(res, tripId, updateData)];
+                        return [4 /*yield*/, this.Trips.updateTripScenes(res, tripId, updateData)];
                     case 2:
                         _a.sent();
                         return [3 /*break*/, 4];
