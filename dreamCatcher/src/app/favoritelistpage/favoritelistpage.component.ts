@@ -155,4 +155,22 @@ export class FavoritelistpageComponent implements OnInit {
       data: location,
     });
   }
+
+  trackByScene(index: number, scene: Scene): string {
+    return scene.sceneId;
+  }
+
+  deleteScene(selectedScene: Scene) {
+    const confirmed = confirm(`Are you sure you want to delete the scene "${selectedScene.sceneName}"?`);
+    if (confirmed && this.selectedList) {
+      this.favoriteListService.deleteSceneFromFavoriteList(this.userId, selectedScene.sceneId, this.selectedList.favListId).subscribe({
+        next: (res) => {
+          if (res['success']) {
+            const index = this.selectedList!.scenes.findIndex(scene => scene.sceneId === selectedScene.sceneId);
+            this.selectedList!.scenes = this.selectedList!.scenes.filter(scene => scene.sceneId !== selectedScene.sceneId);
+          }
+        }
+      });
+    }
+  }
 }
