@@ -65,15 +65,15 @@ class TripModel{
     public async retrieveTrip(response:any, tripId:string) {
         try {
             const result = await this.model.findOne({ tripId: tripId}).exec();
-            response.json(result) ;
+            response.status(200).json({ success: true, message: 'Trip found', data: result });
         }
         catch (e) {
             console.error(e);
         }
     }
 
-    // update trip name by tripId
-    public async updateTripName(response: any, tripId: string, updateData: Partial<Pick<ITripModel, "tripName">>) {
+    // update trip by tripId
+    public async updateTripScenes(response: any, tripId: string, updateData: Partial<Pick<ITripModel, "scenes">>) {
         try {
             const result = await this.model.findOneAndUpdate(
                 { tripId: tripId },         // filter by tripId
@@ -82,9 +82,9 @@ class TripModel{
             );
 
             if (result) {
-                response.status(200).json({ message: 'Trip updated successfully', data: result });
+                response.status(200).json({ success: true, message: 'Trip updated successfully', data: result });
             } else {
-                response.status(404).json({ message: 'Trip not found', data: [] });
+                response.status(404).json({ success: false, message: 'Trip not found', data: [] });
             }
         } catch (e) {
             console.error(e);

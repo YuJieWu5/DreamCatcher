@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { GetTripListResponse, GetTripResponse, TripRoute } from '../model/Trip';
 
 
 @Injectable({
@@ -31,21 +32,20 @@ export class TripService {
   }
 
   /* Get trips by userId */
-  getUserTrips(userId: string){
+  getUserTrips(userId: string): Observable<GetTripListResponse>{
     const url = `${this.baseUrl}/app/user/${userId}/trip`
-    return this.http.get<Record<string, any>>(url);
+    return this.http.get<GetTripListResponse>(url);
   }
 
   /* Get one trip by tripId */
-  getSelectedTrip(tripId: string){
+  getSelectedTrip(tripId: string): Observable<Record<string, any>> {
     const url = `${this.baseUrl}/app/trip/${tripId}`
     return this.http.get<Record<string, any>>(url);
   }
 
-  /* Update tripName by tripId */
-  updateTripName(tripId: string, tripName: string){
+  /* Update trip by tripId */
+  updateTrip(tripId: string, data: any) {
     const url = `${this.baseUrl}/app/trip/${tripId}`;
-    const data = {tripName: tripName};
     return this.http.patch<Record<string, any>>(url, data);
   }
 
@@ -63,7 +63,7 @@ export class TripService {
   }
 
    /* Get detailed information for a list of scenes */
-   getScenes(sceneIds: string[]){
+  getScenes(sceneIds: string[]){
     const url = `${this.baseUrl}/app/scenes/`;
     return this.http.post<Record<string, any>>(url, { scenes: sceneIds });
   }

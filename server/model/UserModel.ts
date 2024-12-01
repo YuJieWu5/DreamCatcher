@@ -44,8 +44,8 @@ class UserModel {
                 });
             }
             next();
-        });        
-        
+        });
+
     }
 
     public async createModel() {
@@ -85,9 +85,8 @@ class UserModel {
     public async userLogIn(response: any, email: string, password: string){
         try{
             const result = await this.model.findOne({email: email}).exec();
-            console.log(result);
             if(result?.password===password){
-                response.status(200).json({message: 'log in successfuly', id: result.userId});
+                response.status(200).json({message: 'log in successfuly', data : result});
             }else{
                 response.status(404).json({message: 'Incorrect password or email'});
             }
@@ -95,7 +94,7 @@ class UserModel {
             response.status(500).json({ success: false, message: 'An error occurred', error: e });
         }
     }
-    
+
     // update userName, phone, or email by userId
     public async updateUserById(response: any, userId: string, updateData: Partial<Pick<IUserModel, "userName" | "phone" | "email">>) {
         try {
@@ -130,7 +129,7 @@ class UserModel {
                 listName: listName,
                 scenes: []
             };
-    
+
             // pushing the new favorite list to their favoriteList array
             const result = await this.model.updateOne(
                 { userId: userId },
@@ -158,7 +157,7 @@ class UserModel {
 
             console.log(result?.favoriteList);
             //return scenes or an empty array if no result is found
-            response.status(200).json({success: true, favoriteList: result?.favoriteList || []}); 
+            response.status(200).json({success: true, favoriteList: result?.favoriteList || []});
         } catch (e) {
             console.error(e);
             response.status(500).json({ success: false, message: 'An error occurred', error: e });
@@ -187,7 +186,7 @@ class UserModel {
         try{
             const result = await this.model.updateOne(
                 { userId: userId },
-                { $pull: { favoriteList: { favListId: favListId } } } 
+                { $pull: { favoriteList: { favListId: favListId } } }
             );
             console.log(result);
             if (result.modifiedCount > 0) {
@@ -205,11 +204,11 @@ class UserModel {
     public async addSceneToFavorites(response: any, userId: string, favListId: string, sceneId: string) {
         try {
             console.log('User ID:', userId, ' List ID:', favListId, ' Scene ID:', sceneId);
-            
+
             //add sceneId to favoriteList only if not present
             const result = await this.model.updateOne(
                 { userId: userId, "favoriteList.favListId": favListId },
-                { $addToSet: { "favoriteList.$.scenes": sceneId } } 
+                { $addToSet: { "favoriteList.$.scenes": sceneId } }
             );
 
             if (result.modifiedCount > 0) {
@@ -232,7 +231,7 @@ class UserModel {
             response.status(500).json({ success: false, message: 'An error occurred', error: e });
         }
     }
-    
+
 
     // delete a sceneId from favoriteList
     public async deleteSceneFromFavoriteList(response: any, userId: string, favListId: string, sceneId: string) {

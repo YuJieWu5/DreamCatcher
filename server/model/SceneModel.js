@@ -219,20 +219,21 @@ var SceneModel = /** @class */ (function () {
     //search by multiple sceneId
     SceneModel.prototype.getSceneBysceneIds = function (response, sceneIds) {
         return __awaiter(this, void 0, void 0, function () {
-            var result, e_7;
+            var result_1, orderedResult, e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.model.find({ sceneId: { $in: sceneIds } }).exec()];
                     case 1:
-                        result = _a.sent();
-                        console.log(result);
-                        if (result.length > 0) {
-                            response.status(200).json({ success: true, message: 'scenes found', data: result });
+                        result_1 = _a.sent();
+                        orderedResult = sceneIds.map(function (id) { return result_1.find(function (scene) { return scene.sceneId === id; }); });
+                        console.log(result_1);
+                        if (result_1.length > 0) {
+                            response.status(200).json({ success: true, message: 'scenes found', data: orderedResult });
                         }
                         else {
-                            response.status(200).json({ success: true, message: 'no scenes data', data: result });
+                            response.status(200).json({ success: true, message: 'no scenes data', data: orderedResult });
                         }
                         return [3 /*break*/, 3];
                     case 2:

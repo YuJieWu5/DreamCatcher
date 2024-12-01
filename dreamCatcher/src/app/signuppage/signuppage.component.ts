@@ -29,6 +29,7 @@ export class SignuppageComponent {
       const userId = result && result['id'] ? result['id'] : "";
       if(userId){
         localStorage.setItem('userId', userId);
+        localStorage.setItem('userName', this.userName);
         this.router.navigate(['/']);
       }else{
         this.message =result['message'];

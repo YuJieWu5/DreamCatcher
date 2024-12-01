@@ -117,11 +117,12 @@ class SceneModel {
     public async getSceneBysceneIds(response: any, sceneIds: string[]) {
         try {
             const result = await this.model.find({ sceneId: { $in: sceneIds } }).exec();
+            const orderedResult = sceneIds.map(id => result.find(scene => scene.sceneId === id));
             console.log(result);
             if(result.length>0){
-                response.status(200).json({success: true, message: 'scenes found', data: result});
+                response.status(200).json({success: true, message: 'scenes found', data: orderedResult});
             }else{
-                response.status(200).json({success: true, message: 'no scenes data', data: result});
+                response.status(200).json({success: true, message: 'no scenes data', data: orderedResult});
             }
         }
         catch (e) {

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms'; 
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -35,7 +35,10 @@ import { CreateListDialogComponent } from './create-list-dialog/create-list-dial
 import { SceneCardComponent } from './scene-card/scene-card.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
 import { SignuppageComponent } from './signuppage/signuppage.component';
-import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.component';
+import { MatOption } from '@angular/material/core';
+import { MatSelect } from '@angular/material/select';
+import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
+import { SelectListDialogComponent } from './select-list-dialog/select-list-dialog.component';
 
 
 
@@ -52,7 +55,8 @@ import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.co
     SceneCardComponent,
     LoginpageComponent,
     SignuppageComponent,
-    TripDetailspageComponent
+    ReviewDialogComponent,
+    SelectListDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,7 +76,9 @@ import { TripDetailspageComponent } from './trip-detailspage/trip-detailspage.co
     MatInputModule,
     MatProgressSpinnerModule,
     MatCheckboxModule,
-    DragDropModule
+    DragDropModule,
+    MatOption,
+    MatSelect
   ],
   providers: [
     provideHttpClient(),

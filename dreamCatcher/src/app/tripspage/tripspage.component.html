@@ -1,13 +1,87 @@
 <div *ngIf="!isLogin; else content" class="loading-container">
-    <div><span class="login-text" [routerLink]="['/login']" >Log in</span> to see user information!</div>
+    <div><span class="login-text" [routerLink]="['/login']">Log in</span> to see user information!</div>
 </div>
 <ng-template #content>
-    <div *ngIf="trips" class="card-container">
-        <mat-card class="card" *ngFor="let trip of trips" [routerLink]="['/trip', trip.tripId]" appearance="outlined">
-            <mat-card-content>{{trip.tripName}}</mat-card-content>
-        </mat-card>
-        <mat-card class="card" appearance="outlined">
-            <mat-card-content>+ Create Trip</mat-card-content>
-        </mat-card>
+    <div class="trip-list-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div id="your-list-title">Your Trip(s)</div>
+                <button class="create-list-button" (click)="openCreateListDialog()">+ Create New Trip</button>
+            </div>
+            <div class="list-items">
+                <div *ngFor="let trip of tripList" class="list-item" (click)="selectTrip(trip)"
+                    [class.selected]="trip.tripId === selectedTrip?.tripId">
+                    <div class="list-icon">
+                        <mat-icon>list</mat-icon>
+                    </div>
+                    <div class="list-details">
+                        <div class="list-name">{{ trip.tripName }}</div>
+                        <div class="list-info">{{ trip.scenes.length }} scenes</div>
+                    </div>
+                    <div class="list-menu">
+                        <mat-icon (click)="openTripMenu($event, trip)">more_vert</mat-icon>
+                        <div *ngIf="trip.showMenu" class="menu-dropdown">
+                            <button (click)="confirmDeleteTrip(trip)">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content" *ngIf="selectedTrip">
+            <div class="title">
+                {{selectedTrip.tripName}}
+            </div>
+            <div *ngIf="selectedTrip.scenes.length>0">
+                <div cdkDropList class="scene-list" (cdkDropListDropped)="drop($event)">
+                    <ng-container *ngFor="let scene of selectedTrip.scenes; let i = index; trackBy: trackByScene">
+                        <!-- Scene Item -->
+                        <div class="scene-item" cdkDrag>
+                            <div style="display: flex; flex-direction: row;">
+                                <img mat-card-image class="scene-image" [src]="scene.url" alt="{{ scene.sceneName }}">
+                                <p class="scene-name">{{scene.sceneName}}</p>
+                                <mat-icon class="delete-icon" aria-hidden="false" fontIcon="delete"
+                                    (click)="deleteScene(scene)"></mat-icon>
+                            </div>
+                        </div>
+                        <!-- Route Item -->
+                        <ng-container *ngIf="i < selectedTrip.scenes.length - 1">
+                            <div class="route-item">
+                                <div style="display: flex; flex-direction: row; align-items: center;">
+                                    <mat-form-field>
+                                        <mat-select [(value)]="selectedTrip.routes[i].transportation" (selectionChange)="onTransportationChange(i)">
+                                            <mat-option value="driving">Driving</mat-option>
+                                            <mat-option value="walking">Walking</mat-option>
+                                            <mat-option value="bicycling">Bicycling</mat-option>
+                                            <mat-option value="transit">Public Transit</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <ng-container *ngIf="!isAutoGenerate">
+                                        <mat-form-field>
+                                            <input matInput type="number" [(ngModel)]="selectedTrip.routes[i].timeInSeconds" placeholder="Time (sec)">
+                                        </mat-form-field>
+                                        <mat-form-field>
+                                            <input matInput type="number" [(ngModel)]="selectedTrip.routes[i].distance" placeholder="Distance (m)">
+                                        </mat-form-field>
+                                    </ng-container>
+                                    <ng-container *ngIf="isAutoGenerate">
+                                        <span>{{selectedTrip.routes[i].timeInSeconds / 60 | number:'1.0-0'}} mins</span>
+                                        <span>{{selectedTrip.routes[i].distance / 1000 | number:'1.1-1'}} km</span>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </ng-container>
+                </div>
+            </div>
+            <div *ngIf="selectedTrip.scenes.length==0">
+                NO scene in this trip.
+            </div>
+            <!-- Save Button -->
+            <div class="save-button-container">
+                <button class="save-button" (click)="saveTrip()">Save</button>
+            </div>
+        </div>
     </div>
 </ng-template>

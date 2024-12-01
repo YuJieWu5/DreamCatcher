@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { SearchService } from '../../service/search-service'; 
+import { SearchService } from '../../service/search-service';
 import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { LocationModalComponent } from '../location-modal/location-modal.component';
@@ -32,6 +32,23 @@ function assignColorsToScenes(scenes: Scene[]): Scene[] {
   return scenes;
 }
 
+export function loadGoogleMapsScript(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (typeof google !== 'undefined' && google.maps) {
+      resolve();
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => resolve();
+    script.onerror = (error: any) => reject(error);
+    document.body.appendChild(script);
+  });
+}
+
 @Component({
   selector: 'app-mainpage',
   templateUrl: './mainpage.component.html',
@@ -42,14 +59,14 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
   private subscription!: Subscription;
 
   constructor(private searchService: SearchService, public dialog: MatDialog) {}
-  
+
   scenes: Scene[] = [];
   map: any;
-  showResults = false; 
+  showResults = false;
   markers: any[] = [];
 
   ngOnInit() {
-    this.loadGoogleMapsScript().then(() => {
+    loadGoogleMapsScript().then(() => {
       this.initializeMap();
     }).catch(err => {
       console.error('Error loading Google Maps script:', err);
@@ -58,23 +75,6 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription = this.searchService.searchObservable$.subscribe(query => {
       this.searchQuery = query;
       this.triggerSearch(query);
-    });
-  }
-
-  loadGoogleMapsScript(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      if (typeof google !== 'undefined' && google.maps) {
-        resolve();
-        return;
-      }
-
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.googleMapsApiKey}`;
-      script.async = true;
-      script.defer = true;
-      script.onload = () => resolve();
-      script.onerror = (error: any) => reject(error);
-      document.body.appendChild(script);
     });
   }
 
@@ -138,7 +138,7 @@ export class MainpageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.markers.forEach(marker => marker.setMap(null));
     this.markers = [];
   }
-  
+
   addMarker(scene: Scene) {
     // console.log(scene)
     const marker = new google.maps.Marker({

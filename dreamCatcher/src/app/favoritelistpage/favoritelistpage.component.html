@@ -36,13 +36,21 @@
     <!-- Main Content -->
     <div class="main-content" *ngIf="selectedList">
       <h2>{{ selectedList.listName }}</h2>
-      <div class="location-list">
-        <app-scene-card
-          *ngFor="let location of selectedList.scenes"
-          [location]="location"
-          (viewLocation)="viewLocation($event)"
-        ></app-scene-card>
-      </div>
+      <div *ngIf="selectedList.scenes.length>0">
+        <div class="scene-list">
+            <ng-container *ngFor="let scene of selectedList.scenes; let i = index; trackBy: trackByScene">
+                <!-- Scene Item -->
+                <div class="scene-item">
+                    <div style="display: flex; flex-direction: row;">
+                        <img mat-card-image class="scene-image" [src]="scene.url" alt="{{ scene.sceneName }}">
+                        <p class="scene-name">{{scene.sceneName}}</p>
+                        <mat-icon class="delete-icon" aria-hidden="false" fontIcon="delete"
+                            (click)="deleteScene(scene)"></mat-icon>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
     </div>
   </div>
   </ng-template>

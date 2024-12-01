@@ -28,8 +28,16 @@ export class DreamCatcherProxyServiceService {
     return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/user/login', loginData);
   }
 
+  addReview(reviewData: Record<string, string>){
+    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/review', reviewData);
+  }
+
   getUserInfo(userId: string){
     return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/user/'+userId);
+  }
+
+  getReview(sceneId: string){
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/review/'+sceneId);
   }
 
   //updateData only accept userName || phone || email, update user by userId
