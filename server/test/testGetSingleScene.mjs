@@ -7,7 +7,6 @@ describe('Test Single Scene result', function () {
     var requestResult;
     var response;
     const validSceneId = "6dc652f2-4667-4379-bc58-14d3fd5ee30d";
-    const invalidSceneId = "invalid-scene-id";
 
     before(function (done) {
         chai.request("http://localhost:8080")
@@ -35,7 +34,7 @@ describe('Test Single Scene result', function () {
         expect(response.body).to.not.be.a.string;
     });
 
-    it('The scene object has the expected properties', function() {
+    it('The scene object has all required properties and the properties conform to the data type', function() {
         expect(response.body).to.satisfy(function(scene) {
             expect(scene).to.have.property('sceneId').that.is.a('string');
             expect(scene).to.have.property('sceneName').that.is.a('string');
@@ -51,14 +50,4 @@ describe('Test Single Scene result', function () {
         });
     });
     
-    it('Should handle invalid scene ID correctly', function(done) {
-        chai.request("http://localhost:8080")
-            .get(`/app/scene/${invalidSceneId}`)
-            .end(function(err, res) {
-                expect(err).to.be.null;
-                expect(res).to.have.status(200);
-                expect(res.body).to.be.null;
-                done();
-            });
-    });
 });

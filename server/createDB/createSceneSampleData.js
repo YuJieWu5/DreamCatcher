@@ -255,3 +255,261 @@ tripsCollection.insert(
     scenes: ["c3e79b56-7fd8-47e3-8413-e2dace2c91d2", "d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648"],
     routes: []
 })
+
+
+db.createCollection('reviews')
+reviewsCollection = db.getCollection("reviews")
+reviewsCollection.remove({})
+
+reviewsCollection.insertMany([
+  {
+    sceneId: "32ab8a17-e92a-4b0d-a42f-ca5e5537db65",
+    rating: 1,
+    comment: "The place was disappointing; not as beautiful as advertised.",
+    commentTime: new Date()
+},
+{
+    sceneId: "32ab8a17-e92a-4b0d-a42f-ca5e5537db65",
+    rating: 3,
+    comment: "Nice, but there were too many tourists to enjoy the scenery.",
+    commentTime: new Date()
+},
+{
+    sceneId: "32ab8a17-e92a-4b0d-a42f-ca5e5537db65",
+    rating: 5,
+    comment: "Absolutely stunning! The best place I’ve visited this year.",
+    commentTime: new Date()
+},
+{
+    sceneId: "4a0dea22-f38d-4bbf-b5ec-5f28615f3e87",
+    rating: 1,
+    comment: "The wind made it almost impossible to enjoy the beach.",
+    commentTime: new Date()
+},
+{
+    sceneId: "4a0dea22-f38d-4bbf-b5ec-5f28615f3e87",
+    rating: 3,
+    comment: "Interesting black sand, but the area felt too isolated.",
+    commentTime: new Date()
+},
+{
+    sceneId: "4a0dea22-f38d-4bbf-b5ec-5f28615f3e87",
+    rating: 5,
+    comment: "A mesmerizing experience! The black sand is unforgettable.",
+    commentTime: new Date()
+},
+{
+    sceneId: "d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51",
+    rating: 1,
+    comment: "Overrated; the glacier looked better in pictures.",
+    commentTime: new Date()
+},
+{
+    sceneId: "d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51",
+    rating: 3,
+    comment: "Good spot, but access to the glacier is difficult.",
+    commentTime: new Date()
+},
+{
+    sceneId: "d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51",
+    rating: 5,
+    comment: "Breathtaking views of the glacier. A must-visit for nature lovers!",
+    commentTime: new Date()
+},
+{
+    sceneId: "6dc652f2-4667-4379-bc58-14d3fd5ee30d",
+    rating: 1,
+    comment: "Nothing special about this mountain.",
+    commentTime: new Date()
+},
+{
+    sceneId: "6dc652f2-4667-4379-bc58-14d3fd5ee30d",
+    rating: 3,
+    comment: "Good views but quite difficult to reach.",
+    commentTime: new Date()
+},
+{
+    sceneId: "6dc652f2-4667-4379-bc58-14d3fd5ee30d",
+    rating: 5,
+    comment: "Arrowhead Mountain is truly iconic. Loved the hike!",
+    commentTime: new Date()
+},
+{
+    sceneId: "a92fd88f-6d97-4d52-b5df-2b3f9bdbf34d",
+    rating: 1,
+    comment: "Overcrowded and overpriced.",
+    commentTime: new Date()
+},
+{
+    sceneId: "a92fd88f-6d97-4d52-b5df-2b3f9bdbf34d",
+    rating: 3,
+    comment: "Interesting history, but not much else to see.",
+    commentTime: new Date()
+},
+{
+    sceneId: "a92fd88f-6d97-4d52-b5df-2b3f9bdbf34d",
+    rating: 5,
+    comment: "Stunning views and rich history. Worth every penny!",
+    commentTime: new Date()
+},
+{
+    sceneId: "d5a2b6d7-ea25-4d3f-8093-5d2c9f76a23b",
+    rating: 1,
+    comment: "Disappointing experience; the place was too crowded.",
+    commentTime: new Date()
+},
+{
+    sceneId: "d5a2b6d7-ea25-4d3f-8093-5d2c9f76a23b",
+    rating: 3,
+    comment: "Nice, but the facilities could be better maintained.",
+    commentTime: new Date()
+},
+{
+    sceneId: "d5a2b6d7-ea25-4d3f-8093-5d2c9f76a23b",
+    rating: 5,
+    comment: "A magical spot. The waterfall was simply breathtaking!",
+    commentTime: new Date()
+},
+{
+  sceneId: "d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51",
+  rating: 5,
+  comment: "The waterfall here is absolutely stunning! The surrounding nature is magical.",
+  commentTime: new Date()
+},   
+
+{
+  sceneId: "d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51",
+  rating: 5,
+  comment: "The waterfall here is absolutely stunning! The surrounding nature is magical.",
+  commentTime: new Date()
+}, 
+
+{
+  sceneId: "d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51",
+  rating: 5,
+  comment: "The waterfall here is absolutely stunning! The surrounding nature is magical.",
+  commentTime: new Date()
+},    
+
+{
+  sceneId: "94eea855-e787-40d4-92a0-afa63f7a0986",
+  rating: 1,
+  comment: "The area was overcrowded and the waterfall wasn’t impressive.",
+  commentTime: new Date()
+},
+{
+  sceneId: "94eea855-e787-40d4-92a0-afa63f7a0986",
+  rating: 3,
+  comment: "The waterfall is nice, but the surroundings need maintenance.",
+  commentTime: new Date()
+},
+{
+  sceneId: "94eea855-e787-40d4-92a0-afa63f7a0986",
+  rating: 5,
+  comment: "A magical place with stunning waterfalls and serene nature.",
+  commentTime: new Date()
+},
+
+// SceneId: e5f96d42-bb78-4c3f-8d2f-d8fa2bcf4871
+{
+  sceneId: "e5f96d42-bb78-4c3f-8d2f-d8fa2bcf4871",
+  rating: 1,
+  comment: "Overhyped, and the location is not well managed.",
+  commentTime: new Date()
+},
+{
+  sceneId: "e5f96d42-bb78-4c3f-8d2f-d8fa2bcf4871",
+  rating: 3,
+  comment: "The waterfall is decent, but there’s nothing extraordinary.",
+  commentTime: new Date()
+},
+{
+  sceneId: "e5f96d42-bb78-4c3f-8d2f-d8fa2bcf4871",
+  rating: 5,
+  comment: "Absolutely beautiful! The nature surrounding it is breathtaking.",
+  commentTime: new Date()
+},
+
+// SceneId: f6b07a83-4b3d-498f-8e41-f2c14eec3d9a
+{
+  sceneId: "f6b07a83-4b3d-498f-8e41-f2c14eec3d9a",
+  rating: 1,
+  comment: "Not worth the trip; there are better places nearby.",
+  commentTime: new Date()
+},
+{
+  sceneId: "f6b07a83-4b3d-498f-8e41-f2c14eec3d9a",
+  rating: 3,
+  comment: "The waterfall is okay, but the infrastructure needs work.",
+  commentTime: new Date()
+},
+{
+  sceneId: "f6b07a83-4b3d-498f-8e41-f2c14eec3d9a",
+  rating: 5,
+  comment: "A stunning location! The waterfall is a true gem of nature.",
+  commentTime: new Date()
+},
+
+// SceneId: a1f42c3b-3a47-4f7b-8149-cf34e1c8c7d6
+{
+  sceneId: "a1f42c3b-3a47-4f7b-8149-cf34e1c8c7d6",
+  rating: 1,
+  comment: "The location was difficult to find and underwhelming.",
+  commentTime: new Date()
+},
+{
+  sceneId: "a1f42c3b-3a47-4f7b-8149-cf34e1c8c7d6",
+  rating: 3,
+  comment: "Decent waterfall, but not worth a long trip.",
+  commentTime: new Date()
+},
+{
+  sceneId: "a1f42c3b-3a47-4f7b-8149-cf34e1c8c7d6",
+  rating: 5,
+  comment: "An amazing spot! The waterfall and surroundings are magical.",
+  commentTime: new Date()
+},
+
+// SceneId: c3e79b56-7fd8-47e3-8413-e2dace2c91d2
+{
+  sceneId: "c3e79b56-7fd8-47e3-8413-e2dace2c91d2",
+  rating: 1,
+  comment: "The waterfall was underwhelming and hard to access.",
+  commentTime: new Date()
+},
+{
+  sceneId: "c3e79b56-7fd8-47e3-8413-e2dace2c91d2",
+  rating: 3,
+  comment: "A nice spot, but there’s not much else to do here.",
+  commentTime: new Date()
+},
+{
+  sceneId: "c3e79b56-7fd8-47e3-8413-e2dace2c91d2",
+  rating: 5,
+  comment: "A beautiful place with a serene waterfall. Highly recommend it!",
+  commentTime: new Date()
+},
+
+// SceneId: d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648
+{
+  sceneId: "d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648",
+  rating: 1,
+  comment: "The waterfall lacked any unique features, very disappointing.",
+  commentTime: new Date()
+},
+{
+  sceneId: "d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648",
+  rating: 3,
+  comment: "Good for a quick stop, but not worth a long visit.",
+  commentTime: new Date()
+},
+{
+  sceneId: "d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648",
+  rating: 5,
+  comment: "One of the most beautiful waterfalls I've ever seen!",
+  commentTime: new Date()
+}
+]);
+
+
+    

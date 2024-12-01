@@ -47,8 +47,6 @@ var ReviewModel = /** @class */ (function () {
     ReviewModel.prototype.createSchema = function () {
         this.schema = new Mongoose.Schema({
             sceneId: { type: String, required: true },
-            userId: { type: String, required: true },
-            userName: { type: String, required: true },
             rating: { type: Number, required: true, min: 1, max: 5 },
             comment: { type: String, required: true },
             commentTime: { type: Date, default: Date.now }

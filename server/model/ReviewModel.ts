@@ -16,8 +16,6 @@ class ReviewModel {
         this.schema = new Mongoose.Schema(
             {
                 sceneId:{ type: String, required: true },
-                userId: { type: String, required: true },
-                userName:{ type: String, required: true } ,
                 rating: { type: Number, required: true, min: 1, max: 5 }, 
                 comment: { type: String, required: true },
                 commentTime: { type: Date, default: Date.now }
@@ -41,16 +39,6 @@ class ReviewModel {
             if (!this.model) {
                 throw new Error("Review model not initialized");
             }
-            const wordLimit = 50;
-            // Split the comment by spaces and count words
-            const words = reviewData.comment.trim().split(/\s+/);
-            if (words.length > wordLimit) {
-                response.status(400).json({ 
-                    success: false, 
-                    message: `Comment cannot exceed ${wordLimit} words. You entered ${words.length} words.` 
-                });
-                return;
-          }      
             const newReview = new this.model(reviewData);
             const savedReview = await newReview.save();
             

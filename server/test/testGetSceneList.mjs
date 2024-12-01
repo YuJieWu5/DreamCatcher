@@ -4,9 +4,7 @@ import chaiHttp from 'chai-http';
 // const { assert, expect, should } = chai;
 chai.use(chaiHttp);
 
-
 describe('Test Scenes result', function () {
-//	this.timeout(15000);
 
 	var requestResult;
 	var response;
