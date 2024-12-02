@@ -42,8 +42,8 @@
                 <!-- Scene Item -->
                 <div class="scene-item">
                     <div style="display: flex; flex-direction: row;">
-                        <img mat-card-image class="scene-image" [src]="scene.url" alt="{{ scene.sceneName }}">
-                        <p class="scene-name">{{scene.sceneName}}</p>
+                        <img mat-card-image (click)="viewLocation(scene)" class="scene-image" [src]="scene.url" alt="{{ scene.sceneName }}">
+                        <div (click)="viewLocation(scene)" class="scene-name">{{scene.sceneName}}</div>
                         <mat-icon class="delete-icon" aria-hidden="false" fontIcon="delete"
                             (click)="deleteScene(scene)"></mat-icon>
                     </div>

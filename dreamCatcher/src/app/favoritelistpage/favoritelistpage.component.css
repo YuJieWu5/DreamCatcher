@@ -137,11 +137,10 @@
   border-bottom: solid 1px #ccc;
   color: rgba(0, 0, 0, 0.87);
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: space-between;
   box-sizing: border-box;
-  cursor: move;
   background: white;
   font-size: 14px;
 }
@@ -149,10 +148,13 @@
 .scene-name {
   padding: 8px;
   flex-grow: 1;
+  cursor: pointer;
+  color: blue;
 }
 
 .scene-image {
   width: 150px;
+  cursor: pointer;
 }
 
 .delete-icon {
