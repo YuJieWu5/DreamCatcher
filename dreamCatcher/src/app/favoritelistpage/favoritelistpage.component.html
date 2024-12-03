@@ -41,9 +41,12 @@
             <ng-container *ngFor="let scene of selectedList.scenes; let i = index; trackBy: trackByScene">
                 <!-- Scene Item -->
                 <div class="scene-item">
-                    <div style="display: flex; flex-direction: row;">
+                    <div class="scene-item-row">
                         <img mat-card-image (click)="viewLocation(scene)" class="scene-image" [src]="scene.url" alt="{{ scene.sceneName }}">
-                        <div (click)="viewLocation(scene)" class="scene-name">{{scene.sceneName}}</div>
+                        <div class="scene-names">
+                          <div (click)="viewLocation(scene)" class="scene-name">{{scene.sceneName}}</div>
+                          <div class="scene-media">{{scene.mediaName}}</div>
+                        </div>
                         <mat-icon class="delete-icon" aria-hidden="false" fontIcon="delete"
                             (click)="deleteScene(scene)"></mat-icon>
                     </div>
