@@ -5,7 +5,7 @@ scenesCollection.remove({})
 scenesCollection.insert(
 {
         sceneId: "32ab8a17-e92a-4b0d-a42f-ca5e5537db65",
-        sceneName: "Game of Thrones - Skógafoss Waterfall",
+        sceneName: "Skógafoss Waterfall",
         address: "Skógafoss, Gönguleið um Fimmvörðuháls, 861, Iceland",
         mediaName: "Game of Thrones",
         url: "https://res.cloudinary.com/itb-database/image/upload/s--wgdrTVeV--/c_fill,dpr_auto,f_auto,q_auto:eco,w_1280/v1/Places/lw6x02miu34wxdd7vwpj",
@@ -20,7 +20,7 @@ scenesCollection.insert(
     scenesCollection.insert(
     {
         sceneId: "4a0dea22-f38d-4bbf-b5ec-5f28615f3e87",
-        sceneName: "Game of Thrones - Reynisfjara Black Sand Beach",
+        sceneName: "Reynisfjara Black Sand Beach",
         address: "Reynisfjara Beach, Vik, South Iceland",
         mediaName: "Game of Thrones",
         url: "https://res.cloudinary.com/icelandtours/g_auto,f_auto,c_fill,w_1200,q_auto:good/reynisfjara_sunset_855c6afc97.jpg",
@@ -35,7 +35,7 @@ scenesCollection.insert(
     scenesCollection.insert(
     {
         sceneId: "6dc652f2-4667-4379-bc58-14d3fd5ee30d",
-        sceneName: "Game of Thrones - Kirkjufell Mountain",
+        sceneName: "Kirkjufell Mountain",
         address: "Kirkjufell Mountain, 351, Iceland",
         mediaName: "Game of Thrones",
         url: "https://adventures.com/media/16569/kirkjufell-mountain-kirkjufellsfoss-waterfall-green-summer-view.jpg?center=0.1111111111111111,0.52777777777777779&mode=crop&width=970&height=645&rnd=133583399610000000&format=webp&quality=80",
@@ -50,7 +50,7 @@ scenesCollection.insert(
       scenesCollection.insert(
       {
         sceneId: "d5a2b6d7-ea25-4d3f-8093-5d2c9f76a23b",
-        sceneName: "Game of Thrones - Snæfellsnes Peninsula",
+        sceneName: "Snæfellsnes Peninsula",
         address: "Snæfellsnes, 342, Iceland",
         mediaName: "Game of Thrones",
         url: "https://gti.images.tshiftcdn.com/1247071/x/0/snaefellsnes-1.jpg?ixlib=php-3.3.0&w=883ellsnes",
@@ -65,7 +65,7 @@ scenesCollection.insert(
       scenesCollection.insert(
       {
         sceneId: "a92fd88f-6d97-4d52-b5df-2b3f9bdbf34d",
-        sceneName: "Game of Thrones - Þingvellir National Park",
+        sceneName: "Þingvellir National Park",
         address: "Þingvellir, 801 Selfoss, Iceland",
         mediaName: "Game of Thrones",
         url: "https://static.wixstatic.com/media/df9fb8_b38148a17ee440c4a2b7ca178a725eea~mv2.jpg/v1/fill/w_1200,h_675,al_c,q_85,enc_auto/df9fb8_b38148a17ee440c4a2b7ca178a725eea~mv2.jpgthingvellir",
@@ -80,7 +80,7 @@ scenesCollection.insert(
       scenesCollection.insert(
       {
         sceneId: "94eea855-e787-40d4-92a0-afa63f7a0986",
-        sceneName: "Game of Thrones - Grjótagjá Cave",
+        sceneName: "Grjótagjá Cave",
         address: "Grjótagjá, 660 Reykjahlíð, Iceland",
         mediaName: "Game of Thrones",
         url: "https://www.campervaniceland.com/assets/img/blog/494/grjotagja-iceland.jpg",
@@ -94,7 +94,7 @@ scenesCollection.insert(
       scenesCollection.insert(
         {
           sceneId: "e5f96d42-bb78-4c3f-8d2f-d8fa2bcf4871",
-          sceneName: "Game of Thrones - Geysir",
+          sceneName: "Geysir",
           address: "Geysir, 806, Iceland",
           mediaName: "Game of Thrones",
           url: "https://www.icelandtravel.is/_next/image/?url=https%3A%2F%2Fcontent.icelandtravel.is%2Fwp-content%2Fuploads%2F2019%2F08%2FGeysir_winter_eruption.jpg&w=3840&q=75",
@@ -109,7 +109,7 @@ scenesCollection.insert(
     scenesCollection.insert(
         {
         sceneId: "f6b07a83-4b3d-498f-8e41-f2c14eec3d9a",
-        sceneName: "Game of Thrones - Gullfoss Waterfall",
+        sceneName: "Gullfoss Waterfall",
         address: "Gullfoss, 846, Iceland",
         mediaName: "Game of Thrones",
         url: "https://gti.images.tshiftcdn.com/331988/x/0/gullfoss-waterfall-1?ixlib=php-3.3.0&w=883",
@@ -125,7 +125,7 @@ scenesCollection.insert(
       scenesCollection.insert(
       {
         sceneId: "d3f42b96-9e3b-4e69-9374-8f2a3e5f3c51",
-        sceneName: "Interstellar - Svínafellsjökull Glacier",
+        sceneName: "Svínafellsjökull Glacier",
         address: "2429+JGW, 785 Svínafell, Iceland",
         mediaName: "Interstellar",
         url: "https://gti.images.tshiftcdn.com/415702/x/0/svinafellsjokull-2.jpg?ixlib=php-3.3.0&w=883",
@@ -139,7 +139,7 @@ scenesCollection.insert(
       scenesCollection.insert(
         {
           sceneId: "a1f42c3b-3a47-4f7b-8149-cf34e1c8c7d6",
-          sceneName: "The Secret Life of Walter Mitty - Seyðisfjörður",
+          sceneName: "Seyðisfjörður",
           address: "Seyðisfjörður, Iceland",
           mediaName: "The Secret Life of Walter Mitty",
           url: "https://adventures.is/media/226638/seydisfjordur-church-rainbow-street.jpg?anchor=center&mode=crop&width=970&height=645&rnd=132369322190000000&format=webp&quality=80",
@@ -155,7 +155,7 @@ scenesCollection.insert(
         scenesCollection.insert(
         {
           sceneId: "c3e79b56-7fd8-47e3-8413-e2dace2c91d2",
-          sceneName: "The Secret Life of Walter Mitty - Höfn",
+          sceneName: "Höfn",
           address: "Höfn, Hornafjörður, Iceland",
           mediaName: "The Secret Life of Walter Mitty",
           url: "https://www.campervaniceland.com/assets/img/blog/538.png",
@@ -170,7 +170,7 @@ scenesCollection.insert(
         scenesCollection.insert(
         {
           sceneId: "d4e8cb97-1bda-4a6e-9854-a8f3ef2fa648",
-          sceneName: "The Secret Life of Walter Mitty - Fjallsárlón Lake",
+          sceneName: "Fjallsárlón Lake",
           address: "Fjallsárlón, 785, Iceland",
           mediaName: "The Secret Life of Walter Mitty",
           url: "https://q-xx.bstatic.com/xdata/images/hotel/max1024x768/562409958.jpg?k=c3820d8ecb712454de9b0bfad999589f0bfe1733bc7bf2fbae93ac5144ec09fb&o=&s=1024x",
