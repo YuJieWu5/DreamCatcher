@@ -16,7 +16,6 @@ declare const google: any;
 })
 export class TripspageComponent {
   isPrime: boolean = false;
-  isLogin: boolean = false;
   tripList: TripSummary[] = [];
   selectedTrip: Trip | null = null;
   isAutoGenerate: boolean = true;
@@ -43,11 +42,8 @@ export class TripspageComponent {
       next: (res) => {
         this.tripList = res.data;
         this.isPrime = res.auth==='prime';
-        console.log(res.auth);
-        this.isLogin = true;
       },
       error: (error) => {
-        this.isLogin = false;
         console.log('Error loading Trips', error);
       }
     });

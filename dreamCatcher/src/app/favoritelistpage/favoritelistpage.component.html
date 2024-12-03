@@ -1,7 +1,3 @@
-<div *ngIf="!isLogin; else content" class="loading-container">
-    <div><span class="login-text" [routerLink]="['/login']" >Log in</span> to see user information!</div>
-  </div>
-  <ng-template #content>
 <div class="favorite-list-container">
     <!-- Sidebar -->
     <div class="sidebar">
@@ -55,7 +51,6 @@
         </div>
     </div>
     </div>
-  </div>
-  </ng-template>
+</div>
   
   

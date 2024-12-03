@@ -17,7 +17,6 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class FavoritelistpageComponent implements OnInit {
   favoriteLists: FavoriteListSummary[] = [];
   selectedList: FavoriteList | null = null;
-  isLogin: boolean = false;
   isPrime: boolean = false;
 
   constructor(
@@ -35,12 +34,10 @@ export class FavoritelistpageComponent implements OnInit {
     this.favoriteListService.getFavoriteLists().subscribe(
       {
       next: (res) => {
-        this.isLogin = true;
         this.favoriteLists = res.favoriteList;
         this.isPrime = res.auth==='prime';
       },
       error: (error) => {
-        this.isLogin = false;
         console.error('Error loading favorite lists:', error);
       }
     });
