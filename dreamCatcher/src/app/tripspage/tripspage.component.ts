@@ -86,6 +86,7 @@ export class TripspageComponent {
   openCreateListDialog() {
     const dialogRef = this.dialog.open(CreateListDialogComponent, {
       width: '300px',
+      data: { title: 'Add a New Trip' }
     });
 
     dialogRef.afterClosed().subscribe((result: { name: string }) => {

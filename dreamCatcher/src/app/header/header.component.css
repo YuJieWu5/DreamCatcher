@@ -42,9 +42,7 @@
     height: auto;
     margin-left: 20px;
   }
-
-
-  
+ 
   .custom-icon {
     margin-right: 10px;
     font-size: 24px;
@@ -58,5 +56,6 @@
   .custom-list-row {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
     align-items: center;
   }

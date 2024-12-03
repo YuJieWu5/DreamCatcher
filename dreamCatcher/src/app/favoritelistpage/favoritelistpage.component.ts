@@ -91,6 +91,7 @@ export class FavoritelistpageComponent implements OnInit {
   openCreateListDialog() {
     const dialogRef = this.dialog.open(CreateListDialogComponent, {
       width: '300px',
+      data: { title: 'Add a New Favorite List' }
     });
 
     dialogRef.afterClosed().subscribe((result: { name: string; }) => {

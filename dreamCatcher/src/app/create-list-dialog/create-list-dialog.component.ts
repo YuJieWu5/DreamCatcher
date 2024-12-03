@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-create-list-dialog',
@@ -8,8 +8,13 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class CreateListDialogComponent {
   listName: string = '';
+  title: string;
 
-  constructor(public dialogRef: MatDialogRef<CreateListDialogComponent>) {}
+  constructor(public dialogRef: MatDialogRef<CreateListDialogComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
+    this.title = data.title;
+  }
 
   createList() {
     this.dialogRef.close({
