@@ -35,11 +35,15 @@ export class ReviewDialogComponent {
   }
 
   onCommentInput() {
-    // Restricted comment length is 50 
+    // Maxmium comment is 50 characters
     if (this.newReview.comment.length > 50) {
-      this.newReview.comment = this.newReview.comment.substring(0, 50);
+      // Display warning message
+      this.message = "Maximum is 50 characters. Please reduce the length.";
+    } else {
+      // Clear warning message if comment length is less than 50 characters
+      this.message = "";
     }
-    // Call the IsvalidReview to update the state of the submission button
+    // Call isValidReview to update the state of the submit button
     this.isValidReview();
   }
 
@@ -53,13 +57,6 @@ export class ReviewDialogComponent {
       this.proxy$.getReview(sceneId).subscribe(response => {
         if (response['success']) {
           this.reviews = response['data'];
-          // User logged in, open comment dialog
-          // const reviewDialogRef = this.dialog.open(ReviewDialogComponent, {
-          //   width: '800px',
-          //   data: { reviews: this.reviews, sceneData: this.data },
-          //   panelClass: 'custom-dialog-container',
-          //   hasBackdrop: true
-          // });
         } else {
 
         }
@@ -128,7 +125,7 @@ export class ReviewDialogComponent {
         }
       })
     } else {
-      alert("Comments cannot exceed 50 characters");
+      alert("Comments cannot exceed 50 characters.");
     }
   }
 

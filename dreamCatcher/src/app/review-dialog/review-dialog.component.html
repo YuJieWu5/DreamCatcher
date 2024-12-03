@@ -1,8 +1,6 @@
 <div class="review-dialog">
   <h2>Reviews </h2>
-  <div style="    margin-top: -16px;
-    font-size: 22px;
-    padding-bottom: 10px;">
+  <div style="margin-top: -16px; font-size: 22px; padding-bottom: 10px;">
     Average Rating: {{ getAverageRating() | number:'1.0-2' }}🌟
   </div>
   <ul class="review-list">
@@ -15,18 +13,6 @@
       </div>
     </li>
   </ul>
-
-
-  <mat-card-actions>
-    <div class="button-row">
-      <div>
-        <button mat-button (click)="onAddReview()">Add Review</button>
-      </div>
-      <div>
-        <button mat-button (click)="onClose()">Close</button>
-      </div>
-    </div>
-  </mat-card-actions>
 
   <!-- Add comment and rating forms -->
   <div *ngIf="showAddReviewForm" class="add-review-form">
@@ -50,17 +36,23 @@
                 rows="3"
                 style="width: 100%; resize: none;"></textarea>
 
-      <div *ngIf="newReview.comment.length > 50" class="char-limit-warning">
-        Maximum is 50 characters. Please reduce the length.
+      <div *ngIf="message" class="char-limit-warning">
+        {{ message }}
       </div>
     </div>
-
-    <mat-card-actions>
-      <div class="button-row">
-        <button mat-button style="float: right;" (click)="submitReview()" [disabled]="!isValidReview()" >Submit Review</button>
-      </div>
-    </mat-card-actions>
-
-
   </div>
+
+  <mat-card-actions>
+    <div class="button-row">
+      <div *ngIf="!showAddReviewForm">
+        <button mat-button (click)="onAddReview()">Add Review</button>
+      </div>
+      <div *ngIf="showAddReviewForm">
+        <button mat-button style="float: right;" (click)="submitReview()" [disabled]="!isValidReview()">Submit Review</button>
+      </div>
+      <div>
+        <button mat-button (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </mat-card-actions>
 </div>

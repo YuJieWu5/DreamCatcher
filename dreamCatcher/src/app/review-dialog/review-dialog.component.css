@@ -44,7 +44,7 @@
 }
 
 .review-dialog .review-comment {
-  word-wrap: break-word; /* Make sure the text is automatically changed when the text exceeds length */
+  word-wrap: break-word; /* Ensure that text wraps automatically when it exceeds the length */
 }
 
 .review-dialog .button-group {
@@ -84,7 +84,7 @@
 
 .review-dialog .form-group {
   margin-bottom: 10px;
-  max-width: 100%; /* Set up maximum width */
+  max-width: 100%; /* Set the maximum width */
 }
 
 .review-dialog .form-group label {
@@ -100,7 +100,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 1em;
-  box-sizing: border-box; /* The total width containing the interior border and the border */
+  box-sizing: border-box; /* Total width including padding and border */
 }
 
 .review-dialog .submit-button {
@@ -126,4 +126,20 @@
 .average-rating {
   margin-top: 20px;
   font-weight: bold;
+}
+
+
+.review-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Adjust the height as needed */
+}
+
+.review-dialog .review-list {
+  flex: 1; /* Make the comments list take up the remaining space */
+  overflow-y: auto; /* If the comment list is too long, you can scroll */
+}
+
+.button-row {
+  margin-top: auto; /* Push the button to the bottom */
 }
