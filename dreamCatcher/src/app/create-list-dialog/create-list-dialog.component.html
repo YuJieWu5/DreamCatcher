@@ -1,11 +1,11 @@
-<h2 mat-dialog-title>Create New List</h2>
+<h2 mat-dialog-title>Add a New Favorite List</h2>
 <div mat-dialog-content>
-  <mat-form-field appearance="fill">
+  <mat-form-field appearance="fill" class="center-form-field">
     <mat-label>List Name</mat-label>
     <input matInput [(ngModel)]="listName" />
   </mat-form-field>
 </div>
-<div mat-dialog-actions>
+<div mat-dialog-actions="dialog-actions">
   <button mat-button mat-dialog-close>Cancel</button>
   <button mat-button [disabled]="!listName" (click)="createList()">Create</button>
 </div>
