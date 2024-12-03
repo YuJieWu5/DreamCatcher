@@ -239,6 +239,8 @@ export class TripspageComponent {
             this.selectedTrip!.routes[index].distance = route.distance.value;
             this.cdRef.detectChanges();
           } else {
+            this.selectedTrip!.routes[index].timeInSeconds = 0;
+            this.selectedTrip!.routes[index].distance = 0;
             console.error('Directions request failed due to ' + status);
           }
         }
