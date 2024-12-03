@@ -1,41 +1,71 @@
 <mat-toolbar class="custom-toolbar">
-    <ng-container *ngIf="currentRoute === '/'">
-        <div class="search-bar-wrapper">
-            <input
-              type="text"
-              placeholder="Search..."
-              (keydown.enter)="onSearch()"
-              [(ngModel)]="searchQuery"
-              class="search-bar"
-            />
-            <button class="search-button" aria-label="Search" (click)="onSearch()">
-              <mat-icon>search</mat-icon>
-            </button>
-          </div>
-    </ng-container>
-
-    <a [routerLink]="['/']">
-        <ng-container *ngIf="currentRoute !== '/'">
-            <img  class="header-logo" [src]="logoUrl" alt="App Logo" />
-        </ng-container>
-    </a>
-
-    <button mat-icon-button (click)="toggleDrawer()">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </mat-toolbar>
-  
-    <mat-drawer #drawer mode="side" [(opened)]="opened" position="end">
-      <button mat-icon-button (click)="toggleDrawer()" style="margin: 10px;">
-        <mat-icon>close</mat-icon>
+  <ng-container *ngIf="currentRoute === '/'">
+    <div class="search-bar-wrapper">
+      <input type="text" placeholder="Search..." (keydown.enter)="onSearch()" [(ngModel)]="searchQuery"
+        class="search-bar" />
+      <button class="search-button" aria-label="Search" (click)="onSearch()">
+        <mat-icon>search</mat-icon>
       </button>
-      <mat-nav-list>
-        <mat-list-item [routerLink]="['/']" (click)="closeDrawer()">Home</mat-list-item>
-        <mat-list-item [routerLink]="['/user']" (click)="closeDrawer()">User Info</mat-list-item>
-        <mat-list-item [routerLink]="['/favlist']" (click)="closeDrawer()">Favorite List</mat-list-item>
-        <mat-list-item [routerLink]="['/trip']" (click)="closeDrawer()">Trips</mat-list-item>
-        <mat-list-item *ngIf="!isLogIn" [routerLink]="['/login']" (click)="closeDrawer()">Log In</mat-list-item>
-        <mat-list-item *ngIf="isLogIn" (click)="logOut()">Log Out</mat-list-item>
-      </mat-nav-list>
-    </mat-drawer>
-  
+    </div>
+  </ng-container>
+
+  <a [routerLink]="['/']">
+    <ng-container *ngIf="currentRoute !== '/'">
+      <img class="header-logo" [src]="logoUrl" alt="App Logo" />
+    </ng-container>
+  </a>
+
+  <button mat-icon-button (click)="toggleDrawer()">
+    <mat-icon>menu</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-drawer #drawer mode="side" [(opened)]="opened" position="end">
+  <button mat-icon-button (click)="toggleDrawer()" style="margin: 10px;">
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-nav-list>
+
+    <mat-list-item [routerLink]="['/']" (click)="closeDrawer()">
+      <div class="custom-list-row">
+        <mat-icon class="custom-icon">home</mat-icon>
+        <span class="custom-text">Home</span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item [routerLink]="['/user']" (click)="closeDrawer()">
+      <div class="custom-list-row">
+        <mat-icon class="custom-icon">person</mat-icon>
+        <span class="custom-text">User Info</span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item [routerLink]="['/favlist']" (click)="closeDrawer()">
+      <div class="custom-list-row">
+        <mat-icon class="custom-icon">favorite</mat-icon>
+        <span class="custom-text">Favorite List</span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item [routerLink]="['/trip']" (click)="closeDrawer()">
+      <div class="custom-list-row">
+        <mat-icon class="custom-icon">directions_car</mat-icon>
+        <span class="custom-text">Trips</span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="!isLogIn" [routerLink]="['/login']" (click)="closeDrawer()">
+      <div class="custom-list-row">
+        <mat-icon class="custom-icon">login</mat-icon>
+        <span class="custom-text">Log In</span>
+      </div>
+    </mat-list-item>
+
+    <mat-list-item *ngIf="isLogIn" (click)="logOut()">
+      <div class="custom-list-row">
+        <mat-icon class="custom-icon">logout</mat-icon>
+        <span class="custom-text">Log Out</span>
+      </div>
+    </mat-list-item>
+  </mat-nav-list>
+</mat-drawer>
