@@ -1,27 +1,36 @@
 <div class="review-dialog">
-  <h2>Reviews</h2>
-  <ul>
-    <li *ngFor="let review of reviews">
-      <div class="review-item">
-        <strong>{{ review.userName }}</strong>: {{ review.rating }}🌟 <span>{{ review.comment }}</span>
+  <h2>Reviews </h2>
+  <div style="    margin-top: -16px;
+    font-size: 22px;
+    padding-bottom: 10px;">
+    Average Rating: {{ getAverageRating() | number:'1.0-2' }}🌟
+  </div>
+  <ul class="review-list">
+    <li *ngFor="let review of reviews" class="review-item">
+      <div class="review-header">
+        <strong>Anonymous</strong>: <span>{{ review.rating }}🌟</span>
+      </div>
+      <div class="review-comment">
+        <span>{{ review.comment }}</span>
       </div>
     </li>
   </ul>
-  <!-- button group -->
-  <div class="button-group">
-    <button (click)="onAddReview()">Add Review</button>
-    <button style="margin-left: 130px" (click)="onClose()">Close</button> <!-- 关闭按钮 -->
-  </div>
 
 
+  <mat-card-actions>
+    <div class="button-row">
+      <div>
+        <button mat-button (click)="onAddReview()">Add Review</button>
+      </div>
+      <div>
+        <button mat-button (click)="onClose()">Close</button>
+      </div>
+    </div>
+  </mat-card-actions>
 
   <!-- Add comment and rating forms -->
   <div *ngIf="showAddReviewForm" class="add-review-form">
-    <div class="form-group">
-      <label for="comment">Comment:</label>
-      <textarea id="comment" [(ngModel)]="newReview.comment" name="comment" required></textarea>
-    </div>
-    <div class="form-group">
+    <div style="width: 60px;" class="form-group">
       <label for="rating">Rating:</label>
       <select id="rating" [(ngModel)]="newReview.rating" name="rating" required>
         <option value="1">1🌟</option>
@@ -31,6 +40,27 @@
         <option value="5">5🌟</option>
       </select>
     </div>
-    <button (click)="submitReview()">Submit Review</button>
+    <div class="form-group">
+      <label for="comment">Comment:</label>
+      <textarea id="comment"
+                [(ngModel)]="newReview.comment"
+                (input)="onCommentInput()"
+                name="comment"
+                required
+                rows="3"
+                style="width: 100%; resize: none;"></textarea>
+
+      <div *ngIf="newReview.comment.length > 50" class="char-limit-warning">
+        Maximum is 50 characters. Please reduce the length.
+      </div>
+    </div>
+
+    <mat-card-actions>
+      <div class="button-row">
+        <button mat-button style="float: right;" (click)="submitReview()" [disabled]="!isValidReview()" >Submit Review</button>
+      </div>
+    </mat-card-actions>
+
+
   </div>
 </div>
