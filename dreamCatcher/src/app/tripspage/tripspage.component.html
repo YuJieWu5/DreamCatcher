@@ -38,9 +38,9 @@
                     <ng-container *ngFor="let scene of selectedTrip.scenes; let i = index; trackBy: trackByScene">
                         <!-- Scene Item -->
                         <div class="scene-item" cdkDrag>
-                            <div style="display: flex; flex-direction: row;">
+                            <div class="scene-item-row">
                                 <img mat-card-image class="scene-image" [src]="scene.url" alt="{{ scene.sceneName }}">
-                                <p class="scene-name">{{scene.sceneName}}</p>
+                                <div class="scene-name">{{scene.sceneName}}</div>
                                 <mat-icon class="delete-icon" aria-hidden="false" fontIcon="delete"
                                     (click)="deleteScene(scene)"></mat-icon>
                             </div>
@@ -48,26 +48,37 @@
                         <!-- Route Item -->
                         <ng-container *ngIf="i < selectedTrip.scenes.length - 1">
                             <div class="route-item">
-                                <div style="display: flex; flex-direction: row; align-items: center;">
-                                    <mat-form-field>
-                                        <mat-select [(value)]="selectedTrip.routes[i].transportation" (selectionChange)="onTransportationChange(i)">
-                                            <mat-option value="driving">Driving</mat-option>
-                                            <mat-option value="walking">Walking</mat-option>
-                                            <mat-option value="bicycling">Bicycling</mat-option>
-                                            <mat-option value="transit">Public Transit</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                <div class="route-details">
+                                    <div class="transportation-list">
+                                        <select [(ngModel)]="selectedTrip.routes[i].transportation"
+                                            (change)="onTransportationChange(i)" class="custom-dropdown">
+                                            <option value="driving">
+                                                🚗 Driving
+                                            </option>
+                                            <option value="walking">
+                                                🚶 Walking
+                                            </option>
+                                            <option value="bicycling">
+                                                🚴 Bicycling
+                                            </option>
+                                            <option value="transit">
+                                                🚍 Public Transit
+                                            </option>
+                                        </select>
+                                    </div>
                                     <ng-container *ngIf="!isAutoGenerate">
-                                        <mat-form-field>
-                                            <input matInput type="number" [(ngModel)]="selectedTrip.routes[i].timeInSeconds" placeholder="Time (sec)">
-                                        </mat-form-field>
-                                        <mat-form-field>
-                                            <input matInput type="number" [(ngModel)]="selectedTrip.routes[i].distance" placeholder="Distance (m)">
-                                        </mat-form-field>
+                                        <input type="number" [(ngModel)]="selectedTrip.routes[i].timeInSeconds"
+                                            placeholder="Time (sec)" class="custom-input" />
+                                        <input type="number" [(ngModel)]="selectedTrip.routes[i].distance"
+                                            placeholder="Distance (m)" class="custom-input" />
                                     </ng-container>
                                     <ng-container *ngIf="isAutoGenerate">
-                                        <span>{{selectedTrip.routes[i].timeInSeconds / 60 | number:'1.0-0'}} mins</span>
-                                        <span>{{selectedTrip.routes[i].distance / 1000 | number:'1.1-1'}} km</span>
+                                        <span class="route-info">
+                                            {{ selectedTrip.routes[i].timeInSeconds / 60 | number: '1.0-0' }} mins
+                                        </span>
+                                        <span class="route-info">
+                                            {{ selectedTrip.routes[i].distance / 1000 | number: '1.1-1' }} km
+                                        </span>
                                     </ng-container>
                                 </div>
                             </div>
