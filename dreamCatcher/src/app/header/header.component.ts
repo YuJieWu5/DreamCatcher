@@ -48,6 +48,7 @@ export class HeaderComponent {
   logOut(){
     localStorage.clear();
     this.opened = false;
+    this.router.navigate(['/']); 
   }
   
 }
