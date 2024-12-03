@@ -1,7 +1,7 @@
-import {Component, Inject} from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import {DreamCatcherProxyServiceService} from '../dream-catcher-proxy-service.service';
+import { DreamCatcherProxyServiceService } from '../dream-catcher-proxy-service.service';
 
 @Component({
   selector: 'app-review-dialog',
@@ -10,7 +10,7 @@ import {DreamCatcherProxyServiceService} from '../dream-catcher-proxy-service.se
 })
 export class ReviewDialogComponent {
   reviews: any[];
-  sceneData ={
+  sceneData = {
     sceneId: ''
   };
   newReview = {
@@ -34,6 +34,19 @@ export class ReviewDialogComponent {
     this.initializeComponent();
   }
 
+  onCommentInput() {
+    // Maxmium comment is 50 characters
+    if (this.newReview.comment.length > 50) {
+      // Display warning message
+      this.message = "Maximum is 50 characters. Please reduce the length.";
+    } else {
+      // Clear warning message if comment length is less than 50 characters
+      this.message = "";
+    }
+    // Call isValidReview to update the state of the submit button
+    this.isValidReview();
+  }
+
   initializeComponent() {
     // Write the logic you need to execute here
     console.log('Component initialized');
@@ -44,14 +57,7 @@ export class ReviewDialogComponent {
       this.proxy$.getReview(sceneId).subscribe(response => {
         if (response['success']) {
           this.reviews = response['data'];
-          // User logged in, open comment dialog
-          // const reviewDialogRef = this.dialog.open(ReviewDialogComponent, {
-          //   width: '800px',
-          //   data: { reviews: this.reviews, sceneData: this.data },
-          //   panelClass: 'custom-dialog-container',
-          //   hasBackdrop: true
-          // });
-        }else {
+        } else {
 
         }
       });
@@ -59,39 +65,30 @@ export class ReviewDialogComponent {
   }
 
   onAddReview(): void {
-
     const userId = localStorage.getItem('userId');
     if (!userId) {
       this.dialogRef.close();
       // The user is not logged in, jump to the login page
       this.router.navigate(['/login']);
-    }else {
+    } else {
       // Implementing the logic for adding comments
       this.showAddReviewForm = !this.showAddReviewForm;
     }
+  }
 
-
+  getAverageRating(): number {
+    if (this.reviews.length === 0) return 0;
+    const totalRating = this.reviews.reduce((sum, review) => sum + parseInt(review.rating), 0);
+    return totalRating / this.reviews.length;
   }
 
   onClose(): void {
     this.dialogRef.close(null); // Close the dialog box without returning any data
     this.showAddReviewForm = !this.showAddReviewForm;
-    this.dialogRef.close(null); // Close the dialog box without returning any data
-
-    // Close the dialog box after a delay of 1 second
-    setTimeout(() => {
-      this.dialogRef.close(null);
-    }, 1);
-
-    setTimeout(() => {
-      this.dialogRef.close(null);
-    }, 10);
   }
-
 
   submitReview() {
     if (this.isValidReview()) {
-
       let userName: string;
       const storedUserName = localStorage.getItem('userName');
       if (storedUserName) {
@@ -108,26 +105,27 @@ export class ReviewDialogComponent {
         userId = 'defaultUserName';
       }
 
-
-      const data: Record<string, string> ={
+      const data: Record<string, string> = {
         sceneId: this.sceneData.sceneId,
         userId: userId,
         userName: userName,
-        rating : this.newReview.rating,
-        comment : this.newReview.comment
+        rating: this.newReview.rating,
+        comment: this.newReview.comment
       }
 
-      this.proxy$.addReview(data).subscribe((result: Record<string, any>)=>{
+      this.proxy$.addReview(data).subscribe((result: Record<string, any>) => {
         console.log(result);
         const success = result && result['success'] ? result['success'] : "";
-        if(success == true){
+        if (success == true) {
           this.reviews.push(this.newReview); // Add new comment to list
           this.newReview = { userName: '', rating: '', comment: '' }; // Reset Form
           this.showAddReviewForm = false; // Hide Form
-        }else{
-          this.message =result['message'];
+        } else {
+          this.message = result['message'];
         }
       })
+    } else {
+      alert("Comments cannot exceed 50 characters.");
     }
   }
 
@@ -141,6 +139,7 @@ export class ReviewDialogComponent {
     }
     this.newReview.userName = userName;
     return this.newReview.rating.trim() !== '' &&
+      this.newReview.comment.trim().length <= 50 &&
       this.newReview.comment.trim() !== '';
   }
 }

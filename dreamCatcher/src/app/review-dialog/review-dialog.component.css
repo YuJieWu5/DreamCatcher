@@ -1,14 +1,16 @@
 .review-dialog {
-  max-width: 800px; /* adjust the max width of pop window */
+  max-width: 800px; /* Adjust the max width of the pop-up window */
   width: 100%;
-  min-height: 500px; /* adjust the min width of pop window */
+  min-height: 500px; /* Adjust the min height of the pop-up window */
   padding: 30px;
   border-radius: 8px; /* Rounded border */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slight shadow */
   background: white;
   color: #333;
   font-family: 'Arial', sans-serif;
-  overflow-y: auto; /* Allow content to scroll */
+  overflow-y: auto; /* Allow vertical scrolling if needed */
+  position: relative; /* Ensure child elements are positioned relative to this */
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .review-dialog h2 {
@@ -17,26 +19,48 @@
   font-size: 1.5em;
 }
 
-.review-dialog ul {
+.review-dialog .review-list {
   max-height: 400px; /* Set the maximum height of the comment list */
-  overflow-y: auto; /* Allow scrolling of comment list */
+  overflow-y: auto; /* Allow vertical scrolling of comment list */
   margin-bottom: 20px;
+  list-style-type: none; /* Remove bullet points */
+  padding: 0; /* Remove default padding */
 }
 
-.review-dialog li {
+.review-dialog .review-item {
   margin-bottom: 10px;
   padding: 10px;
   background: #f7f7f7;
   border-radius: 4px;
 }
 
-/* Other styles remain unchanged */
-.review-dialog li:last-child {
+.review-dialog .review-item:last-child {
   margin-bottom: 0;
 }
 
-.review-dialog button {
-  background-color: rgb(92, 111, 146); /* grey button */
+.review-dialog .review-header {
+  margin-bottom: 5px; /* Optional: Add some spacing */
+  float: left;
+}
+
+.review-dialog .review-comment {
+  word-wrap: break-word; /* Ensure that text wraps automatically when it exceeds the length */
+}
+
+.review-dialog .button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.button-row {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.review-dialog .action-button {
+  background-color: rgb(92, 111, 146); /* Grey button */
   color: white;
   border: none;
   padding: 10px 20px;
@@ -44,54 +68,78 @@
   cursor: pointer;
   font-size: 1em;
   transition: background-color 0.3s ease;
-  position: absolute; /* Set absolute positioning */
-  bottom: 0; /* 0 distance from the bottom of the container */
-  left: 50%; /* Horizontal Center */
-  transform: translateX(-50%); /* Use transform to adjust the position so that it is completely centered */
 }
 
-.review-dialog button:hover {
+.review-dialog .action-button:hover {
   background-color: #4e506b; /* The button becomes darker when the mouse is hovering */
 }
 
-.custom-dialog-container .mat-dialog-container {
-  padding: 0; /* Remove the default padding */
-  border-radius: 8px; /* Apply rounded corners */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Applying shadows */
+.review-dialog .close-button {
+  background-color: #d9534f; /* Red button for close action */
 }
 
-
-.add-review-form {
+.review-dialog .add-review-form {
   margin-top: 20px;
 }
 
-.form-group {
+.review-dialog .form-group {
   margin-bottom: 10px;
+  max-width: 100%; /* Set the maximum width */
 }
 
-.form-group label {
+.review-dialog .form-group label {
   display: block;
   margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
+.review-dialog .form-group textarea,
+.review-dialog .form-group select {
   width: 100%;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box; /* Total width including padding and border */
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #5cb85c;
+.review-dialog .submit-button {
+  background-color: #5cb85c; /* Green button */
   color: white;
   border: none;
+  padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #4cae4c;
+.review-dialog .submit-button:hover {
+  background-color: #4cae4c; /* The button becomes darker when the mouse is hovering */
+}
+
+.char-limit-warning {
+  color: red;
+  text-align: right;
+}
+
+.average-rating {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+
+.review-dialog {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Adjust the height as needed */
+}
+
+.review-dialog .review-list {
+  flex: 1; /* Make the comments list take up the remaining space */
+  overflow-y: auto; /* If the comment list is too long, you can scroll */
+}
+
+.button-row {
+  margin-top: auto; /* Push the button to the bottom */
 }
