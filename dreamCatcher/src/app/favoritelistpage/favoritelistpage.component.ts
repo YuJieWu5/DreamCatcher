@@ -17,19 +17,14 @@ import { ActivatedRoute, Params } from '@angular/router';
 export class FavoritelistpageComponent implements OnInit {
   favoriteLists: FavoriteListSummary[] = [];
   selectedList: FavoriteList | null = null;
-  userId: string;
   isLogin: boolean = false;
+  isPrime: boolean = false;
 
   constructor(
     private dialog: MatDialog, 
     private favoriteListService: FavoriteListService, 
     private router: Router,
-    private route: ActivatedRoute) {
-    this.userId = localStorage.getItem('userId') ?? ""
-    if (this.userId !== "") {
-      this.isLogin = true;
-    }
-  }
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loadFavoriteLists();
@@ -37,12 +32,15 @@ export class FavoritelistpageComponent implements OnInit {
   }
 
   loadFavoriteLists() {
-    this.favoriteListService.getFavoriteLists(this.userId).subscribe(
+    this.favoriteListService.getFavoriteLists().subscribe(
       {
       next: (res) => {
+        this.isLogin = true;
         this.favoriteLists = res.favoriteList;
+        this.isPrime = res.auth==='prime';
       },
       error: (error) => {
+        this.isLogin = false;
         console.error('Error loading favorite lists:', error);
       }
     });
@@ -52,7 +50,7 @@ export class FavoritelistpageComponent implements OnInit {
     this.route.params.subscribe((params) => {
       const listId = params['id'];
       if (listId) {
-        this.favoriteListService.getFavoriteList(this.userId, listId).subscribe(
+        this.favoriteListService.getFavoriteList(listId).subscribe(
           {
           next: (res) => {
             // console.log(res['data'][0]);
@@ -89,6 +87,7 @@ export class FavoritelistpageComponent implements OnInit {
   }
 
   openCreateListDialog() {
+    if(this.isPrime){
     const dialogRef = this.dialog.open(CreateListDialogComponent, {
       width: '300px',
       data: { title: 'Add a New Favorite List' }
@@ -103,7 +102,7 @@ export class FavoritelistpageComponent implements OnInit {
           alert('List name already exists. Please choose a different name.');
         } else {
           // Create the new list via the API
-          this.favoriteListService.createFavoriteList(this.userId, result.name).subscribe({
+          this.favoriteListService.createFavoriteList(result.name).subscribe({
             next: (res) => {
               if(res['success']){
                 const ls = res['favoriteList'];
@@ -114,15 +113,20 @@ export class FavoritelistpageComponent implements OnInit {
                   scenes: ls.scenes
                 };
                 this.favoriteLists.push(newList);
+                }
+              },
+              error: (error) => {
+                console.error('Error creating favorite list:', error);
               }
-            },
-            error: (error) => {
-              console.error('Error creating favorite list:', error);
-            }
-        });
+          });
+          }
         }
-      }
-    });
+      });
+    }else{
+      alert('You need to upgrade to create more Favorite List!');
+      return;
+    }
+    
   }
 
   openListMenu(event: MouseEvent, list: FavoriteListSummary) {
@@ -134,7 +138,7 @@ export class FavoritelistpageComponent implements OnInit {
     const confirmed = confirm(`Are you sure you want to delete the list "${list.listName}"?`);
     if (confirmed) {
       // Call API to delete the list
-      this.favoriteListService.deleteFavoriteList(this.userId, list.favListId).subscribe({
+      this.favoriteListService.deleteFavoriteList(list.favListId).subscribe({
         next: (res) => {
           // console.log(res);
           // Remove from favoriteLists
@@ -164,7 +168,7 @@ export class FavoritelistpageComponent implements OnInit {
   deleteScene(selectedScene: Scene) {
     const confirmed = confirm(`Are you sure you want to delete the scene "${selectedScene.sceneName}"?`);
     if (confirmed && this.selectedList) {
-      this.favoriteListService.deleteSceneFromFavoriteList(this.userId, selectedScene.sceneId, this.selectedList.favListId).subscribe({
+      this.favoriteListService.deleteSceneFromFavoriteList(selectedScene.sceneId, this.selectedList.favListId).subscribe({
         next: (res) => {
           if (res['success']) {
             const index = this.selectedList!.scenes.findIndex(scene => scene.sceneId === selectedScene.sceneId);

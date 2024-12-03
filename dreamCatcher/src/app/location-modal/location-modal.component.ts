@@ -13,7 +13,7 @@ import { FavoriteListService } from '../../service/favorite-list-service';
   styleUrls: ['./location-modal.component.css']
 })
 export class LocationModalComponent {
-  userId: string;
+  // userId: string;
   isLogin: boolean = false;
 
   constructor(
@@ -25,10 +25,15 @@ export class LocationModalComponent {
     private tripService: TripService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.userId = localStorage.getItem('userId') ?? ""
-    if (this.userId !== "") {
-      this.isLogin = true;
-    }
+    proxy$.getUserInfo().subscribe({
+      next: (res) => {
+        this.isLogin = true;
+      },
+      error: (error) => {
+        this.isLogin = false;
+        console.log('Error loading Trips', error);
+      }
+    });
   }
 
   openReviewDialog() {
@@ -47,8 +52,9 @@ export class LocationModalComponent {
       return;
     }
 
-    this.favoriteService.getFavoriteLists(this.userId).subscribe({
+    this.favoriteService.getFavoriteLists().subscribe({
       next: (res) => {
+        this.isLogin = true;
         const dialogRef = this.dialog.open(SelectListDialogComponent, {
           width: '400px',
           data: { title: 'Select a Favorite List', lists: res.favoriteList.map(item => { return { name: item.listName, id: item.favListId } }) },
@@ -57,7 +63,7 @@ export class LocationModalComponent {
 
         dialogRef.afterClosed().subscribe(selectedListId => {
           if (selectedListId) {
-            this.favoriteService.addSceneToFavoriteList(this.userId, this.data.sceneId, selectedListId).subscribe(() => {
+            this.favoriteService.addSceneToFavoriteList(this.data.sceneId, selectedListId).subscribe(() => {
               alert('Added to favorite successfully!');
             });
           }
@@ -73,7 +79,7 @@ export class LocationModalComponent {
       return;
     }
 
-    this.tripService.getUserTrips(this.userId).subscribe({
+    this.tripService.getUserTrips().subscribe({
       next: (res) => {
         const dialogRef = this.dialog.open(SelectListDialogComponent, {
           width: '400px',

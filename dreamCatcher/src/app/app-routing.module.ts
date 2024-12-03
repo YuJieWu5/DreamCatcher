@@ -6,7 +6,6 @@ import {TripspageComponent} from './tripspage/tripspage.component';
 import {FavoritelistpageComponent} from  './favoritelistpage/favoritelistpage.component';
 import {UserpageComponent} from  './userpage/userpage.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
-import { SignuppageComponent } from './signuppage/signuppage.component';
 
 const routes: Routes = [
   {path: '', component: MainpageComponent},
@@ -15,8 +14,7 @@ const routes: Routes = [
   {path: 'favlist/:id', component: FavoritelistpageComponent},
   {path: 'trip', component: TripspageComponent},
   {path: 'trip/:id', component: TripspageComponent},
-  {path: 'login', component: LoginpageComponent},
-  {path: 'signup', component: SignuppageComponent}
+  {path: 'login', component: LoginpageComponent}
 ];
 
 @NgModule({

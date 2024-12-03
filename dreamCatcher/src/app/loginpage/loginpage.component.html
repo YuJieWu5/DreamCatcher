@@ -7,7 +7,7 @@
             <img src="assets/images/logo2.png" alt="DreamCatcher Text">
         </div>
 
-        <mat-form-field appearance="fill" class="input-field">
+        <!-- <mat-form-field appearance="fill" class="input-field">
             <mat-label>Email</mat-label>
             <input matInput [(ngModel)]="email" name="email" type="text">
         </mat-form-field>
@@ -17,11 +17,11 @@
             <input matInput [(ngModel)]="password" name="password" type="password">
         </mat-form-field>
 
-        <p>{{message}}</p>
+        <p>{{message}}</p> -->
 
-        <button mat-raised-button class="login-button" color="primary" (click)="logIn()">Login</button>
-        <a mat-raised-button class="login-button" href="http://localhost:8080/auth/google" role="button">Google Login</a>
+        <!-- <button mat-raised-button class="login-button" color="primary" (click)="logIn()">Login</button> -->
+        <a mat-raised-button class="login-button" href="/auth/google" role="button">Google Login</a>
 
-        <a mat-button [routerLink]="['/signup']" class="create-account">Create Account</a>
+        <!-- <a mat-button [routerLink]="['/signup']" class="create-account">Create Account</a> -->
     </div>
 </div>

@@ -16,4 +16,5 @@ export interface FavoriteListSummary {
 export interface FavoriteListSummaryResponse {
     success: boolean;
     favoriteList: FavoriteListSummary[];
+    auth: string;
 }

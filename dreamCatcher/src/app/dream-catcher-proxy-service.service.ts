@@ -7,41 +7,29 @@ import { Injectable } from '@angular/core';
 export class DreamCatcherProxyServiceService {
 
   hostUrl:string = 'http://localhost:8080/';
+  // hostUrl:string = 'https://dream-catcher2024.azurewebsites.net/';
 
   constructor( private httpClient: HttpClient) { }
 
   /* API Regarding User*/
-  createAccount(userName: string, phone: number, email: string, password: string){
-    const req = {
-      userId: "",               //will generate userId in backend
-      userName: userName,
-      phone: phone,
-      email: email,
-      password: password,
-      authorization: "general"  //default authorization is general
-    };
-
-    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/user', req);
+  logOut(){
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'logout');
   }
 
-  userLogin(loginData: Record<string, string>){
-    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/user/login', loginData);
+  getUserInfo(){
+    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/user');
   }
 
-  addReview(reviewData: Record<string, string>){
-    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/review', reviewData);
-  }
-
-  getUserInfo(userId: string){
-    return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/user/'+userId);
+  //updateData only accept userName || phone || email, update user by userId
+  updateUserInfo(updateData: Record<string, any>){
+    return this.httpClient.patch<any[]>(this.hostUrl+'app/user/update', updateData);
   }
 
   getReview(sceneId: string){
     return this.httpClient.get<Record<string, any>>(this.hostUrl+'app/review/'+sceneId);
   }
 
-  //updateData only accept userName || phone || email, update user by userId
-  updateUserInfo(updateData: Record<string, any>, userId: string){
-    return this.httpClient.patch<any[]>(this.hostUrl+'app/user/'+userId, updateData);
+  addReview(reviewData: Record<string, string>){
+    return this.httpClient.post<Record<string, any>>(this.hostUrl+'app/review', reviewData);
   }
 }

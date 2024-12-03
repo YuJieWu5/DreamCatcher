@@ -15,7 +15,7 @@ declare const google: any;
   styleUrls: ['./tripspage.component.css']
 })
 export class TripspageComponent {
-  userId: string;
+  isPrime: boolean = false;
   isLogin: boolean = false;
   tripList: TripSummary[] = [];
   selectedTrip: Trip | null = null;
@@ -27,12 +27,7 @@ export class TripspageComponent {
     private router: Router,
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef
-  ) {
-    this.userId = localStorage.getItem('userId') ?? '';
-    if (this.userId !== '') {
-      this.isLogin = true;
-    }
-  }
+  ) {}
 
   ngOnInit(): void {
     loadGoogleMapsScript().then(() => {
@@ -44,11 +39,15 @@ export class TripspageComponent {
   }
 
   loadTrips() {
-    this.tripService.getUserTrips(this.userId).subscribe({
+    this.tripService.getUserTrips().subscribe({
       next: (res) => {
         this.tripList = res.data;
+        this.isPrime = res.auth==='prime';
+        console.log(res.auth);
+        this.isLogin = true;
       },
       error: (error) => {
+        this.isLogin = false;
         console.log('Error loading Trips', error);
       }
     });
@@ -84,30 +83,36 @@ export class TripspageComponent {
   }
 
   openCreateListDialog() {
-    const dialogRef = this.dialog.open(CreateListDialogComponent, {
-      width: '300px',
-      data: { title: 'Add a New Trip' }
-    });
+    if(this.isPrime){
+      const dialogRef = this.dialog.open(CreateListDialogComponent, {
+        width: '300px',
+        data: { title: 'Add a New Trip' }
+      });
 
-    dialogRef.afterClosed().subscribe((result: { name: string }) => {
-      if (result) {
-        const duplicate = this.tripList.some((trip) => trip.tripName === result.name);
-        if (duplicate) {
-          alert('Trip name already exists. Please choose a different name.');
-        } else {
-          this.tripService.createTrip(this.userId, result.name).subscribe({
-            next: (res) => {
-              if (res['success']) {
-                this.loadTrips();
+      dialogRef.afterClosed().subscribe((result: { name: string }) => {
+        if (result) {
+          const duplicate = this.tripList.some((trip) => trip.tripName === result.name);
+          if (duplicate) {
+            alert('Trip name already exists. Please choose a different name.');
+          } else {
+            this.tripService.createTrip(result.name).subscribe({
+              next: (res) => {
+                if (res['success']) {
+                  this.loadTrips();
+                }
+              },
+              error: (error) => {
+                console.error('Error creating favorite list:', error);
               }
-            },
-            error: (error) => {
-              console.error('Error creating favorite list:', error);
-            }
-          });
+            });
+          }
         }
-      }
-    });
+      });
+    }else{
+      alert('You need to upgrade to create more Trip!');
+      return;
+    }
+    
   }
 
   loadTripData() {
