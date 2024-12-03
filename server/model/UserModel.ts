@@ -25,9 +25,8 @@ class UserModel {
             {
                 userId: { type: String, required: true, unique: true },
                 userName: { type: String, required: true },
-                phone: { type: Number, required: true },
+                phone: { type: Number},
                 email: { type: String, required: true },
-                password: { type: String, required: true },
                 authorization: { type: String, required: true },
                 favoriteList: { type: [this.favListSchema], default: [] }
             }, {collection: 'users', strict: false, versionKey: false }
@@ -79,19 +78,6 @@ class UserModel {
         }
         catch (e) {
             console.error(e);
-        }
-    }
-
-    public async userLogIn(response: any, email: string, password: string){
-        try{
-            const result = await this.model.findOne({email: email}).exec();
-            if(result?.password===password){
-                response.status(200).json({message: 'log in successfuly', data : result});
-            }else{
-                response.status(404).json({message: 'Incorrect password or email'});
-            }
-        }catch(e){
-            response.status(500).json({ success: false, message: 'An error occurred', error: e });
         }
     }
 
@@ -150,14 +136,14 @@ class UserModel {
     }
 
     //get all favorite list data
-    public async retrieveFavoriteList(response:any, userId:string) {
+    public async retrieveFavoriteList(response:any, userId:string, authorization: string) {
         console.log("Model reveived userId:"+ userId);
         try {
             const result = await this.model.findOne({ userId: userId }).lean().exec();
 
             console.log(result?.favoriteList);
             //return scenes or an empty array if no result is found
-            response.status(200).json({success: true, favoriteList: result?.favoriteList || []});
+            response.status(200).json({success: true, favoriteList: result?.favoriteList || [],  auth: authorization});
         } catch (e) {
             console.error(e);
             response.status(500).json({ success: false, message: 'An error occurred', error: e });

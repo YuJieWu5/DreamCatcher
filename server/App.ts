@@ -5,11 +5,28 @@ import { UserModel } from './model/UserModel';
 import { TripModel } from './model/TripModel';
 import { ReviewModel } from './model/ReviewModel';
 import * as crypto from 'crypto';
-// import * as cors from 'cors';
-// import * as passport from 'passport';
-// import GooglePassport from './GooglePassport';
-// import * as session from 'express-session';
-// import * as cookieParser from 'cookie-parser';
+import * as passport from 'passport';
+import GooglePassport from './GooglePassport';
+import * as session from 'express-session';
+import * as cookieParser from 'cookie-parser';
+
+declare global {
+  namespace Express {
+    interface User {
+      userId: string;
+      userName: string;
+      email: string;
+      authorization: string;
+      // Add any other fields your user object contains
+    }
+
+    interface Request {
+      user?: User; // Include user from Passport
+      logout(callback: (err: unknown) => void): void; // Add logout method
+      // Add session if needed in the future
+    }
+  }
+}
 
 // Creates and configures an ExpressJS web server.
 class App {
@@ -20,12 +37,10 @@ class App {
   public Users: UserModel;
   public Trips: TripModel;
   public Reviews: ReviewModel;
-  // public googlePassportObj:GooglePassport;
+  public googlePassportObj:GooglePassport;
 
   //Run configuration methods on the Express instance.
   constructor(mongoDBConnection: string) {
-    // this.googlePassportObj = new GooglePassport();
-
     this.expressApp = express();
     this.middleware();
     this.routes();
@@ -33,17 +48,13 @@ class App {
     this.Users = new UserModel(mongoDBConnection);
     this.Trips = new TripModel(mongoDBConnection);
     this.Reviews = new ReviewModel(mongoDBConnection);
+    this.googlePassportObj = new GooglePassport(this.Users, this.Trips);
   }
 
   // Configure Express middleware.
   private middleware(): void {
     this.expressApp.use(bodyParser.json());
     this.expressApp.use(bodyParser.urlencoded({ extended: false }));
-    // Add CORS middleware here
-    // this.expressApp.use(cors({
-    //   origin: 'http://localhost:4200', // Allow requests from client-side
-    //   credentials: true               // Allow cookies and authentication headers
-    // }));
 
     this.expressApp.use((req, res, next) => {
       res.header("Access-Control-Allow-Origin", "*");
@@ -51,38 +62,54 @@ class App {
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
-    // this.expressApp.use(session({ secret: 'keyboard cat' }));
-    // this.expressApp.use(cookieParser());
-    // this.expressApp.use(passport.initialize());
-    // this.expressApp.use(passport.session());
+    this.expressApp.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false, cookie: {secure: false}}));
+    this.expressApp.use(cookieParser());
+    this.expressApp.use(passport.initialize());
+    this.expressApp.use(passport.session());
   }
 
-  // private validateAuth(req, res, next):void {
-  //   if (req.isAuthenticated()) {
-  //     console.log("user is authenticated");
-  //     console.log(JSON.stringify(req.user));
-  //     return next(); }
-  //   console.log("user is not authenticated");
-  //   res.redirect('/');
-  // }
+  private validateAuth(req, res, next):void {
+    if (req.isAuthenticated()) {
+      console.log("user is authenticated");
+      console.log('validateAuth: '+JSON.stringify(req.user.id));
+      return next(); 
+    }
+    console.log("user is not authenticated");
+    res.redirect('/');
+  }
 
   // Configure API endpoints.
   private routes(): void {
     let router = express.Router();
 
-    // router.get('/auth/google',
-    // passport.authenticate('google', {scope: ['profile']}));
+    router.get('/auth/google',
+    passport.authenticate('google', {scope: ['profile', 'email']}));
 
-    // router.get('/auth/google/callback',
-    //   passport.authenticate('google',
-    //     { failureRedirect: '/' }
-    //   ),
-    //   (req, res) => {
-    //     console.log("successfully authenticated user and returned to callback page.");
-    //     console.log("redirecting to /#/user");
-    //     res.redirect('http://localhost:4200/#/user');
-    //   }
-    // );
+    router.get('/auth/google/callback',
+      passport.authenticate('google',
+        { failureRedirect: '/' }
+      ),
+      (req, res) => {
+        console.log("successfully authenticated user and returned to callback page.");
+        console.log("redirecting to /#/user");
+        res.redirect('/#/user');
+      }
+    );
+
+    // Logout route
+    router.get('/logout', this.validateAuth, (req, res) => {
+      req.logout((err) => {
+        if (err) {
+          console.error('Error during logout:', err);
+          return res.status(500).json({ success: false, message: 'Logout failed', error: err });
+        }
+        res.clearCookie('connect.sid'); // Replace with your session cookie name
+        console.log('User logged out successfully');
+        res.status(200).json({ success: true, message: 'Logged out successfully' });
+      });
+    });
+
+
 
     //get scene by sceneId
     router.get('/app/scene/:sceneId', async (req, res) => {
@@ -144,6 +171,7 @@ class App {
       console.log("passed in scenes: " + sceneIds);
       await this.Scenes.getSceneBysceneIds(res, sceneIds);
     });
+    
     // add review to scene
     router.post('/app/review', async (req, res) => {
       const reviewData = req.body;
@@ -158,43 +186,20 @@ class App {
       await this.Reviews.retrieveReviewsBySceneId(res, sceneId);
     });
 
-
-
-    /*endpoint for user*/
-
-    //create a new user
-    router.post('/app/user/', async (req, res) => {
-      const id = crypto.randomBytes(16).toString("hex");
-      var jsonObj = req.body;
-      jsonObj.userId = id;
-      console.log(req.body);
-      try {
-        await this.Users.model.create([jsonObj]);
-        res.status(200).json({ message: 'user creation success', id: id });
-      }
-      catch (e) {
-        console.error(e);
-        console.log('object creation failed');
-        res.status(404).json({ message: 'user creation failed' });
-      }
-    });
-
-    router.post('/app/user/login', async (req, res) => {
-      const email = req.body.email;
-      const password = req.body.password;
-      try {
-        await this.Users.userLogIn(res, email, password);
-      } catch (e) {
-        console.log('log in failed')
-        console.log(e);
-      }
-    });
-
     //get user info by userId
-    router.get('/app/user/:userId', async (req, res) => {
-      var id = req.params.userId;
-      console.log('Query single user with id: ' + id);
-      await this.Users.retrieveUser(res, id);
+    router.get('/app/user', this.validateAuth, async (req, res) => {
+      try {
+          // Retrieve the userId from the session (req.user)
+          console.log('user authorization: '+ req.user.authorization);
+          const userId = req.user.userId; // Assuming `userId` is part of the user object in req.user
+          console.log('Querying single user with id: ' + userId);
+  
+          // Fetch user info from the database
+          await this.Users.retrieveUser(res, userId);
+      } catch (error) {
+          console.error("Error fetching user info:", error);
+          res.status(500).json({ success: false, message: "An error occurred", error });
+      }
     });
 
     //get user count
@@ -204,8 +209,10 @@ class App {
     });
 
     //update user(phone || email || name) by userId
-    router.patch('/app/user/:userId', async (req, res) => {
-      const userId = req.params.userId;
+    router.patch('/app/user/update', this.validateAuth, async (req, res) => {
+      // const userId = req.params.userId;
+      const userId = req.user.userId;
+      console.log('update by userId: ' + userId);
       const updateData = req.body; // e.g., { userName, phone, email })
       try {
         await this.Users.updateUserById(res, userId, updateData);
@@ -215,24 +222,25 @@ class App {
     });
 
     //get user all favorite list
-    router.get('/app/user/:userId/favoritelist', async (req, res) => {
-      var id = req.params.userId;
-      console.log('Query single user with id: ' + id);
-      await this.Users.retrieveFavoriteList(res, id);
+    router.get('/app/user/favoritelist', this.validateAuth, async (req, res) => {
+      const userId = req.user.userId;
+      const authorization = req.user.authorization;
+      console.log('update by userId: ' + userId);
+      await this.Users.retrieveFavoriteList(res, userId, authorization);
     });
 
     //get user's one favorite list by favListId & userId
-    router.get('/app/user/:userId/favoritelist/:favListId', async (req, res) => {
-      var id = req.params.userId;
+    router.get('/app/user/favoritelist/:favListId', this.validateAuth, async (req, res) => {
+      const id = req.user.userId;
       var listId = req.params.favListId;
       console.log('Query single user with id: ' + id + " and listId:" + listId);
       await this.Users.retrieveFavoriteListByListId(res, id, listId);
     });
 
     //add scene to user favorite list
-    router.patch('/app/user/:userId/addscene', async (req, res) => {
+    router.patch('/app/user/addscene', this.validateAuth, async (req, res) => {
       try {
-        const userId = req.params.userId;
+        const userId = req.user.userId;
         const { listId } = req.body;
         const { sceneId } = req.body;
         await this.Users.addSceneToFavorites(res, userId, listId, sceneId);
@@ -244,9 +252,10 @@ class App {
     });
 
     //delete scene to user favorite list
-    router.delete('/app/user/:userId/list/:listId/deletescene/:sceneId', async (req, res) => {
+    router.delete('/app/user/list/:listId/deletescene/:sceneId', this.validateAuth, async (req, res) => {
       try {
-        const { userId, listId, sceneId } = req.params;
+        const userId = req.user.userId;
+        const { listId, sceneId } = req.params;
         await this.Users.deleteSceneFromFavoriteList(res, userId, listId, sceneId);
       }
       catch (e) {
@@ -256,10 +265,10 @@ class App {
     });
 
     //create favorite list
-    router.post('/app/user/addList', async (req, res) => {
+    router.post('/app/user/addList', this.validateAuth, async (req, res) => {
       try {
-        const { userId, listName } = req.body;
-        // console.log(userId+" , ", listName);
+        const userId = req.user.userId;
+        const { listName } = req.body;
         await this.Users.createFavoriteList(res, userId, listName);
       } catch (e) {
         console.log(e);
@@ -268,9 +277,10 @@ class App {
     });
 
     //delete favorite list
-    router.delete('/app/user/:userId/deleteList/:listId', async (req, res) => {
+    router.delete('/app/user/deleteList/:listId', this.validateAuth, async (req, res) => {
       try {
-        const { userId, listId } = req.params;
+        const userId = req.user.userId;
+        const { listId } = req.params;
         console.log(userId + " , " + listId);
         await this.Users.deleteFavoriteList(res, userId, listId);
       }
@@ -281,12 +291,15 @@ class App {
     });
 
     /*API for Trips*/
-    //create new scene
-    router.post('/app/trip/', async (req, res) => {
+
+    //create new trip
+    router.post('/app/trip', this.validateAuth, async (req, res) => {
+      const userId = req.user.userId;
       const id = crypto.randomBytes(16).toString("hex");
-      console.log(req.body);
       var jsonObj = req.body;
       jsonObj.tripId = id;
+      jsonObj.userId = userId;
+      console.log(req.body);
       try {
         await this.Trips.model.create([jsonObj]);
         res.status(200).json({success: true, message: 'trip creation success', id: id});
@@ -299,10 +312,11 @@ class App {
     });
 
     //get all trip by userId
-    router.get('/app/user/:userId/trip', async (req, res) => {
-      const userId = req.params.userId;
+    router.get('/app/user/trip', this.validateAuth, async (req, res) => {
+      const userId = req.user.userId;
+      const authorization = req.user.authorization;
       console.log('query trips by userId: ' + userId);
-      await this.Trips.retrieveTrips(res, userId);
+      await this.Trips.retrieveTrips(res, userId, authorization);
     });
 
     //get trip by tripId
@@ -365,7 +379,7 @@ class App {
 
     // this.expressApp.use('/app/json/', express.static(__dirname+'/app/json'));
     // this.expressApp.use('/images', express.static(__dirname+'/img'));
-    this.expressApp.use('/', express.static(__dirname + '/pages'));
+    this.expressApp.use('/', express.static(__dirname + '/dist'));
 
   }
 

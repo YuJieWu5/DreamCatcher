@@ -75,22 +75,13 @@ var ReviewModel = /** @class */ (function () {
     };
     ReviewModel.prototype.addReviews = function (response, reviewData) {
         return __awaiter(this, void 0, void 0, function () {
-            var wordLimit, words, newReview, savedReview, e_2;
+            var newReview, savedReview, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         if (!this.model) {
                             throw new Error("Review model not initialized");
-                        }
-                        wordLimit = 50;
-                        words = reviewData.comment.trim().split(/\s+/);
-                        if (words.length > wordLimit) {
-                            response.status(400).json({
-                                success: false,
-                                message: "Comment cannot exceed ".concat(wordLimit, " words. You entered ").concat(words.length, " words.")
-                            });
-                            return [2 /*return*/];
                         }
                         newReview = new this.model(reviewData);
                         return [4 /*yield*/, newReview.save()];

@@ -44,17 +44,14 @@ var UserModel_1 = require("./model/UserModel");
 var TripModel_1 = require("./model/TripModel");
 var ReviewModel_1 = require("./model/ReviewModel");
 var crypto = require("crypto");
-// import * as cors from 'cors';
-// import * as passport from 'passport';
-// import GooglePassport from './GooglePassport';
-// import * as session from 'express-session';
-// import * as cookieParser from 'cookie-parser';
+var passport = require("passport");
+var GooglePassport_1 = require("./GooglePassport");
+var session = require("express-session");
+var cookieParser = require("cookie-parser");
 // Creates and configures an ExpressJS web server.
 var App = /** @class */ (function () {
-    // public googlePassportObj:GooglePassport;
     //Run configuration methods on the Express instance.
     function App(mongoDBConnection) {
-        // this.googlePassportObj = new GooglePassport();
         this.expressApp = express();
         this.middleware();
         this.routes();
@@ -62,51 +59,54 @@ var App = /** @class */ (function () {
         this.Users = new UserModel_1.UserModel(mongoDBConnection);
         this.Trips = new TripModel_1.TripModel(mongoDBConnection);
         this.Reviews = new ReviewModel_1.ReviewModel(mongoDBConnection);
+        this.googlePassportObj = new GooglePassport_1.default(this.Users, this.Trips);
     }
     // Configure Express middleware.
     App.prototype.middleware = function () {
         this.expressApp.use(bodyParser.json());
         this.expressApp.use(bodyParser.urlencoded({ extended: false }));
-        // Add CORS middleware here
-        // this.expressApp.use(cors({
-        //   origin: 'http://localhost:4200', // Allow requests from client-side
-        //   credentials: true               // Allow cookies and authentication headers
-        // }));
         this.expressApp.use(function (req, res, next) {
             res.header("Access-Control-Allow-Origin", "*");
             res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS');
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             next();
         });
-        // this.expressApp.use(session({ secret: 'keyboard cat' }));
-        // this.expressApp.use(cookieParser());
-        // this.expressApp.use(passport.initialize());
-        // this.expressApp.use(passport.session());
+        this.expressApp.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false, cookie: { secure: false } }));
+        this.expressApp.use(cookieParser());
+        this.expressApp.use(passport.initialize());
+        this.expressApp.use(passport.session());
     };
-    // private validateAuth(req, res, next):void {
-    //   if (req.isAuthenticated()) {
-    //     console.log("user is authenticated");
-    //     console.log(JSON.stringify(req.user));
-    //     return next(); }
-    //   console.log("user is not authenticated");
-    //   res.redirect('/');
-    // }
+    App.prototype.validateAuth = function (req, res, next) {
+        if (req.isAuthenticated()) {
+            console.log("user is authenticated");
+            console.log('validateAuth: ' + JSON.stringify(req.user.id));
+            return next();
+        }
+        console.log("user is not authenticated");
+        res.redirect('/');
+    };
     // Configure API endpoints.
     App.prototype.routes = function () {
         var _this = this;
         var router = express.Router();
-        // router.get('/auth/google',
-        // passport.authenticate('google', {scope: ['profile']}));
-        // router.get('/auth/google/callback',
-        //   passport.authenticate('google',
-        //     { failureRedirect: '/' }
-        //   ),
-        //   (req, res) => {
-        //     console.log("successfully authenticated user and returned to callback page.");
-        //     console.log("redirecting to /#/user");
-        //     res.redirect('http://localhost:4200/#/user');
-        //   }
-        // );
+        router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+        router.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }), function (req, res) {
+            console.log("successfully authenticated user and returned to callback page.");
+            console.log("redirecting to /#/user");
+            res.redirect('/#/user');
+        });
+        // Logout route
+        router.get('/logout', this.validateAuth, function (req, res) {
+            req.logout(function (err) {
+                if (err) {
+                    console.error('Error during logout:', err);
+                    return res.status(500).json({ success: false, message: 'Logout failed', error: err });
+                }
+                res.clearCookie('connect.sid'); // Replace with your session cookie name
+                console.log('User logged out successfully');
+                res.status(200).json({ success: true, message: 'Logged out successfully' });
+            });
+        });
         //get scene by sceneId
         router.get('/app/scene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id;
@@ -259,70 +259,29 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
-        /*endpoint for user*/
-        //create a new user
-        router.post('/app/user/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var id, jsonObj, e_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        id = crypto.randomBytes(16).toString("hex");
-                        jsonObj = req.body;
-                        jsonObj.userId = id;
-                        console.log(req.body);
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.Users.model.create([jsonObj])];
-                    case 2:
-                        _a.sent();
-                        res.status(200).json({ message: 'user creation success', id: id });
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_3 = _a.sent();
-                        console.error(e_3);
-                        console.log('object creation failed');
-                        res.status(404).json({ message: 'user creation failed' });
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        }); });
-        router.post('/app/user/login', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var email, password, e_4;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        email = req.body.email;
-                        password = req.body.password;
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.Users.userLogIn(res, email, password)];
-                    case 2:
-                        _a.sent();
-                        return [3 /*break*/, 4];
-                    case 3:
-                        e_4 = _a.sent();
-                        console.log('log in failed');
-                        console.log(e_4);
-                        return [3 /*break*/, 4];
-                    case 4: return [2 /*return*/];
-                }
-            });
-        }); });
         //get user info by userId
-        router.get('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var id;
+        router.get('/app/user', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = req.params.userId;
-                        console.log('Query single user with id: ' + id);
-                        return [4 /*yield*/, this.Users.retrieveUser(res, id)];
+                        _a.trys.push([0, 2, , 3]);
+                        // Retrieve the userId from the session (req.user)
+                        console.log('user authorization: ' + req.user.authorization);
+                        userId = req.user.userId;
+                        console.log('Querying single user with id: ' + userId);
+                        // Fetch user info from the database
+                        return [4 /*yield*/, this.Users.retrieveUser(res, userId)];
                     case 1:
+                        // Fetch user info from the database
                         _a.sent();
-                        return [2 /*return*/];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error("Error fetching user info:", error_1);
+                        res.status(500).json({ success: false, message: "An error occurred", error: error_1 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         }); });
@@ -340,12 +299,13 @@ var App = /** @class */ (function () {
             });
         }); });
         //update user(phone || email || name) by userId
-        router.patch('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, updateData, e_5;
+        router.patch('/app/user/update', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, updateData, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        userId = req.params.userId;
+                        userId = req.user.userId;
+                        console.log('update by userId: ' + userId);
                         updateData = req.body;
                         _a.label = 1;
                     case 1:
@@ -355,22 +315,23 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        e_5 = _a.sent();
-                        console.error(e_5);
+                        e_3 = _a.sent();
+                        console.error(e_3);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
             });
         }); });
         //get user all favorite list
-        router.get('/app/user/:userId/favoritelist', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var id;
+        router.get('/app/user/favoritelist', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, authorization;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = req.params.userId;
-                        console.log('Query single user with id: ' + id);
-                        return [4 /*yield*/, this.Users.retrieveFavoriteList(res, id)];
+                        userId = req.user.userId;
+                        authorization = req.user.authorization;
+                        console.log('update by userId: ' + userId);
+                        return [4 /*yield*/, this.Users.retrieveFavoriteList(res, userId, authorization)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -378,12 +339,12 @@ var App = /** @class */ (function () {
             });
         }); });
         //get user's one favorite list by favListId & userId
-        router.get('/app/user/:userId/favoritelist/:favListId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.get('/app/user/favoritelist/:favListId', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id, listId;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        id = req.params.userId;
+                        id = req.user.userId;
                         listId = req.params.favListId;
                         console.log('Query single user with id: ' + id + " and listId:" + listId);
                         return [4 /*yield*/, this.Users.retrieveFavoriteListByListId(res, id, listId)];
@@ -394,13 +355,13 @@ var App = /** @class */ (function () {
             });
         }); });
         //add scene to user favorite list
-        router.patch('/app/user/:userId/addscene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listId, sceneId, e_6;
+        router.patch('/app/user/addscene', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, listId, sceneId, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        userId = req.params.userId;
+                        userId = req.user.userId;
                         listId = req.body.listId;
                         sceneId = req.body.sceneId;
                         return [4 /*yield*/, this.Users.addSceneToFavorites(res, userId, listId, sceneId)];
@@ -408,8 +369,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_6 = _a.sent();
-                        console.error(e_6);
+                        e_4 = _a.sent();
+                        console.error(e_4);
                         console.log('add scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -417,20 +378,21 @@ var App = /** @class */ (function () {
             });
         }); });
         //delete scene to user favorite list
-        router.delete('/app/user/:userId/list/:listId/deletescene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, userId, listId, sceneId, e_7;
+        router.delete('/app/user/list/:listId/deletescene/:sceneId', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, _a, listId, sceneId, e_5;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
-                        _a = req.params, userId = _a.userId, listId = _a.listId, sceneId = _a.sceneId;
+                        userId = req.user.userId;
+                        _a = req.params, listId = _a.listId, sceneId = _a.sceneId;
                         return [4 /*yield*/, this.Users.deleteSceneFromFavoriteList(res, userId, listId, sceneId)];
                     case 1:
                         _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_7 = _b.sent();
-                        console.error(e_7);
+                        e_5 = _b.sent();
+                        console.error(e_5);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -438,22 +400,21 @@ var App = /** @class */ (function () {
             });
         }); });
         //create favorite list
-        router.post('/app/user/addList', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, userId, listName, e_8;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+        router.post('/app/user/addList', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, listName, e_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
-                        _a = req.body, userId = _a.userId, listName = _a.listName;
-                        // console.log(userId+" , ", listName);
+                        _a.trys.push([0, 2, , 3]);
+                        userId = req.user.userId;
+                        listName = req.body.listName;
                         return [4 /*yield*/, this.Users.createFavoriteList(res, userId, listName)];
                     case 1:
-                        // console.log(userId+" , ", listName);
-                        _b.sent();
+                        _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_8 = _b.sent();
-                        console.log(e_8);
+                        e_6 = _a.sent();
+                        console.log(e_6);
                         console.log('create favorite failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -461,21 +422,22 @@ var App = /** @class */ (function () {
             });
         }); });
         //delete favorite list
-        router.delete('/app/user/:userId/deleteList/:listId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, userId, listId, e_9;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+        router.delete('/app/user/deleteList/:listId', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, listId, e_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
-                        _a = req.params, userId = _a.userId, listId = _a.listId;
+                        _a.trys.push([0, 2, , 3]);
+                        userId = req.user.userId;
+                        listId = req.params.listId;
                         console.log(userId + " , " + listId);
                         return [4 /*yield*/, this.Users.deleteFavoriteList(res, userId, listId)];
                     case 1:
-                        _b.sent();
+                        _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_9 = _b.sent();
-                        console.error(e_9);
+                        e_7 = _a.sent();
+                        console.error(e_7);
                         console.log('delete favorite list failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -483,16 +445,18 @@ var App = /** @class */ (function () {
             });
         }); });
         /*API for Trips*/
-        //create new scene
-        router.post('/app/trip/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var id, jsonObj, e_10;
+        //create new trip
+        router.post('/app/trip', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, id, jsonObj, e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        userId = req.user.userId;
                         id = crypto.randomBytes(16).toString("hex");
-                        console.log(req.body);
                         jsonObj = req.body;
                         jsonObj.tripId = id;
+                        jsonObj.userId = userId;
+                        console.log(req.body);
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
@@ -502,8 +466,8 @@ var App = /** @class */ (function () {
                         res.status(200).json({ success: true, message: 'trip creation success', id: id });
                         return [3 /*break*/, 4];
                     case 3:
-                        e_10 = _a.sent();
-                        console.error(e_10);
+                        e_8 = _a.sent();
+                        console.error(e_8);
                         console.log('trip creation failed');
                         res.status(404).json({ success: false, message: 'trip creation failed' });
                         return [3 /*break*/, 4];
@@ -512,14 +476,15 @@ var App = /** @class */ (function () {
             });
         }); });
         //get all trip by userId
-        router.get('/app/user/:userId/trip', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId;
+        router.get('/app/user/trip', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, authorization;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        userId = req.params.userId;
+                        userId = req.user.userId;
+                        authorization = req.user.authorization;
                         console.log('query trips by userId: ' + userId);
-                        return [4 /*yield*/, this.Trips.retrieveTrips(res, userId)];
+                        return [4 /*yield*/, this.Trips.retrieveTrips(res, userId, authorization)];
                     case 1:
                         _a.sent();
                         return [2 /*return*/];
@@ -542,7 +507,7 @@ var App = /** @class */ (function () {
         }); });
         //update trip name
         router.patch('/app/trip/:tripId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var tripId, updateData, e_11;
+            var tripId, updateData, e_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -556,8 +521,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        e_11 = _a.sent();
-                        console.error(e_11);
+                        e_9 = _a.sent();
+                        console.error(e_9);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -565,7 +530,7 @@ var App = /** @class */ (function () {
         }); });
         //delete trip
         router.delete('/app/trip/:tripId/delete', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var tripId, e_12;
+            var tripId, e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -576,8 +541,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_12 = _a.sent();
-                        console.error(e_12);
+                        e_10 = _a.sent();
+                        console.error(e_10);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -586,7 +551,7 @@ var App = /** @class */ (function () {
         }); });
         //add scene to trip
         router.patch('/app/trip/:tripId/addscene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var tripId, sceneId, e_13;
+            var tripId, sceneId, e_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -598,8 +563,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_13 = _a.sent();
-                        console.error(e_13);
+                        e_11 = _a.sent();
+                        console.error(e_11);
                         console.log('add scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -608,7 +573,7 @@ var App = /** @class */ (function () {
         }); });
         //delete scene from trip
         router.delete('/app/trip/:tripId/deletescene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, tripId, sceneId, e_14;
+            var _a, tripId, sceneId, e_12;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -619,8 +584,8 @@ var App = /** @class */ (function () {
                         _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_14 = _b.sent();
-                        console.error(e_14);
+                        e_12 = _b.sent();
+                        console.error(e_12);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -630,7 +595,7 @@ var App = /** @class */ (function () {
         this.expressApp.use('/', router);
         // this.expressApp.use('/app/json/', express.static(__dirname+'/app/json'));
         // this.expressApp.use('/images', express.static(__dirname+'/img'));
-        this.expressApp.use('/', express.static(__dirname + '/pages'));
+        this.expressApp.use('/', express.static(__dirname + '/dist'));
     };
     return App;
 }());

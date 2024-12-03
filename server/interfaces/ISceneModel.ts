@@ -10,6 +10,5 @@ interface ISceneModel extends Mongoose.Document {
     lng:number;
     type: string;
     description: string;
-    review: string[];
 }
 export {ISceneModel};
