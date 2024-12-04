@@ -9,14 +9,15 @@ import { GetTripListResponse, GetTripResponse, TripRoute } from '../model/Trip';
 })
 export class TripService {
   private baseUrl = 'http://localhost:8080'; 
+  // private baseUrl =  'https://dream-catcher2024.azurewebsites.net';
 
   constructor(private http: HttpClient) {}
 
   /* Create new Trip */
-  createTrip(userId: string, tripName: string){
+  createTrip(tripName: string){
     const url = `${this.baseUrl}/app/trip/`;
     const data = {
-        userId: userId,
+        userId: '',
         tripId: '',
         tripName: tripName,
         scenes: [],
@@ -31,9 +32,9 @@ export class TripService {
     return this.http.delete<Record<string, any>>(url);
   }
 
-  /* Get trips by userId */
-  getUserTrips(userId: string): Observable<GetTripListResponse>{
-    const url = `${this.baseUrl}/app/user/${userId}/trip`
+  /* Get trips */
+  getUserTrips(): Observable<GetTripListResponse>{
+    const url = `${this.baseUrl}/app/user/trip`
     return this.http.get<GetTripListResponse>(url);
   }
 

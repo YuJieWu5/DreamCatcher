@@ -62,7 +62,7 @@ var ReviewModel = /** @class */ (function () {
                         return [4 /*yield*/, Mongoose.connect(this.dbConnectionString)];
                     case 1:
                         _a.sent();
-                        this.model = Mongoose.models.Reviews || Mongoose.model("Reviews", this.schema);
+                        this.model = Mongoose.model("Reviews", this.schema);
                         return [3 /*break*/, 3];
                     case 2:
                         e_1 = _a.sent();
@@ -73,44 +73,9 @@ var ReviewModel = /** @class */ (function () {
             });
         });
     };
-    ReviewModel.prototype.addReviews = function (response, reviewData) {
-        return __awaiter(this, void 0, void 0, function () {
-            var wordLimit, words, newReview, savedReview, e_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        if (!this.model) {
-                            throw new Error("Review model not initialized");
-                        }
-                        wordLimit = 50;
-                        words = reviewData.comment.trim().split(/\s+/);
-                        if (words.length > wordLimit) {
-                            response.status(400).json({
-                                success: false,
-                                message: "Comment cannot exceed ".concat(wordLimit, " words. You entered ").concat(words.length, " words.")
-                            });
-                            return [2 /*return*/];
-                        }
-                        newReview = new this.model(reviewData);
-                        return [4 /*yield*/, newReview.save()];
-                    case 1:
-                        savedReview = _a.sent();
-                        response.status(201).json({ success: true, data: savedReview });
-                        return [3 /*break*/, 3];
-                    case 2:
-                        e_2 = _a.sent();
-                        console.error("Error adding review:", e_2);
-                        response.status(500).json({ success: false, message: "Failed to add review", error: e_2 });
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
     ReviewModel.prototype.retrieveReviewsBySceneId = function (response, sceneId) {
         return __awaiter(this, void 0, void 0, function () {
-            var reviews, e_3;
+            var reviews, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -126,9 +91,9 @@ var ReviewModel = /** @class */ (function () {
                         }
                         return [3 /*break*/, 3];
                     case 2:
-                        e_3 = _a.sent();
-                        console.error("Error retrieving reviews:", e_3);
-                        response.status(500).json({ success: false, message: "Failed to retrieve reviews", error: e_3 });
+                        e_2 = _a.sent();
+                        console.error("Error retrieving reviews:", e_2);
+                        response.status(500).json({ success: false, message: "Failed to retrieve reviews", error: e_2 });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

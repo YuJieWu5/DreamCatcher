@@ -10,6 +10,7 @@ export class SearchService {
   private searchSubject = new Subject<string>();
   searchObservable$ = this.searchSubject.asObservable();
   private baseUrl = 'http://localhost:8080'; 
+  // private baseUrl =  'https://dream-catcher2024.azurewebsites.net';
 
   constructor(private http: HttpClient) {}
 

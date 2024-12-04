@@ -13,17 +13,17 @@ export class UserpageComponent {
   isLogin: boolean = false;
 
   constructor(private proxy$: DreamCatcherProxyServiceService) {
-    const userIdFromCache = localStorage.getItem('userId');
-    console.log(userIdFromCache);
-    if (userIdFromCache) {
-      this.userId = userIdFromCache;
-      this.isLogin = true;
-      proxy$.getUserInfo(this.userId).subscribe((result: Record<string, any>) => {
-        console.log('User Info API Response:', result);
-        this.userInfo = result;
+      proxy$.getUserInfo().subscribe({
+        next: (res) => {
+          console.log('User Info API Response:', res);
+          this.userInfo = res;
+          this.isLogin = true;
+        },
+        error: (error) => {
+          this.isLogin = false;
+          console.log('Error loading Trips', error);
+        }
       });
-    }
-    
   }
 
   ngOnInit() {
@@ -39,7 +39,7 @@ export class UserpageComponent {
         "userName": this.userInfo['userName'],
         "phone": this.userInfo['phone']
       }
-      this.proxy$.updateUserInfo(data, this.userId).subscribe(result => {
+      this.proxy$.updateUserInfo(data).subscribe(result => {
         console.log('Save successful:', result);
       });
     }

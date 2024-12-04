@@ -23,8 +23,7 @@ class SceneModel {
                 lat: Number, 
                 lng: Number,
                 type: String,
-                description: String,
-                review: [String]
+                description: String
             }, {collection: 'scenes',versionKey: false}
         );    
     }
@@ -92,7 +91,7 @@ class SceneModel {
     // search a scene by keyword
     public async searchSceneByKeyword(response: any, keyword: string){
         try{
-            console.log(keyword);
+            // console.log(keyword);
             const result = await this.model.find({
                 $or: [
                     { sceneName: { $regex: keyword, $options: 'i' } }, // 'i' for case-insensitive
@@ -101,7 +100,7 @@ class SceneModel {
                 ]
             });
 
-            console.log(result);
+            // console.log(result);
             if (result.length > 0) {
                 response.status(200).json({success: true, data: result, message: ''});
             } else {
@@ -118,7 +117,7 @@ class SceneModel {
         try {
             const result = await this.model.find({ sceneId: { $in: sceneIds } }).exec();
             const orderedResult = sceneIds.map(id => result.find(scene => scene.sceneId === id));
-            console.log(result);
+            // console.log(result);
             if(result.length>0){
                 response.status(200).json({success: true, message: 'scenes found', data: orderedResult});
             }else{

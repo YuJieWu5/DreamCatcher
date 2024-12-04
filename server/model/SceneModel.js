@@ -54,8 +54,7 @@ var SceneModel = /** @class */ (function () {
             lat: Number,
             lng: Number,
             type: String,
-            description: String,
-            review: [String]
+            description: String
         }, { collection: 'scenes', versionKey: false });
     };
     SceneModel.prototype.createModel = function () {
@@ -188,7 +187,6 @@ var SceneModel = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        console.log(keyword);
                         return [4 /*yield*/, this.model.find({
                                 $or: [
                                     { sceneName: { $regex: keyword, $options: 'i' } }, // 'i' for case-insensitive
@@ -198,7 +196,7 @@ var SceneModel = /** @class */ (function () {
                             })];
                     case 1:
                         result = _a.sent();
-                        console.log(result);
+                        // console.log(result);
                         if (result.length > 0) {
                             response.status(200).json({ success: true, data: result, message: '' });
                         }
@@ -228,7 +226,7 @@ var SceneModel = /** @class */ (function () {
                     case 1:
                         result_1 = _a.sent();
                         orderedResult = sceneIds.map(function (id) { return result_1.find(function (scene) { return scene.sceneId === id; }); });
-                        console.log(result_1);
+                        // console.log(result);
                         if (result_1.length > 0) {
                             response.status(200).json({ success: true, message: 'scenes found', data: orderedResult });
                         }

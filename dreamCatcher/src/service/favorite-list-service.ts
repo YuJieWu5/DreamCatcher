@@ -9,6 +9,7 @@ import { GetScenesResponse } from '../model/Scene'
 })
 export class FavoriteListService {
   private baseUrl = 'http://localhost:8080'; 
+  // private baseUrl =  'https://dream-catcher2024.azurewebsites.net';
 
   constructor(private http: HttpClient) {}
 
@@ -23,27 +24,27 @@ export class FavoriteListService {
   /**
    * Get all favorite lists for a user.
    */
-  getFavoriteLists(userId: string): Observable<FavoriteListSummaryResponse> {
-    const url = `${this.baseUrl}/app/user/${userId}/favoritelist`;
+  getFavoriteLists(): Observable<FavoriteListSummaryResponse> {
+    const url = `${this.baseUrl}/app/user/favoritelist`;
     return this.http.get<FavoriteListSummaryResponse>(url);
   }
 
    /**
    * Get scenes in the list
    */
-  getFavoriteList(userId: string, listId: string): Observable<Record<string, any>>{
-    return this.http.get<Record<string, any>>(this.baseUrl+'/app/user/'+userId+'/favoritelist/'+listId);
+  getFavoriteList(listId: string): Observable<Record<string, any>>{
+    return this.http.get<Record<string, any>>(this.baseUrl+'/app/user/favoritelist/'+listId);
   }
 
   /**
    * Add a scene to favorite list.
    */
-  addSceneToFavoriteList(userId: string, sceneId: string, listId: string): Observable<GetScenesResponse>{
+  addSceneToFavoriteList(sceneId: string, listId: string): Observable<GetScenesResponse>{
     const req = {
       sceneId: sceneId,
       listId: listId
     };
-    const url = this.baseUrl+'/app/user/'+userId+'/addscene';
+    const url = this.baseUrl+'/app/user/addscene';
 
     return this.http.patch<GetScenesResponse>(url, req);
   }
@@ -51,10 +52,9 @@ export class FavoriteListService {
   /**
    * Create a new favorite list.
    */
-  createFavoriteList(userId: string, listName: string){
+  createFavoriteList(listName: string){
     console.log("calling create favorite list");
     const data = {
-      userId: userId,
       listName: listName
     };
     return this.http.post<Record<string, any>>(this.baseUrl+'/app/user/addList', data);
@@ -63,16 +63,16 @@ export class FavoriteListService {
   /**
    * Delete a favorite list.
    */
-  deleteFavoriteList(userId: string, favListId: string){
-    const url = `${this.baseUrl}/app/user/${userId}/deleteList/${favListId}`;
+  deleteFavoriteList(favListId: string){
+    const url = `${this.baseUrl}/app/user/deleteList/${favListId}`;
     return this.http.delete<Record<string, any>>(url);
   }
 
   /**
    * Delete a scene from favorite list.
    */
-  deleteSceneFromFavoriteList(userId: string, sceneId: string, listId: string){
-    const url = `${this.baseUrl}/app/user/${userId}/list/${listId}/deletescene/${sceneId}`;
+  deleteSceneFromFavoriteList(sceneId: string, listId: string){
+    const url = `${this.baseUrl}/app/user/list/${listId}/deletescene/${sceneId}`;
     return this.http.delete<Record<string, any>>(url);
   }
 }

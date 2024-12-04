@@ -80,7 +80,7 @@ var TripModel = /** @class */ (function () {
         });
     };
     //get all trips by userId
-    TripModel.prototype.retrieveTrips = function (response, userId) {
+    TripModel.prototype.retrieveTrips = function (response, userId, authorization) {
         return __awaiter(this, void 0, void 0, function () {
             var results, e_2;
             return __generator(this, function (_a) {
@@ -91,10 +91,10 @@ var TripModel = /** @class */ (function () {
                     case 1:
                         results = _a.sent();
                         if (results && results.length > 0) {
-                            response.status(200).json({ success: true, message: 'Trips found', data: results });
+                            response.status(200).json({ success: true, message: 'Trips found', data: results, auth: authorization });
                         }
                         else {
-                            response.status(404).json({ success: false, message: 'No records found for the given userId', data: [] });
+                            response.status(404).json({ success: false, message: 'No records found for the given userId', data: [], auth: authorization });
                         }
                         return [3 /*break*/, 3];
                     case 2:

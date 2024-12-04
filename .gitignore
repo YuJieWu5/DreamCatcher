@@ -134,3 +134,5 @@ dist
 server/get_scene_location.mjs
 
 .idea/*
+
+db/

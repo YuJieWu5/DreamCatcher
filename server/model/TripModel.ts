@@ -44,13 +44,13 @@ class TripModel{
     }
 
     //get all trips by userId
-    public async retrieveTrips(response:any, userId:string) {
+    public async retrieveTrips(response:any, userId:string, authorization: string) {
         try {
             const results = await this.model.find({ userId: userId }).lean().exec();
             if (results && results.length > 0) {
-                response.status(200).json({ success: true, message: 'Trips found', data: results });
+                response.status(200).json({ success: true, message: 'Trips found', data: results, auth: authorization });
             } else {
-                response.status(404).json({ success: false, message: 'No records found for the given userId', data: [] });
+                response.status(404).json({ success: false, message: 'No records found for the given userId', data: [], auth: authorization });
             }
         }
         catch (e) {

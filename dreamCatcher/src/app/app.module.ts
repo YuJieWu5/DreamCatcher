@@ -11,14 +11,14 @@ import { TripspageComponent } from './tripspage/tripspage.component';
 import { HeaderComponent } from './header/header.component';
 
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {DreamCatcherProxyServiceService} from './dream-catcher-proxy-service.service';
+import { DreamCatcherProxyServiceService } from './dream-catcher-proxy-service.service';
 import { provideHttpClient } from '@angular/common/http';
 
-import {MatTableModule} from '@angular/material/table';
-import {MatSortModule} from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
@@ -26,7 +26,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -34,7 +34,6 @@ import { LocationModalComponent } from './location-modal/location-modal.componen
 import { CreateListDialogComponent } from './create-list-dialog/create-list-dialog.component';
 import { SceneCardComponent } from './scene-card/scene-card.component';
 import { LoginpageComponent } from './loginpage/loginpage.component';
-import { SignuppageComponent } from './signuppage/signuppage.component';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
@@ -54,7 +53,6 @@ import { SelectListDialogComponent } from './select-list-dialog/select-list-dial
     CreateListDialogComponent,
     SceneCardComponent,
     LoginpageComponent,
-    SignuppageComponent,
     ReviewDialogComponent,
     SelectListDialogComponent,
   ],

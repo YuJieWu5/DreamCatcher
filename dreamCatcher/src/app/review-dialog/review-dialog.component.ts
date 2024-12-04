@@ -14,7 +14,6 @@ export class ReviewDialogComponent {
     sceneId: ''
   };
   newReview = {
-    userName: '',
     rating: '',
     comment: ''
   };
@@ -57,23 +56,13 @@ export class ReviewDialogComponent {
       this.proxy$.getReview(sceneId).subscribe(response => {
         if (response['success']) {
           this.reviews = response['data'];
-        } else {
-
         }
       });
     }
   }
 
   onAddReview(): void {
-    const userId = localStorage.getItem('userId');
-    if (!userId) {
-      this.dialogRef.close();
-      // The user is not logged in, jump to the login page
-      this.router.navigate(['/login']);
-    } else {
-      // Implementing the logic for adding comments
-      this.showAddReviewForm = !this.showAddReviewForm;
-    }
+    this.showAddReviewForm = !this.showAddReviewForm;
   }
 
   getAverageRating(): number {
@@ -89,26 +78,8 @@ export class ReviewDialogComponent {
 
   submitReview() {
     if (this.isValidReview()) {
-      let userName: string;
-      const storedUserName = localStorage.getItem('userName');
-      if (storedUserName) {
-        userName = storedUserName;
-      } else {
-        userName = 'defaultUserName';
-      }
-
-      let userId: string;
-      const storedUserId = localStorage.getItem('userId');
-      if (storedUserId) {
-        userId = storedUserId;
-      } else {
-        userId = 'defaultUserName';
-      }
-
       const data: Record<string, string> = {
         sceneId: this.sceneData.sceneId,
-        userId: userId,
-        userName: userName,
         rating: this.newReview.rating,
         comment: this.newReview.comment
       }
@@ -118,7 +89,7 @@ export class ReviewDialogComponent {
         const success = result && result['success'] ? result['success'] : "";
         if (success == true) {
           this.reviews.push(this.newReview); // Add new comment to list
-          this.newReview = { userName: '', rating: '', comment: '' }; // Reset Form
+          this.newReview = { rating: '', comment: '' }; // Reset Form
           this.showAddReviewForm = false; // Hide Form
         } else {
           this.message = result['message'];
@@ -130,14 +101,6 @@ export class ReviewDialogComponent {
   }
 
   isValidReview() {
-    let userName: string;
-    const storedUserName = localStorage.getItem('userName');
-    if (storedUserName) {
-      userName = storedUserName;
-    } else {
-      userName = 'defaultUserName';
-    }
-    this.newReview.userName = userName;
     return this.newReview.rating.trim() !== '' &&
       this.newReview.comment.trim().length <= 50 &&
       this.newReview.comment.trim() !== '';

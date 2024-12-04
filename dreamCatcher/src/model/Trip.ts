@@ -3,7 +3,8 @@ import { Scene } from "./Scene"
 export interface GetTripListResponse {
     success: boolean 
     message: string 
-    data: TripSummary[]
+    data: TripSummary[],
+    auth: string
 }
 
 export interface GetTripResponse {

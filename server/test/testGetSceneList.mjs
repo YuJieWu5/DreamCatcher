@@ -49,7 +49,6 @@ describe('Test Scenes result', function () {
 					expect(body[i]).to.have.property('lng').that.is.a('number');
                     expect(body[i]).to.have.property('type').that.is.a('string');
                     expect(body[i]).to.have.property('description').that.is.a('string');
-                    expect(body[i]).to.have.property('review').that.is.an('array');
 				}
 				return true;
 			});
