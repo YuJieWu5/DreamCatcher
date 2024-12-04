@@ -174,9 +174,15 @@ class App {
     
     // add review to scene
     router.post('/app/review', async (req, res) => {
-      const reviewData = req.body;
-      console.log('Adding new review:', reviewData);
-      await this.Reviews.addReviews(res, reviewData);
+      var jsonObj = req.body;
+      console.log(jsonObj);
+      try {
+        await this.Reviews.model.create([jsonObj]);
+        res.status(200).json({ success: true, data: jsonObj });
+      }
+      catch (e) {
+        res.status(500).json({ success: false, message: "Failed to add review", error: e });
+      }
     });
 
     // display all reveiws by sceneId

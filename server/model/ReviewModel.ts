@@ -26,31 +26,14 @@ class ReviewModel {
     public async createModel() {
         try {
             await Mongoose.connect(this.dbConnectionString);
-            this.model = Mongoose.models.Reviews || Mongoose.model<IReviewModel>("Reviews", this.schema);
+            this.model = Mongoose.model<IReviewModel>("Reviews", this.schema);
         }
         catch (e) {
             console.error(e);
         }
     }
 
-
-    public async addReviews(response: any, reviewData: any) {
-        try {
-            if (!this.model) {
-                throw new Error("Review model not initialized");
-            }
-            const newReview = new this.model(reviewData);
-            const savedReview = await newReview.save();
-            
-            response.status(201).json({ success: true, data: savedReview });
-        } catch (e) {
-            console.error("Error adding review:", e);
-            response.status(500).json({ success: false, message: "Failed to add review", error: e });
-        }
-    }
-    
-
-     public async retrieveReviewsBySceneId(response: any, sceneId: string) {
+    public async retrieveReviewsBySceneId(response: any, sceneId: string) {
         try {
             const reviews = await this.model.find({ sceneId }).exec();
             if (reviews.length > 0) {
