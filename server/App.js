@@ -123,7 +123,7 @@ var App = /** @class */ (function () {
             });
         }); });
         //create new scene
-        router.post('/app/scene/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.post('/app/scene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             var id, jsonObj, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -174,7 +174,7 @@ var App = /** @class */ (function () {
             });
         }); });
         //display all scene
-        router.get('/app/scene/', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+        router.get('/app/scene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -289,6 +289,29 @@ var App = /** @class */ (function () {
                         error_1 = _a.sent();
                         console.error("Error fetching user info:", error_1);
                         res.status(500).json({ success: false, message: "An error occurred", error: error_1 });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        }); });
+        //unprotected get user path
+        router.get('/app/user/:userId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        userId = req.params.userId;
+                        // Fetch user info from the database
+                        return [4 /*yield*/, this.Users.retrieveUser(res, userId)];
+                    case 1:
+                        // Fetch user info from the database
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.error("Error fetching user info:", error_2);
+                        res.status(500).json({ success: false, message: "An error occurred", error: error_2 });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

@@ -119,7 +119,7 @@ class App {
     });
 
     //create new scene
-    router.post('/app/scene/', async (req, res) => {
+    router.post('/app/scene', async (req, res) => {
       const id = crypto.randomBytes(16).toString("hex");
       console.log(req.body);
       var jsonObj = req.body;
@@ -147,7 +147,7 @@ class App {
     });
 
     //display all scene
-    router.get('/app/scene/', async (req, res) => {
+    router.get('/app/scene', async (req, res) => {
       console.log('Query All Scenes');
       await this.Scenes.retrieveAllScenes(res);
     });
@@ -199,6 +199,19 @@ class App {
           console.log('user authorization: '+ req.user.authorization);
           const userId = req.user.userId; // Assuming `userId` is part of the user object in req.user
           console.log('Querying single user with id: ' + userId);
+  
+          // Fetch user info from the database
+          await this.Users.retrieveUser(res, userId);
+      } catch (error) {
+          console.error("Error fetching user info:", error);
+          res.status(500).json({ success: false, message: "An error occurred", error });
+      }
+    });
+
+    //unprotected get user path
+    router.get('/app/user/:userId', async (req, res) => {
+      try {
+          const userId = req.params.userId;
   
           // Fetch user info from the database
           await this.Users.retrieveUser(res, userId);
