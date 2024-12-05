@@ -6,10 +6,12 @@ chai.use(chaiHttp);
 describe('Test Single User result', function () {
     var requestResult;
     var response;
-    const validUserId = "f5a013b7-0e83-4ec8-bfd2-8a8f3838bace"; 
+    const baseUrl = 'https://dream-catcher2024.azurewebsites.net';
+    // const baseUrl = 'http://localhost:8080';
+    const validUserId = "115756618068685535983"; 
 
     before(function (done) {
-        chai.request("http://localhost:8080")
+        chai.request(baseUrl)
             .get(`/app/user/${validUserId}`)
             .end(function (err, res) {
                 requestResult = res.body;

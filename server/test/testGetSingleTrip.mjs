@@ -6,10 +6,12 @@ chai.use(chaiHttp);
 describe('Test Single Trip result', function () {
     var requestResult;
     var response;
+    const baseUrl = 'https://dream-catcher2024.azurewebsites.net';
+    // const baseUrl = 'http://localhost:8080';
     const validTripId = "7ddc4d5f-d84a-4930-85ba-45c06c"; 
 
     before(function (done) {
-        chai.request("http://localhost:8080")
+        chai.request(baseUrl)
             .get(`/app/trip/${validTripId}`)
             .end(function (err, res) {
                 requestResult = res.body;

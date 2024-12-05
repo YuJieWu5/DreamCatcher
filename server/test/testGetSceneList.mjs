@@ -8,9 +8,11 @@ describe('Test Scenes result', function () {
 
 	var requestResult;
 	var response;
+	const baseUrl = 'https://dream-catcher2024.azurewebsites.net';
+    // const baseUrl = 'http://localhost:8080';
 		 
     before(function (done) {
-        chai.request("http://localhost:8080")
+        chai.request(baseUrl)
 			.get("/app/scene")
 			.end(function (err, res) {
 				requestResult = res.body.data;
