@@ -12,7 +12,7 @@ describe('Test Single User result', function () {
 
     before(function (done) {
         chai.request(baseUrl)
-            .get(`/app/user/${validUserId}`)
+            .get(`/app/unprotected/user/${validUserId}`)
             .end(function (err, res) {
                 requestResult = res.body;
                 response = res;
