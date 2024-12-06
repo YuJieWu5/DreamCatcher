@@ -54,7 +54,7 @@ var GooglePassport = /** @class */ (function () {
             callbackURL: "/auth/google/callback"
         }, function (accessToken, refreshToken, profile, done) {
             process.nextTick(function () { return __awaiter(_this, void 0, void 0, function () {
-                var existingUser, newUser, createUser, id, newTrip, createTrip, error_1;
+                var existingUser, newUser, createUser, id, newTrip, error_1;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -86,9 +86,9 @@ var GooglePassport = /** @class */ (function () {
                             };
                             return [4 /*yield*/, this.Trips.model.create(newTrip)];
                         case 3:
-                            createTrip = _a.sent();
-                            console.log('create Trip:' + createTrip);
-                            console.log(createUser);
+                            _a.sent();
+                            // console.log('create Trip:'+createTrip);
+                            // console.log(createUser);
                             // Call done with the newly saved user
                             return [2 /*return*/, done(null, createUser)];
                         case 4:
@@ -100,7 +100,7 @@ var GooglePassport = /** @class */ (function () {
             }); });
         }));
         passport.serializeUser(function (user, done) {
-            // console.log('serializeUserId: '+user.id);
+            console.log('serializeUserId: ' + user.id);
             done(null, user.id);
         });
         passport.deserializeUser(function (id, done) { return __awaiter(_this, void 0, void 0, function () {
@@ -108,18 +108,21 @@ var GooglePassport = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, Users.model.findById(id)];
+                        console.log('deserializeUser id:' + id);
+                        _a.label = 1;
                     case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, Users.model.findById(id)];
+                    case 2:
                         user = _a.sent();
                         done(null, user);
-                        return [3 /*break*/, 3];
-                    case 2:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_2 = _a.sent();
                         console.log('error occur here');
                         done(error_2, null);
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         }); });

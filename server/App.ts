@@ -17,13 +17,11 @@ declare global {
       userName: string;
       email: string;
       authorization: string;
-      // Add any other fields your user object contains
     }
 
     interface Request {
-      user?: User; // Include user from Passport
-      logout(callback: (err: unknown) => void): void; // Add logout method
-      // Add session if needed in the future
+      user?: User;
+      logout(callback: (err: unknown) => void): void;
     }
   }
 }
@@ -62,7 +60,14 @@ class App {
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
-    this.expressApp.use(session({ secret: 'keyboard cat', resave: false, saveUninitialized: false, cookie: {secure: false}}));
+    this.expressApp.use(
+      session({
+          secret: 'keyboard cat',
+          resave: false,
+          saveUninitialized: false,
+          cookie: { secure: false }
+      })
+  );
     this.expressApp.use(cookieParser());
     this.expressApp.use(passport.initialize());
     this.expressApp.use(passport.session());
@@ -103,13 +108,11 @@ class App {
           console.error('Error during logout:', err);
           return res.status(500).json({ success: false, message: 'Logout failed', error: err });
         }
-        res.clearCookie('connect.sid'); // Replace with your session cookie name
+        res.clearCookie('connect.sid');
         console.log('User logged out successfully');
         res.status(200).json({ success: true, message: 'Logged out successfully' });
       });
     });
-
-
 
     //get scene by sceneId
     router.get('/app/scene/:sceneId', async (req, res) => {
@@ -196,7 +199,7 @@ class App {
     router.get('/app/user', this.validateAuth, async (req, res) => {
       try {
           // Retrieve the userId from the session (req.user)
-          console.log('user authorization: '+ req.user.authorization);
+          // console.log('user authorization: '+ req.user.authorization);
           const userId = req.user.userId; // Assuming `userId` is part of the user object in req.user
           console.log('Querying single user with id: ' + userId);
   
@@ -209,7 +212,7 @@ class App {
     });
 
     //unprotected get user path
-    router.get('/app/user/:userId', async (req, res) => {
+    router.get('/app/unprotected/user/:userId', async (req, res) => {
       try {
           const userId = req.params.userId;
   
@@ -242,10 +245,25 @@ class App {
 
     //get user all favorite list
     router.get('/app/user/favoritelist', this.validateAuth, async (req, res) => {
-      const userId = req.user.userId;
-      const authorization = req.user.authorization;
-      console.log('update by userId: ' + userId);
-      await this.Users.retrieveFavoriteList(res, userId, authorization);
+      try{
+        const userId = req.user.userId;
+        const authorization = req.user.authorization;
+        console.log('get favorite list by userId:', userId);
+        await this.Users.retrieveFavoriteList(res, userId, authorization);
+      }catch(e){
+        console.log(e);
+      }
+    });
+
+    //unprotected get user all favorite list
+    router.get('/app/user/:userId/favoritelist', async (req, res) => {
+      try{
+        const userId = req.params.userId;
+        console.log('get favorite list by userId:', userId);
+        await this.Users.retrieveFavoriteList(res, userId, "prime");
+      }catch(e){
+        console.log(e);
+      }
     });
 
     //get user's one favorite list by favListId & userId
@@ -391,8 +409,6 @@ class App {
         console.log('delete scene failed');
       }
     });
-
-
 
     this.expressApp.use('/', router);
 

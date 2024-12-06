@@ -58,10 +58,10 @@ class GooglePassport {
                             scenes: []
                         }
 
-                        const createTrip = await this.Trips.model.create(newTrip);
-                        console.log('create Trip:'+createTrip);
+                        await this.Trips.model.create(newTrip);
+                        // console.log('create Trip:'+createTrip);
                         
-                        console.log(createUser);
+                        // console.log(createUser);
     
                         // Call done with the newly saved user
                         return done(null, createUser);
@@ -74,12 +74,12 @@ class GooglePassport {
         ));
 
         passport.serializeUser(function(user, done) {
-            // console.log('serializeUserId: '+user.id);
+            console.log('serializeUserId: '+user.id);
             done(null, user.id);
         });
 
         passport.deserializeUser(async(id, done)=> {
-            // console.log('deserializeUser id:'+ id);
+            console.log('deserializeUser id:'+ id);
             try {
                 const user = await Users.model.findById(id);
                 done(null, user);
