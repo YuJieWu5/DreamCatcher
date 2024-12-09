@@ -128,3 +128,29 @@
   font-weight: 800;
   cursor: pointer;
 }
+
+
+/* Container for the subscription buttons */
+.subscription-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;          /* Space between buttons */
+  margin: 20px 0;     /* Add some vertical spacing */
+}
+
+/* Ensure buttons take appropriate width */
+.subscription-actions button {
+  min-width: 180px;   /* Set a minimum width for buttons */
+}
+
+/* Optional: Add responsiveness for smaller screens */
+@media (max-width: 600px) {
+  .subscription-actions {
+    flex-direction: column; /* Stack buttons vertically on smaller screens */
+  }
+
+  .subscription-actions button {
+    width: 100%;       /* Make buttons full width */
+    margin-bottom: 10px;
+  }
+}

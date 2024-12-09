@@ -22,7 +22,12 @@ export class DreamCatcherProxyServiceService {
 
   //updateData only accept userName || phone || email, update user by userId
   updateUserInfo(updateData: Record<string, any>){
-    return this.httpClient.patch<any[]>(this.hostUrl+'app/user/update', updateData);
+    return this.httpClient.patch<Record<string, any>>(this.hostUrl+'app/user/update', updateData);
+  }
+
+  // update user type
+  updateUserType(updateData: Record<string, any>){
+    return this.httpClient.patch<Record<string, any>>(this.hostUrl+'app/user/updateUserType', updateData);
   }
 
   getReview(sceneId: string){

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DreamCatcherProxyServiceService } from '../dream-catcher-proxy-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-userpage',
@@ -12,18 +13,22 @@ export class UserpageComponent {
   isEditing: boolean = false;
   isLogin: boolean = false;
 
-  constructor(private proxy$: DreamCatcherProxyServiceService) {
-      proxy$.getUserInfo().subscribe({
-        next: (res) => {
-          console.log('User Info API Response:', res);
-          this.userInfo = res;
-          this.isLogin = true;
-        },
-        error: (error) => {
-          this.isLogin = false;
-          console.log('Error loading Trips', error);
-        }
-      });
+  constructor(private proxy$: DreamCatcherProxyServiceService, private router: Router) {
+    this.loadUserInfo();
+  }
+
+  loadUserInfo() {
+    this.proxy$.getUserInfo().subscribe({
+      next: (res) => {
+        console.log('User Info API Response:', res);
+        this.userInfo = res;
+        this.isLogin = true;
+      },
+      error: (error) => {
+        this.isLogin = false;
+        console.log('Error loading user info', error);
+      }
+    });
   }
 
   ngOnInit() {
@@ -62,5 +67,33 @@ export class UserpageComponent {
       return 'Premium Member';
     }
     return 'General User';
+  }
+
+  upgradeToPrime() {
+    this.proxy$.updateUserType({ authorization: 'prime' }).subscribe({
+      next: (res) => {
+        if (res['success']) {
+          alert('Upgrade to Prime successful!');
+          this.loadUserInfo();
+        }
+      },
+      error: (error) => {
+        console.error('Error upgrading to Prime:', error);
+      }
+    });
+  }
+
+  cancelSubscription() {
+    this.proxy$.updateUserType({ authorization: 'general' }).subscribe({
+      next: (res) => {
+        if (res['success']) {
+          alert('Subscription canceled successfully!');
+          this.loadUserInfo();
+        }
+      },
+      error: (error) => {
+        console.error('Error canceling subscription:', error);
+      }
+    });
   }
 }

@@ -47,6 +47,15 @@
     </div>
 
     <!-- Edit Button -->
+    <div class="subscription-actions">
+      <button *ngIf="userInfo['authorization'] !== 'prime'" mat-flat-button color="primary" (click)="upgradeToPrime()">
+        Upgrade to Prime
+      </button>
+      <button *ngIf="userInfo['authorization'] === 'prime'" mat-flat-button color="warn" (click)="cancelSubscription()">
+        Cancel Subscription
+      </button>
+    </div>
+    
     <button *ngIf="!isEditing" mat-flat-button (click)="toggleEdit()">
       Edit
     </button>

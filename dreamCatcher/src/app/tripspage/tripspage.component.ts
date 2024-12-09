@@ -7,6 +7,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateListDialogComponent } from '../create-list-dialog/create-list-dialog.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { loadGoogleMapsScript } from '../mainpage/mainpage.component'
+import { UpgradeToPrimeDialogComponent } from '../upgrade-to-prime-dialog/upgrade-to-prime-dialog.component';
+import { DreamCatcherProxyServiceService } from '../dream-catcher-proxy-service.service';
 declare const google: any;
 
 @Component({
@@ -25,7 +27,8 @@ export class TripspageComponent {
     private tripService: TripService,
     private router: Router,
     private route: ActivatedRoute,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private proxy$: DreamCatcherProxyServiceService
   ) {}
 
   ngOnInit(): void {
@@ -105,8 +108,25 @@ export class TripspageComponent {
         }
       });
     }else{
-      alert('You need to upgrade to create more Trip!');
-      return;
+      const dialogRef = this.dialog.open(UpgradeToPrimeDialogComponent, {
+        width: '400px'
+      });
+  
+      dialogRef.afterClosed().subscribe((confirmUpgrade) => {
+        if (confirmUpgrade) {
+          this.proxy$.updateUserType({'authorization': 'prime'}).subscribe({
+            next: (res) => {
+              if (res['success']) {
+                alert('Upgrade successful!');
+                this.router.navigate(['user']);
+              }
+            },
+            error: (error) => {
+              console.error('Error upgrading to Prime:', error);
+            }
+          })
+        }
+      });
     }
     
   }

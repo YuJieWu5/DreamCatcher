@@ -37,7 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var passport = require("passport");
+var dotenv = require("dotenv");
 var crypto = require("crypto");
+dotenv.config();
 var GoogleStrategy = require('passport-google-oauth20-with-people-api').Strategy;
 // Creates a Passport configuration for Google
 var GooglePassport = /** @class */ (function () {

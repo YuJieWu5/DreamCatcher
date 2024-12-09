@@ -357,9 +357,33 @@ var App = /** @class */ (function () {
                 }
             });
         }); });
+        //update user(authorization) by userId
+        router.patch('/app/user/updateUserType', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
+            var userId, updateData, e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        userId = req.user.userId;
+                        console.log('update by userId: ' + userId);
+                        updateData = req.body;
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.Users.updateUserTypeById(res, userId, updateData)];
+                    case 2:
+                        _a.sent();
+                        return [3 /*break*/, 4];
+                    case 3:
+                        e_5 = _a.sent();
+                        console.error(e_5);
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        }); });
         //get user all favorite list
         router.get('/app/user/favoritelist', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, authorization, e_5;
+            var userId, authorization, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -372,8 +396,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_5 = _a.sent();
-                        console.log(e_5);
+                        e_6 = _a.sent();
+                        console.log(e_6);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -381,7 +405,7 @@ var App = /** @class */ (function () {
         }); });
         //unprotected get user all favorite list
         router.get('/app/user/:userId/favoritelist', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, e_6;
+            var userId, e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -393,8 +417,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_6 = _a.sent();
-                        console.log(e_6);
+                        e_7 = _a.sent();
+                        console.log(e_7);
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -418,7 +442,7 @@ var App = /** @class */ (function () {
         }); });
         //add scene to user favorite list
         router.patch('/app/user/addscene', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listId, sceneId, e_7;
+            var userId, listId, sceneId, e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -431,8 +455,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_7 = _a.sent();
-                        console.error(e_7);
+                        e_8 = _a.sent();
+                        console.error(e_8);
                         console.log('add scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -441,7 +465,7 @@ var App = /** @class */ (function () {
         }); });
         //delete scene to user favorite list
         router.delete('/app/user/list/:listId/deletescene/:sceneId', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, _a, listId, sceneId, e_8;
+            var userId, _a, listId, sceneId, e_9;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -453,8 +477,8 @@ var App = /** @class */ (function () {
                         _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_8 = _b.sent();
-                        console.error(e_8);
+                        e_9 = _b.sent();
+                        console.error(e_9);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -463,7 +487,7 @@ var App = /** @class */ (function () {
         }); });
         //create favorite list
         router.post('/app/user/addList', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listName, e_9;
+            var userId, listName, e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -475,8 +499,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_9 = _a.sent();
-                        console.log(e_9);
+                        e_10 = _a.sent();
+                        console.log(e_10);
                         console.log('create favorite failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -485,7 +509,7 @@ var App = /** @class */ (function () {
         }); });
         //delete favorite list
         router.delete('/app/user/deleteList/:listId', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, listId, e_10;
+            var userId, listId, e_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -498,8 +522,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_10 = _a.sent();
-                        console.error(e_10);
+                        e_11 = _a.sent();
+                        console.error(e_11);
                         console.log('delete favorite list failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -509,7 +533,7 @@ var App = /** @class */ (function () {
         /*API for Trips*/
         //create new trip
         router.post('/app/trip', this.validateAuth, function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var userId, id, jsonObj, e_11;
+            var userId, id, jsonObj, e_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -528,8 +552,8 @@ var App = /** @class */ (function () {
                         res.status(200).json({ success: true, message: 'trip creation success', id: id });
                         return [3 /*break*/, 4];
                     case 3:
-                        e_11 = _a.sent();
-                        console.error(e_11);
+                        e_12 = _a.sent();
+                        console.error(e_12);
                         console.log('trip creation failed');
                         res.status(404).json({ success: false, message: 'trip creation failed' });
                         return [3 /*break*/, 4];
@@ -569,7 +593,7 @@ var App = /** @class */ (function () {
         }); });
         //update trip name
         router.patch('/app/trip/:tripId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var tripId, updateData, e_12;
+            var tripId, updateData, e_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -583,8 +607,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 4];
                     case 3:
-                        e_12 = _a.sent();
-                        console.error(e_12);
+                        e_13 = _a.sent();
+                        console.error(e_13);
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -592,7 +616,7 @@ var App = /** @class */ (function () {
         }); });
         //delete trip
         router.delete('/app/trip/:tripId/delete', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var tripId, e_13;
+            var tripId, e_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -603,8 +627,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_13 = _a.sent();
-                        console.error(e_13);
+                        e_14 = _a.sent();
+                        console.error(e_14);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -613,7 +637,7 @@ var App = /** @class */ (function () {
         }); });
         //add scene to trip
         router.patch('/app/trip/:tripId/addscene', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var tripId, sceneId, e_14;
+            var tripId, sceneId, e_15;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -625,8 +649,8 @@ var App = /** @class */ (function () {
                         _a.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_14 = _a.sent();
-                        console.error(e_14);
+                        e_15 = _a.sent();
+                        console.error(e_15);
                         console.log('add scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -635,7 +659,7 @@ var App = /** @class */ (function () {
         }); });
         //delete scene from trip
         router.delete('/app/trip/:tripId/deletescene/:sceneId', function (req, res) { return __awaiter(_this, void 0, void 0, function () {
-            var _a, tripId, sceneId, e_15;
+            var _a, tripId, sceneId, e_16;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -646,8 +670,8 @@ var App = /** @class */ (function () {
                         _b.sent();
                         return [3 /*break*/, 3];
                     case 2:
-                        e_15 = _b.sent();
-                        console.error(e_15);
+                        e_16 = _b.sent();
+                        console.error(e_16);
                         console.log('delete scene failed');
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
@@ -657,6 +681,7 @@ var App = /** @class */ (function () {
         this.expressApp.use('/', router);
         // this.expressApp.use('/app/json/', express.static(__dirname+'/app/json'));
         // this.expressApp.use('/images', express.static(__dirname+'/img'));
+        // this.expressApp.use('/', express.static(__dirname + '/dist/dream-catcher/browser'));
         this.expressApp.use('/', express.static(__dirname + '/dist'));
     };
     return App;

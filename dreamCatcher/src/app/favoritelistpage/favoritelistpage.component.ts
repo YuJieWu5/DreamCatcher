@@ -7,6 +7,8 @@ import { FavoriteList, FavoriteListSummary } from '../../model/FavoriteList'
 import { Scene } from '../../model/Scene'
 import { Router } from '@angular/router';
 import { ActivatedRoute, Params } from '@angular/router';
+import { UpgradeToPrimeDialogComponent } from '../upgrade-to-prime-dialog/upgrade-to-prime-dialog.component';
+import { DreamCatcherProxyServiceService } from '../dream-catcher-proxy-service.service';
 
 
 @Component({
@@ -23,7 +25,9 @@ export class FavoritelistpageComponent implements OnInit {
     private dialog: MatDialog, 
     private favoriteListService: FavoriteListService, 
     private router: Router,
-    private route: ActivatedRoute) {}
+    private route: ActivatedRoute,
+    private proxy$: DreamCatcherProxyServiceService
+  ) {}
 
   ngOnInit(): void {
     this.loadFavoriteLists();
@@ -120,8 +124,25 @@ export class FavoritelistpageComponent implements OnInit {
         }
       });
     }else{
-      alert('You need to upgrade to create more Favorite List!');
-      return;
+      const dialogRef = this.dialog.open(UpgradeToPrimeDialogComponent, {
+        width: '400px'
+      });
+  
+      dialogRef.afterClosed().subscribe((confirmUpgrade) => {
+        if (confirmUpgrade) {
+          this.proxy$.updateUserType({'authorization': 'prime'}).subscribe({
+            next: (res) => {
+              if (res['success']) {
+                alert('Upgrade successful!');
+                this.router.navigate(['user']);
+              }
+            },
+            error: (error) => {
+              console.error('Error upgrading to Prime:', error);
+            }
+          })
+        }
+      });
     }
     
   }

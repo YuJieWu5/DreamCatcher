@@ -243,6 +243,19 @@ class App {
       }
     });
 
+    //update user(authorization) by userId
+    router.patch('/app/user/updateUserType', this.validateAuth, async (req, res) => {
+      // const userId = req.params.userId;
+      const userId = req.user.userId;
+      console.log('update by userId: ' + userId);
+      const updateData = req.body; // e.g., { authorization })
+      try {
+        await this.Users.updateUserTypeById(res, userId, updateData);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
     //get user all favorite list
     router.get('/app/user/favoritelist', this.validateAuth, async (req, res) => {
       try{
@@ -414,6 +427,7 @@ class App {
 
     // this.expressApp.use('/app/json/', express.static(__dirname+'/app/json'));
     // this.expressApp.use('/images', express.static(__dirname+'/img'));
+    // this.expressApp.use('/', express.static(__dirname + '/dist/dream-catcher/browser'));
     this.expressApp.use('/', express.static(__dirname + '/dist'));
 
   }

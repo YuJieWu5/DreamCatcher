@@ -102,6 +102,27 @@ class UserModel {
         }
     }
 
+    // update user type by userId
+    public async updateUserTypeById(response: any, userId: string, updateData: Partial<Pick<IUserModel, "authorization">>) {
+        try {
+            // console.log(updateData);
+            const result = await this.model.findOneAndUpdate(
+                { userId: userId },         // filter by userId
+                { $set: updateData },       // update specific fields
+                { new: true }               //new=true returns updated document
+            );
+
+            if (result) {
+                response.status(200).json({ success: true, message: 'User updated successfully', data: result });
+            } else {
+                response.status(404).json({ success: false, message: 'User not found' });
+            }
+        } catch (e) {
+            console.error(e);
+            response.status(500).json({ success: false, message: 'An error occurred', error: e });
+        }
+    }
+
 
     //FUNCTION REGARDING FAVORITE LIST
 

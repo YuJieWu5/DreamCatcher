@@ -38,6 +38,7 @@ import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { ReviewDialogComponent } from './review-dialog/review-dialog.component';
 import { SelectListDialogComponent } from './select-list-dialog/select-list-dialog.component';
+import { UpgradeToPrimeDialogComponent } from './upgrade-to-prime-dialog/upgrade-to-prime-dialog.component';
 
 
 
@@ -55,6 +56,7 @@ import { SelectListDialogComponent } from './select-list-dialog/select-list-dial
     LoginpageComponent,
     ReviewDialogComponent,
     SelectListDialogComponent,
+    UpgradeToPrimeDialogComponent,
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,7 @@ import * as crypto from 'crypto';
 import { UserModel } from './model/UserModel'; 
 import { TripModel } from './model/TripModel';
 
-
+dotenv.config();
 let GoogleStrategy = require('passport-google-oauth20-with-people-api').Strategy;
 
 // Creates a Passport configuration for Google
